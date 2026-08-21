@@ -5,7 +5,6 @@ import {
   CustomersSection,
   FeaturedProductsSection,
   GlobalReachSection,
-  HeroSection,
   ImportExportSection,
   IndustriesSection,
   ManufacturingSection,
@@ -15,6 +14,7 @@ import {
   TestimonialsSection,
   WhyChooseUsSection,
 } from "@/components/sections/home";
+import { ShaderHeroSection } from "@/components/sections/home/ShaderHeroSection";
 import { CONTACT, SITE_NAME, SITE_URL } from "@/content/site";
 import { getCompanyInfo } from "@/lib/company";
 
@@ -95,7 +95,7 @@ export default function HomePage() {
           __html: JSON.stringify([organizationSchema, websiteSchema]),
         }}
       />
-      <HeroSection />
+      <ShaderHeroSection />
       <CapabilityStrip />
       <ProductCategoriesSection />
       <FeaturedProductsSection />

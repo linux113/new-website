@@ -142,6 +142,8 @@ void main(){
 
 type StarCursorProps = {
   label?: boolean;
+  /** Replace the native cursor while over the frame (default true). */
+  hideNativePointer?: boolean;
   labelText?: string;
   labelColor?: string;
   labelFont?: React.CSSProperties;
@@ -231,6 +233,7 @@ function OriginkitBaseStarCursor(props: StarCursorProps) {
     label = DEFAULTS.label,
     labelText = DEFAULTS.labelText,
     labelColor = DEFAULTS.labelColor,
+    hideNativePointer = true,
     style,
   } = props;
 
@@ -347,6 +350,7 @@ function OriginkitBaseStarCursor(props: StarCursorProps) {
     const previousCursor = document.documentElement.style.cursor;
     let cursorHidden = false;
     const hideNativeCursor = (hide: boolean) => {
+      if (!hideNativePointer) return;
       if (hide === cursorHidden) return;
       cursorHidden = hide;
       document.documentElement.style.cursor = hide ? "none" : previousCursor;
@@ -476,7 +480,7 @@ function OriginkitBaseStarCursor(props: StarCursorProps) {
       material.dispose();
       renderer.dispose();
     };
-  }, [perFrame]);
+  }, [perFrame, hideNativePointer]);
 
   const labelNode = label ? (
     <div
