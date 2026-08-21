@@ -1,19 +1,21 @@
 import type {
-  ContactPlaceholders,
+  ContactInfo,
   FooterColumn,
   NavItem,
   SocialLink,
 } from "./types";
 
 /**
- * SRIYAAN METALS — site structure & placeholder contact data.
+ * SRIYAAN METALS — site structure & company data.
  *
- * PLACEHOLDER-CONTENT (DS §31): every bracketed value below awaits
- * real client input. Nothing here is a business claim. This module is
- * the single sweep point for the layout shell.
+ * CONTACT/GST/ADDRESS/HOURS below are VERIFIED client-supplied data.
+ * Everything bracketed remains PLACEHOLDER-CONTENT (DS §31) awaiting
+ * client input. This module is the single sweep point for the shell.
  */
 
 export const SITE_NAME = "SRIYAAN METALS";
+export const SITE_DOMAIN = "sriyaanmetals.com";
+export const SITE_URL = `https://${SITE_DOMAIN}`;
 
 /** Main navigation. Products carries the mega-menu categories. */
 export const MAIN_NAV: NavItem[] = [
@@ -74,13 +76,30 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
   },
 ];
 
-/** Contact placeholders (DS §31.6) — never invented values. */
-export const CONTACT: ContactPlaceholders = {
-  phone: "[+00 000 000 0000]",
-  email: "[info@ — pending]",
-  address: "[Registered address — pending client input]",
-  hours: "[Working hours — pending client input]",
-  gst: "GSTIN: [PENDING CLIENT INPUT]",
+/** VERIFIED contact data — supplied by SRIYAAN METALS. */
+export const CONTACT: ContactInfo = {
+  phones: [
+    { label: "Phone", value: "+91 96195 61657", href: "tel:+919619561657" },
+    { label: "Phone", value: "+91 98190 33982", href: "tel:+919819033982" },
+  ],
+  whatsapp: [
+    { label: "WhatsApp", value: "+91 96195 61657", href: "https://wa.me/919619561657" },
+    { label: "WhatsApp", value: "+91 98190 33982", href: "https://wa.me/919819033982" },
+  ],
+  emails: [
+    { label: "General", value: "info@sriyaanmetals.co", href: "mailto:info@sriyaanmetals.co" },
+    { label: "Sales", value: "sales@sriyaanmetals.co", href: "mailto:sales@sriyaanmetals.co" },
+    { label: "Purchase", value: "purchase@sriyaanmetals.co", href: "mailto:purchase@sriyaanmetals.co" },
+    { label: "Accounts", value: "accounts@sriyaanmetals.co", href: "mailto:accounts@sriyaanmetals.co" },
+  ],
+  addressLines: [
+    "Floor-2, 204, Plot No.96/98,",
+    "Platinum Arcade, JSS Road,",
+    "Central Plaza Cinema Charni Road,",
+    "Opera House, Mumbai - 400004",
+  ],
+  hours: "10:00 AM – 7:00 PM",
+  gst: "GSTIN: 27CRKPS0693G1ZB",
 };
 
 /** Social profiles — hrefs stay "#" until the client supplies them. */

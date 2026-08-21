@@ -18,3 +18,4 @@ export { SectionHeading } from "./SectionHeading";
 export { Icon } from "./Icon";
 export { Skeleton } from "./Skeleton";
 export { EmptyState } from "./EmptyState";
+export { ButtonLink } from "./ButtonLink";

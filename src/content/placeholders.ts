@@ -69,18 +69,32 @@ export const PLACEHOLDER_METRICS: Metric[] = [
   { id: "m4", label: "Metric — awaiting client data", value: { value: null, placeholder: "[—]" } },
 ];
 
-/* ---- Industries ---- */
-// PLACEHOLDER-CONTENT
+/* ---- Industries ----
+ * Client-requested website categories (Construction, Automotive,
+ * Engineering, Infrastructure). These are sections the client asked
+ * for — NOT claims of existing customers. Descriptions pending.
+ */
+// PLACEHOLDER-CONTENT (descriptions)
 export const PLACEHOLDER_INDUSTRIES: Industry[] = [
-  { slug: "industry-1", index: "01", name: "Industry — placeholder" },
-  { slug: "industry-2", index: "02", name: "Industry — placeholder" },
-  { slug: "industry-3", index: "03", name: "Industry — placeholder" },
-  { slug: "industry-4", index: "04", name: "Industry — placeholder" },
+  { slug: "construction", index: "01", name: "Construction", href: "/industries" },
+  { slug: "automotive", index: "02", name: "Automotive", href: "/industries" },
+  { slug: "engineering", index: "03", name: "Engineering", href: "/industries" },
+  { slug: "infrastructure", index: "04", name: "Infrastructure", href: "/industries" },
 ];
 
-/* ---- Blog posts ---- */
+/* ---- Blog posts ----
+ * Ships empty — no fabricated company news. The section renders its
+ * pending state until real posts exist. Editorial categories below
+ * are the client-requested content plan, used as labels only.
+ */
 // PLACEHOLDER-CONTENT
 export const PLACEHOLDER_POSTS: Post[] = [];
+
+export const BLOG_CATEGORIES = [
+  "Fastener Guides",
+  "Industry Knowledge",
+  "Company Updates",
+] as const;
 
 /* ---- Testimonials (DS §31.3) — no invented names/companies ---- */
 // PLACEHOLDER-CONTENT

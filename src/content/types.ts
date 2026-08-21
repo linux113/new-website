@@ -55,10 +55,19 @@ export interface FooterColumn {
   links: NavLink[];
 }
 
-export interface ContactPlaceholders {
-  phone: string;
-  email: string;
-  address: string;
+/** A single contact channel with a usable href (tel:, mailto:, wa.me). */
+export interface ContactChannel {
+  label: string;
+  value: string;
+  href: string;
+}
+
+/** Verified company contact data (supplied by client — not placeholder). */
+export interface ContactInfo {
+  phones: ContactChannel[];
+  whatsapp: ContactChannel[];
+  emails: ContactChannel[];
+  addressLines: string[];
   hours: string;
   gst: string;
 }

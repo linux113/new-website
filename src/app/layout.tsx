@@ -43,12 +43,13 @@ const plexMono = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://sriyaanmetals.com"),
   title: {
     default: "SRIYAAN METALS",
     template: "%s — SRIYAAN METALS",
   },
   description:
-    "Precision alloy supply. Industrial manufacturing, trading and import–export.", // PLACEHOLDER-CONTENT: refine with client copy
+    "SRIYAAN METALS — Mumbai-based metals trading, import and export.",
 };
 
 export default function RootLayout({
