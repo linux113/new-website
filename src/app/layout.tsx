@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { SkipLink } from "@/components/layout/SkipLink";
+import { SiteFooter, SiteHeader, SkipLink } from "@/components/layout";
 import "./globals.css";
 
 /**
@@ -63,7 +63,9 @@ export default function RootLayout({
     >
       <body>
         <SkipLink />
+        <SiteHeader />
         <main id="main-content">{children}</main>
+        <SiteFooter />
       </body>
     </html>
   );
