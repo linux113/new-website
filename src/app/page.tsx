@@ -1,6 +1,17 @@
 import { Breadcrumbs } from "@/components/layout";
 import { CountUp, Reveal, Stagger } from "@/components/motion";
 import {
+  Carousel,
+  CertSlot,
+  IndustryRow,
+  LogoSlot,
+  ProductGrid,
+  SpecTable,
+  StatItem,
+  TestimonialCard,
+  WorldMap,
+} from "@/components/patterns";
+import {
   Container,
   Eyebrow,
   Hairline,
@@ -8,6 +19,14 @@ import {
   Section,
   SectionHeading,
 } from "@/components/ui";
+import {
+  PLACEHOLDER_CERTIFICATIONS,
+  PLACEHOLDER_INDUSTRIES,
+  PLACEHOLDER_LOGO_COUNT,
+  PLACEHOLDER_METRICS,
+  PLACEHOLDER_PRODUCTS,
+  PLACEHOLDER_TESTIMONIALS,
+} from "@/content/placeholders";
 
 /**
  * PHASE 1–2 — FOUNDATION PREVIEW.
@@ -121,6 +140,87 @@ export default function FoundationPreview() {
               </p>
             </div>
           </div>
+        </Container>
+      </Section>
+
+      {/* PHASE 3 — pattern verification (placeholder data only) */}
+      <Section rule aria-labelledby="fp-patterns">
+        <Container>
+          <SectionHeading
+            id="fp-patterns"
+            code="SM–03"
+            eyebrow="Pattern layer"
+            title="Reusable patterns, typed placeholders"
+            lede="Every pattern below renders exclusively from the placeholder content module — no invented products, certifications, customers or markets."
+          />
+
+          <h3 className="mt-16 text-mono-meta text-surface-muted">
+            ProductGrid / ProductCard
+          </h3>
+          <ProductGrid products={PLACEHOLDER_PRODUCTS} className="mt-6" />
+
+          <h3 className="mt-16 text-mono-meta text-surface-muted">
+            StatItem — hairline-divided band
+          </h3>
+          <div className="mt-6 grid grid-cols-2 gap-y-8 border-y border-edge py-8 md:grid-cols-4 md:divide-x md:divide-(--surface-edge) md:[&>*]:px-8 md:[&>*:first-child]:pl-0">
+            {PLACEHOLDER_METRICS.map((metric) => (
+              <StatItem key={metric.id} metric={metric} />
+            ))}
+          </div>
+
+          <h3 className="mt-16 text-mono-meta text-surface-muted">
+            IndustryRow — ruled list
+          </h3>
+          <div className="mt-6 border-t border-edge">
+            {PLACEHOLDER_INDUSTRIES.map((industry, i) => (
+              <IndustryRow
+                key={industry.slug}
+                industry={industry}
+                position={i + 1}
+                total={PLACEHOLDER_INDUSTRIES.length}
+              />
+            ))}
+          </div>
+
+          <h3 className="mt-16 text-mono-meta text-surface-muted">
+            SpecTable — responsive (table ≥ md, stacked list &lt; md)
+          </h3>
+          <SpecTable
+            className="mt-6"
+            specifications={[
+              { label: "Specification A", value: { value: null, placeholder: "[PENDING CLIENT INPUT]" } },
+              { label: "Specification B", value: { value: null, placeholder: "[PENDING CLIENT INPUT]" } },
+              { label: "Specification C", value: { value: null, placeholder: "[PENDING CLIENT INPUT]" } },
+            ]}
+          />
+
+          <h3 className="mt-16 text-mono-meta text-surface-muted">
+            CertSlot / LogoSlot — honest slots
+          </h3>
+          <div className="mt-6 grid grid-cols-2 gap-6 md:grid-cols-3">
+            {PLACEHOLDER_CERTIFICATIONS.map((cert) => (
+              <CertSlot key={cert.id} certification={cert} />
+            ))}
+          </div>
+          <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-6">
+            {Array.from({ length: PLACEHOLDER_LOGO_COUNT }, (_, i) => (
+              <LogoSlot key={i} />
+            ))}
+          </div>
+
+          <h3 className="mt-16 text-mono-meta text-surface-muted">
+            Carousel / TestimonialCard
+          </h3>
+          <Carousel label="Testimonials" className="mt-6">
+            {PLACEHOLDER_TESTIMONIALS.map((t) => (
+              <TestimonialCard key={t.id} testimonial={t} className="h-full" />
+            ))}
+          </Carousel>
+
+          <h3 className="mt-16 text-mono-meta text-surface-muted">
+            WorldMap — neutral state, zero highlighted markets
+          </h3>
+          <WorldMap className="mt-6" />
         </Container>
       </Section>
     </>

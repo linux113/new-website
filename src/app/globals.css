@@ -286,3 +286,13 @@
 @utility max-w-measure {
   max-width: 65ch;
 }
+
+/* Image fade-in on load / crossfade (DS §27.5, §15) */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
