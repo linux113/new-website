@@ -5,6 +5,7 @@ import { deleteMediaAction } from "@/lib/admin/settings-actions";
 import { AdminSearch } from "@/components/admin/AdminSearch";
 import { ConfirmDelete } from "@/components/admin/ConfirmDelete";
 import { MediaAltForm } from "@/components/admin/MediaAltForm";
+import { MediaUploadForm } from "@/components/admin/MediaUploadForm";
 import { AdminEmptyState, AdminPageHeader } from "@/components/admin/ui";
 
 export const metadata = { title: "Media" };
@@ -59,17 +60,19 @@ export default async function AdminMediaPage({
         crumbs={[{ label: "Admin", href: "/admin/dashboard" }, { label: "Media" }]}
       />
 
+      <div className="mb-4">
+        <MediaUploadForm />
+      </div>
+
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
         <AdminSearch basePath="/admin/media" placeholder="Search filename or alt text…" />
-        <p className="text-mono-micro text-slate">
-          {total} assets · Uploads arrive with the Cloudflare R2 integration (next phase).
-        </p>
+        <p className="text-mono-micro text-slate">{total} assets</p>
       </div>
 
       {assets.length === 0 ? (
         <AdminEmptyState
           title={q ? `No results for “${q}”` : "No media yet"}
-          description="Assets appear here once storage (Cloudflare R2) is connected in the media phase. The library, alt-text editing and deletion are already functional."
+          description="Upload the first asset above. Without R2 credentials, files store locally for development."
         />
       ) : (
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">

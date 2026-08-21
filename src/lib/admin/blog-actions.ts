@@ -64,6 +64,9 @@ function normalizePublication<T extends { status: string; publishedAt?: Date }>(
 function revalidateBlog() {
   revalidatePath("/admin/blogs");
   revalidatePath("/");
+  revalidatePath("/blog");
+  revalidatePath("/blog/[slug]", "page");
+  revalidatePath("/sitemap.xml");
 }
 
 export async function createBlogPostAction(

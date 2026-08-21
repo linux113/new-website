@@ -116,6 +116,10 @@ function zodFieldErrors(error: z.ZodError): Record<string, string> {
 function revalidateProducts() {
   revalidatePath("/admin/products");
   revalidatePath("/");
+  revalidatePath("/products");
+  revalidatePath("/products/[slug]", "page");
+  revalidatePath("/products/category/[slug]", "page");
+  revalidatePath("/sitemap.xml");
 }
 
 export async function createProductAction(

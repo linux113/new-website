@@ -67,7 +67,13 @@ async function checkUnique(
 
 function revalidateAdmin(segment: string) {
   revalidatePath(`/admin/${segment}`);
-  revalidatePath("/"); // public homepage may consume this content later
+  // Public surfaces affected by this content:
+  revalidatePath("/");
+  if (segment === "categories") {
+    revalidatePath("/products");
+    revalidatePath("/products/category/[slug]", "page");
+    revalidatePath("/sitemap.xml");
+  }
 }
 
 export async function createEntityAction(

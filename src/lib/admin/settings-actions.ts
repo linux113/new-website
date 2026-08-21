@@ -49,7 +49,7 @@ export async function saveSettingsAction(
   revalidatePath("/admin/settings");
   revalidatePath("/admin/content");
   revalidatePath("/admin/seo");
-  revalidatePath("/");
+  revalidatePath("/", "layout"); // contact info flows through the whole layout
   return { success: true };
 }
 
@@ -84,6 +84,9 @@ export async function deleteMediaAction(id: string): Promise<ActionState> {
   const parsedId = idSchema.safeParse(id);
   if (!parsedId.success) return { error: "Invalid id." };
 
+  const asset = await db.mediaAsset.findUnique({ where: { id: parsedId.data } });
+  if (!asset) return { error: "Asset not found." };
+
   try {
     await db.mediaAsset.delete({ where: { id: parsedId.data } });
   } catch {
@@ -92,6 +95,16 @@ export async function deleteMediaAction(id: string): Promise<ActionState> {
         "Could not delete — this asset is still referenced by products, posts or content.",
     };
   }
+
+  // Remove the stored object after the DB row (references now gone).
+  try {
+    const { getStorage } = await import("@/lib/storage/storage");
+    await getStorage().delete(asset.storageKey);
+  } catch (error) {
+    console.error("[media] object delete failed:", error instanceof Error ? error.message : error);
+    // DB row is gone; orphaned object is logged for manual cleanup.
+  }
+
   revalidatePath("/admin/media");
   return { success: true };
 }

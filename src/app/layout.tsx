@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { SiteFooter, SiteHeader, SkipLink } from "@/components/layout";
 import "./globals.css";
 
 /**
@@ -52,6 +51,11 @@ export const metadata: Metadata = {
     "SRIYAAN METALS — Mumbai-based metals trading, import and export.",
 };
 
+/**
+ * Root layout: fonts + document shell only. The public site chrome
+ * (header/footer/floating actions) lives in (public)/layout.tsx;
+ * the admin shell lives in admin/(panel)/layout.tsx.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -62,12 +66,7 @@ export default function RootLayout({
       lang="en"
       className={`${spaceGrotesk.variable} ${inter.variable} ${plexMono.variable}`}
     >
-      <body>
-        <SkipLink />
-        <SiteHeader />
-        <main id="main-content">{children}</main>
-        <SiteFooter />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

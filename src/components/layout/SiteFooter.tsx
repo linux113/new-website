@@ -1,19 +1,20 @@
 import Link from "next/link";
 import { Container, Hairline } from "@/components/ui";
-import {
-  CONTACT,
-  FOOTER_COLUMNS,
-  LEGAL_LINKS,
-  SITE_NAME,
-  SOCIAL_LINKS,
-} from "@/content/site";
+import { FOOTER_COLUMNS, LEGAL_LINKS, SITE_NAME } from "@/content/site";
+import { getCompanyInfo } from "@/lib/company";
 
 /**
  * Premium industrial footer (server component, dark Carbon surface).
- * Contact, address, hours and GST are verified client-supplied data;
- * remaining bracketed values are placeholders (DS §31).
+ * Contact data flows from the single source of truth (lib/company —
+ * admin-editable settings over verified defaults).
  */
-export function SiteFooter() {
+export async function SiteFooter() {
+  const company = await getCompanyInfo();
+  const CONTACT = company;
+  const SOCIAL_LINKS = company.social;
+  const footerDescription =
+    company.content["content.footer.description"] ??
+    "[Company description — pending client input]";
   return (
     <footer data-surface="dark" className="bg-ink text-paper">
       <Container className="py-16 lg:py-24">
@@ -23,8 +24,8 @@ export function SiteFooter() {
           <div className="col-span-4 flex flex-col gap-4 md:col-span-3">
             <p className="text-display-md font-display">{SITE_NAME}</p>
             <p className="text-body-sm text-mist max-w-measure">
-              {/* PLACEHOLDER-CONTENT: company one-liner pending client copy */}
-              [Company description — pending client input]
+              {/* PLACEHOLDER-CONTENT until admin sets content.footer.description */}
+              {footerDescription}
             </p>
             <address className="text-body-sm text-mist not-italic">
               {CONTACT.addressLines.map((line) => (

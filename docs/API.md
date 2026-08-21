@@ -29,17 +29,27 @@ Zod schemas: `categoryInputSchema`, `productInputSchema`,
 `contactMessageInputSchema`, `vendorRequestInputSchema` + shared
 fragments (slug, email, phone, SEO input). All `.strict()`, all bounded.
 
-## 2. Planned boundaries (NOT yet implemented)
+## 2. Implemented in later phases (6–7)
 
-| Boundary | Phase | Notes |
-|---|---|---|
-| Server Actions for public forms (contact / RFQ / vendor) | Enquiry phase | Zod parse → repository create → inline success (DS §13); rate limiting + spam controls |
-| Admin authentication (session-based, hashed credentials) | Admin phase | AdminUser model is ready; no auth code exists yet |
-| Admin CRUD (products, blog, content, media, settings) | Admin phase | Server actions or route handlers behind auth middleware |
-| Media upload to Cloudflare R2 (presigned PUT) | Media phase | MediaAsset model is storage-agnostic and ready |
-| Public read API (JSON) | Only if a consumer outside Next.js appears | Frontend uses repositories directly — no need by default |
+| Boundary | Status |
+|---|---|
+| Admin authentication (session cookie + bcrypt) | ✅ Phase 6 — `src/lib/auth/` |
+| Admin CRUD server actions | ✅ Phase 6 — `src/lib/admin/` |
+| Public form server actions (enquiry / contact / vendor) | ✅ Phase 7 — `src/lib/public-actions.ts` (throttle + honeypot + Zod → DB → email) |
+| Media upload (R2/S3 abstraction + local dev fallback) | ✅ Phase 7 — `src/lib/storage/` + `media-actions.ts` (MIME + magic-byte validation) |
+| Email notifications (provider abstraction, Resend-compatible) | ✅ Phase 7 — `src/lib/email/` (dev-safe logging when unconfigured) |
+| Public dynamic routes (products/categories/blog) | ✅ Phase 7 — `src/app/(public)/` |
+| sitemap.xml / robots.txt | ✅ Phase 7 — published content only |
 
-## 3. Contracts
+## 3. Still planned
+
+| Boundary | Notes |
+|---|---|
+| Public read API (JSON) | Only if a consumer outside Next.js appears |
+| WhatsApp Business API | Click-to-chat only for now (`src/lib/whatsapp.ts`) |
+| Cloudflare Turnstile | Env placeholders reserved; honeypot + throttling active |
+
+## 4. Contracts
 
 - Untrusted input crosses the boundary **only** through the Zod layer.
 - Repositories never expose draft/unpublished rows to public callers.

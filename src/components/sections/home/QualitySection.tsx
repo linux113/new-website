@@ -3,6 +3,8 @@ import { Reveal } from "@/components/motion";
 import { Container, Section, SectionHeading } from "@/components/ui";
 import { CertSlot, FeatureItem } from "@/components/patterns";
 import { PLACEHOLDER_CERTIFICATIONS } from "@/content/placeholders";
+import { getPublishedCertifications } from "@/lib/repositories/content";
+import { toMediaRef } from "@/lib/mappers";
 
 /**
  * SM–07 / QUALITY & CERTIFICATIONS.
@@ -29,7 +31,17 @@ const QUALITY_PRACTICES = [
   },
 ];
 
-export function QualitySection() {
+export async function QualitySection() {
+  const dbCerts = await getPublishedCertifications().catch(() => []);
+  const live = dbCerts.length > 0;
+  const certifications = live
+    ? dbCerts.map((cert) => ({
+        id: cert.id,
+        name: cert.name,
+        status: "provided" as const,
+        document: toMediaRef(cert.document),
+      }))
+    : PLACEHOLDER_CERTIFICATIONS;
   return (
     <Section rule aria-labelledby="home-quality">
       <Container>
@@ -39,7 +51,11 @@ export function QualitySection() {
             code="SM–07"
             eyebrow="Quality"
             title="Verified, then shipped"
-            lede="Certification slots below remain pending until the client provides verified documents — no standard names or numbers are displayed in advance."
+            lede={
+              live
+                ? "Certifications below are admin-verified documents."
+                : "Certification slots below remain pending until the client provides verified documents — no standard names or numbers are displayed in advance."
+            }
           />
         </Reveal>
 
@@ -64,10 +80,10 @@ export function QualitySection() {
           {/* Certification slots — cols 8–12 */}
           <Reveal delay={100} className="col-span-4 md:col-span-5 md:col-start-8">
             <p className="text-mono-meta text-surface-muted">
-              Certifications — pending verification
+              {live ? "Certifications" : "Certifications — pending verification"}
             </p>
             <div className="mt-4 grid grid-cols-2 gap-4">
-              {PLACEHOLDER_CERTIFICATIONS.map((cert) => (
+              {certifications.map((cert) => (
                 <CertSlot key={cert.id} certification={cert} />
               ))}
             </div>

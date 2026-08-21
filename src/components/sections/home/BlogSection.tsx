@@ -7,17 +7,19 @@ import {
   SectionHeading,
 } from "@/components/ui";
 import { BlogCard } from "@/components/patterns";
-import { BLOG_CATEGORIES, PLACEHOLDER_POSTS } from "@/content/placeholders";
+import { BLOG_CATEGORIES } from "@/content/placeholders";
+import { getPublishedPosts } from "@/lib/repositories/blogs";
+import { toPatternPost } from "@/lib/mappers";
 
 /**
  * SM–13 / BLOG.
- * Ready to consume CMS/database posts through the typed Post
- * contract. Ships with zero posts — no fabricated company news —
- * so the honest EmptyState renders with the planned editorial
- * categories as mono labels.
+ * Published posts from the database; the honest EmptyState with the
+ * planned editorial categories while none exist.
  */
-export function BlogSection() {
-  const hasPosts = PLACEHOLDER_POSTS.length > 0;
+export async function BlogSection() {
+  const dbPosts = await getPublishedPosts({ take: 3 }).catch(() => []);
+  const posts = dbPosts.map(toPatternPost);
+  const hasPosts = posts.length > 0;
 
   return (
     <Section rule aria-labelledby="home-blog">
@@ -34,7 +36,7 @@ export function BlogSection() {
 
         {hasPosts ? (
           <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
-            {PLACEHOLDER_POSTS.slice(0, 3).map((post, i) => (
+            {posts.map((post, i) => (
               <Reveal key={post.slug} delay={i * 70}>
                 <BlogCard post={post} className="h-full" />
               </Reveal>

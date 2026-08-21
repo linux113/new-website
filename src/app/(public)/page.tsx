@@ -16,28 +16,40 @@ import {
   WhyChooseUsSection,
 } from "@/components/sections/home";
 import { CONTACT, SITE_NAME, SITE_URL } from "@/content/site";
+import { getCompanyInfo } from "@/lib/company";
 
 const DESCRIPTION =
   "SRIYAAN METALS — Mumbai-based metals trading, import and export. Send your specification for a considered quote.";
 
-export const metadata: Metadata = {
-  title: "SRIYAAN METALS — Metals Trading, Import & Export, Mumbai",
-  description: DESCRIPTION,
-  alternates: { canonical: SITE_URL },
-  openGraph: {
-    title: `${SITE_NAME} — Metals Trading, Import & Export`,
-    description: DESCRIPTION,
-    url: SITE_URL,
-    siteName: SITE_NAME,
-    type: "website",
-    locale: "en_IN",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${SITE_NAME} — Metals Trading, Import & Export`,
-    description: DESCRIPTION,
-  },
-};
+/** Homepage metadata — admin SEO settings override verified defaults. */
+export async function generateMetadata(): Promise<Metadata> {
+  const company = await getCompanyInfo();
+  const title =
+    company.seo["seo.home.title"] ||
+    company.seo["seo.default.title"] ||
+    "SRIYAAN METALS — Metals Trading, Import & Export, Mumbai";
+  const description =
+    company.seo["seo.home.description"] ||
+    company.seo["seo.default.description"] ||
+    DESCRIPTION;
+  const robots = company.seo["seo.robots"] || undefined;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: SITE_URL },
+    ...(robots ? { robots } : {}),
+    openGraph: {
+      title,
+      description,
+      url: SITE_URL,
+      siteName: SITE_NAME,
+      type: "website",
+      locale: "en_IN",
+    },
+    twitter: { card: "summary_large_image", title, description },
+  };
+}
 
 /**
  * Organization schema — VERIFIED client-supplied facts only
@@ -61,6 +73,13 @@ const organizationSchema = {
   },
 } as const;
 
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+} as const;
+
 /**
  * SRIYAAN METALS — homepage (Phase 4).
  * Thin composition only; every section is a server component in
@@ -72,7 +91,9 @@ export default function HomePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([organizationSchema, websiteSchema]),
+        }}
       />
       <HeroSection />
       <CapabilityStrip />
