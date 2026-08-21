@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AnimatedShaderHeroDemo } from "@/components/ui/demos/animated-shader-hero-demo";
 import { SplineSceneBasic } from "@/components/ui/demos/spline-scene-demo";
 import FireworkCursor from "@/components/ui/firework-cursor";
+import StarCursor from "@/components/ui/star-cursor";
 import { Container, Section, SectionHeading } from "@/components/ui";
 
 export const metadata: Metadata = {
@@ -53,6 +54,26 @@ export default function ComponentLabPage() {
               labelText="HOVER AROUND"
               colors={["#C8461B", "#E0592B"]}
               color="#C8461B"
+            />
+          </div>
+        </Container>
+      </Section>
+
+      {/* 4 — Star / glitter cursor trail */}
+      <Section surface="dark" rule aria-labelledby="lab-star">
+        <Container>
+          <SectionHeading
+            id="lab-star"
+            code="LAB–04"
+            eyebrow="Glitter cursor"
+            title="Star particle trail"
+            align="start"
+          />
+          <div className="mt-10 h-[420px] border border-line-dark bg-black">
+            <StarCursor
+              labelText="HOVER AROUND"
+              starColor="#C8461B"
+              labelColor="#9AA7B4"
             />
           </div>
         </Container>
