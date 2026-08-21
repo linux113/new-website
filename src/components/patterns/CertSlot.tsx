@@ -30,7 +30,7 @@ export function CertSlot({ certification, className }: CertSlotProps) {
       {pending ? (
         // PLACEHOLDER-CONTENT: certification slot awaiting client documents
         <p className="text-mono-micro text-mist">
-          CERTIFICATION — [PENDING CLIENT INPUT]
+          CERTIFICATION — UNDER VERIFICATION
         </p>
       ) : (
         <>

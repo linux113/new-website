@@ -35,7 +35,7 @@ export function LogoSlot({ logo, name, className }: LogoSlotProps) {
       ) : (
         // PLACEHOLDER-CONTENT: neutral slot until client supplies logos
         <p className="text-mono-micro text-mist">
-          {name ? `[${name}]` : "[CLIENT LOGO]"}
+          {name ? name.toUpperCase() : "LOGO — RESERVED"}
         </p>
       )}
     </div>

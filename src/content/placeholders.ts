@@ -25,10 +25,12 @@ export const PENDING = "[PENDING CLIENT INPUT]";
 /* ---- Categories (DS §31.4) ---- */
 // PLACEHOLDER-CONTENT
 export const PLACEHOLDER_CATEGORIES: Category[] = [
-  { slug: "category-a", index: "01", title: "Category A — placeholder", image: null },
-  { slug: "category-b", index: "02", title: "Category B — placeholder", image: null },
-  { slug: "category-c", index: "03", title: "Category C — placeholder", image: null },
-  { slug: "category-d", index: "04", title: "Category D — placeholder", image: null },
+  // Representative material imagery (generic metals photography) —
+  // titles remain placeholders until the client catalogue lands.
+  { slug: "category-a", index: "01", title: "Category A — placeholder", image: { src: "/images/cat-coils.jpg", alt: "Steel coils — representative imagery" } },
+  { slug: "category-b", index: "02", title: "Category B — placeholder", image: { src: "/images/cat-sheets.jpg", alt: "Sheet metal stock — representative imagery" } },
+  { slug: "category-c", index: "03", title: "Category C — placeholder", image: { src: "/images/cat-bars.jpg", alt: "Steel bars — representative imagery" } },
+  { slug: "category-d", index: "04", title: "Category D — placeholder", image: { src: "/images/cat-pipes.jpg", alt: "Steel pipes — representative imagery" } },
 ];
 
 /* ---- Products (DS §31.4) ---- */

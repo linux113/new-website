@@ -10,8 +10,8 @@ import { Container, Section } from "@/components/ui";
  */
 
 const CAPABILITIES = [
-  { index: "01", label: "Products", note: "Catalogue — [PENDING CLIENT INPUT]" },
-  { index: "02", label: "Quality", note: "Standards — [PENDING CLIENT INPUT]" },
+  { index: "01", label: "Products", note: "Enquiry-driven catalogue" },
+  { index: "02", label: "Quality", note: "Checked before dispatch" },
   { index: "03", label: "Supply", note: "Domestic trading & distribution" },
   { index: "04", label: "Import / Export", note: "International sourcing & sales" },
 ];

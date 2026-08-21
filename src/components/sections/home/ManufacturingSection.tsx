@@ -17,22 +17,20 @@ import type { MediaRef } from "@/content/types";
 
 // PLACEHOLDER-CONTENT: real client facility imagery pending.
 const PRIMARY_MEDIA: MediaRef = {
-  src: null,
-  alt: "Facility — pending client photography",
-  placeholderLabel: "IMAGE — [AWAITING CLIENT ASSET: FACTORY / MACHINERY]",
+  src: "/images/material-wide.jpg",
+  alt: "Metal stock in storage — representative imagery",
 };
 
 const SECONDARY_MEDIA: MediaRef = {
-  src: null,
-  alt: "Warehouse and packaging — pending client photography",
-  placeholderLabel: "IMAGE — [AWAITING CLIENT ASSET: WAREHOUSE / PACKAGING]",
+  src: "/images/material-detail.jpg",
+  alt: "Machined steel surface detail — representative imagery",
 };
 
 const PROCESS_STEPS = [
-  { index: "01", label: "Sourcing", note: "[PROCESS DETAIL — PENDING CLIENT INPUT]" },
-  { index: "02", label: "Inspection", note: "[PROCESS DETAIL — PENDING CLIENT INPUT]" },
-  { index: "03", label: "Warehousing", note: "[PROCESS DETAIL — PENDING CLIENT INPUT]" },
-  { index: "04", label: "Packaging & dispatch", note: "[PROCESS DETAIL — PENDING CLIENT INPUT]" },
+  { index: "01", label: "Sourcing", note: "Material sourced against the buyer's specification" },
+  { index: "02", label: "Inspection", note: "Checked against order requirements before acceptance" },
+  { index: "03", label: "Warehousing", note: "Held and handled to preserve material condition" },
+  { index: "04", label: "Packaging & dispatch", note: "Packed and dispatched per the agreed schedule" },
 ];
 
 export function ManufacturingSection() {
@@ -45,7 +43,7 @@ export function ManufacturingSection() {
             code="SM–06"
             eyebrow="Infrastructure"
             title="From intake to dispatch"
-            lede="Facility photography — factory, machinery, warehouse and packaging — will be supplied by the client and dropped into these frames without layout changes."
+            lede="From sourcing and inspection to warehousing and dispatch — every consignment moves through the same disciplined sequence."
           />
         </Reveal>
 
@@ -67,7 +65,7 @@ export function ManufacturingSection() {
               <MediaFigure
                 media={PRIMARY_MEDIA}
                 figure={1}
-                caption="[FACILITY — DESCRIPTION PLACEHOLDER]"
+                caption="REPRESENTATIVE IMAGERY — CLIENT FACILITY PHOTOGRAPHY PENDING"
                 ratio="16/9"
                 sizes="(min-width: 48rem) 66vw, 100vw"
               />
@@ -80,7 +78,7 @@ export function ManufacturingSection() {
               <MediaFigure
                 media={SECONDARY_MEDIA}
                 figure={2}
-                caption="[WAREHOUSE — DESCRIPTION PLACEHOLDER]"
+                caption="MATERIAL DETAIL — REPRESENTATIVE IMAGERY"
                 ratio="4/3"
                 sizes="(min-width: 48rem) 33vw, 100vw"
               />

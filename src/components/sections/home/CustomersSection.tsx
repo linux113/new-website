@@ -21,7 +21,7 @@ export async function CustomersSection() {
             code="SM–11"
             eyebrow="Customers"
             title="Buyers we serve"
-            lede="Customer logos are published only with permission. Slots below are reserved pending client confirmation."
+            lede="Customer logos appear here with permission — slots are reserved."
           />
         </Reveal>
 

@@ -54,7 +54,7 @@ export async function QualitySection() {
             lede={
               live
                 ? "Certifications below are admin-verified documents."
-                : "Certification slots below remain pending until the client provides verified documents — no standard names or numbers are displayed in advance."
+                : "Certifications publish here once verified — nothing is displayed before the documents are in hand."
             }
           />
         </Reveal>

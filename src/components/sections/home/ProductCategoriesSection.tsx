@@ -22,7 +22,7 @@ export function ProductCategoriesSection() {
             code="SM–03"
             eyebrow="Product range"
             title="Material, by category"
-            lede="The catalogue is being prepared with the client. Category slots below are placeholders — structure, imagery ratios and navigation are production-ready."
+            lede="Material organised the way buyers specify it. The full catalogue is being finalised — enquiries are open now."
           />
         </Reveal>
 

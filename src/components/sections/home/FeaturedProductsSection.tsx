@@ -28,7 +28,7 @@ export async function FeaturedProductsSection() {
             lede={
               live
                 ? "A selection from the catalogue — every product is enquiry-driven."
-                : "Product entries are placeholder slots pending the client catalogue. Names, codes and specifications will be populated from verified data only."
+                : "The catalogue is being finalised. Send a specification meanwhile — sales responds during working hours."
             }
           />
         </Reveal>
