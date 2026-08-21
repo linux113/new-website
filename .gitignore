@@ -44,3 +44,8 @@ next-env.d.ts
 # Prisma generated client (regenerate with: npx prisma generate)
 /src/generated/
 /public/uploads
+
+# audit screenshots
+/v2-*.png
+/sec-*.png
+/audit-*.png
