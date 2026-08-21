@@ -118,9 +118,26 @@ model AdminUser {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 
-  blogPosts BlogPost[] @relation("BlogAuthor")
+  blogPosts BlogPost[]     @relation("BlogAuthor")
+  sessions  AdminSession[]
 
   @@index([status])
+}
+
+/// Server-side admin sessions. The cookie holds a random opaque
+/// token; only its SHA-256 hash is stored here.
+model AdminSession {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  user      AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  ip        String?
+  userAgent String?
+
+  @@index([userId])
+  @@index([expiresAt])
 }
 
 // ============================================================

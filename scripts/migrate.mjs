@@ -78,12 +78,26 @@ try {
     if (!name) throw new Error("Usage: node scripts/migrate.mjs create <name>");
     const schema = readFileSync(SCHEMA_PATH, "utf8");
     const list = loadMigrationsList();
-    // Diff: current migration history → target schema. For the very
-    // first migration the source is empty, which avoids the shadow DB.
-    const from =
-      list.migrationDirectories.length === 0
-        ? { tag: "empty" }
-        : { tag: "migrations", ...list };
+    // Diff source: empty for the first migration, otherwise the live
+    // database (avoids the shadow-DB requirement of the `migrations`
+    // source; valid because we always apply before creating the next).
+    // Diff source: empty for the first migration; afterwards the
+    // schema as of the last commit (datamodel→datamodel diff — no
+    // shadow DB or introspection needed). Requires committing the
+    // schema together with each generated migration, which is the
+    // standard Prisma workflow anyway.
+    let from = { tag: "empty" };
+    if (list.migrationDirectories.length > 0) {
+      const { execSync } = await import("node:child_process");
+      const prevSchema = execSync("git show HEAD:prisma/schema.prisma", {
+        cwd: ROOT,
+        encoding: "utf8",
+      });
+      from = {
+        tag: "schemaDatamodel",
+        files: [{ path: "prisma/schema.prisma", content: prevSchema }],
+      };
+    }
     const out = await engine.diff({
       from,
       to: {

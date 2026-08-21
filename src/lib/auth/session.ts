@@ -1,0 +1,105 @@
+import "server-only";
+import { createHash, randomBytes, timingSafeEqual } from "node:crypto";
+import { cookies, headers } from "next/headers";
+import { cache } from "react";
+import { db } from "@/lib/db";
+import type { AdminRole } from "@/generated/prisma/enums";
+
+/**
+ * Admin session management (server-only).
+ *
+ * Design:
+ * - Opaque 256-bit random token in an HttpOnly cookie.
+ * - Only the SHA-256 hash of the token is stored in PostgreSQL —
+ *   a database leak cannot be replayed as a session.
+ * - Server-side expiry + revocation (logout deletes the row).
+ * - Cookie: HttpOnly, SameSite=Lax (CSRF mitigation for top-level
+ *   POSTs), Secure in production, scoped to path "/".
+ */
+
+const COOKIE_NAME = "sm_admin_session";
+const SESSION_TTL_MS = 1000 * 60 * 60 * 12; // 12 hours
+
+function hashToken(token: string): string {
+  return createHash("sha256").update(token).digest("hex");
+}
+
+export async function createSession(userId: string): Promise<void> {
+  const token = randomBytes(32).toString("base64url");
+  const h = await headers();
+
+  await db.adminSession.create({
+    data: {
+      tokenHash: hashToken(token),
+      userId,
+      expiresAt: new Date(Date.now() + SESSION_TTL_MS),
+      ip: h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null,
+      userAgent: h.get("user-agent")?.slice(0, 250) ?? null,
+    },
+  });
+
+  const cookieStore = await cookies();
+  cookieStore.set(COOKIE_NAME, token, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: SESSION_TTL_MS / 1000,
+  });
+}
+
+export async function destroySession(): Promise<void> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(COOKIE_NAME)?.value;
+  if (token) {
+    await db.adminSession
+      .delete({ where: { tokenHash: hashToken(token) } })
+      .catch(() => undefined); // already gone — fine
+  }
+  cookieStore.delete(COOKIE_NAME);
+}
+
+export interface SessionUser {
+  id: string;
+  name: string;
+  email: string;
+  role: AdminRole;
+}
+
+/**
+ * Resolve the current admin user from the session cookie.
+ * Returns null for missing/expired/revoked sessions or
+ * suspended users. Cached per-request via React cache().
+ */
+export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(COOKIE_NAME)?.value;
+  if (!token) return null;
+
+  const session = await db.adminSession.findUnique({
+    where: { tokenHash: hashToken(token) },
+    include: { user: true },
+  });
+
+  if (!session) return null;
+  if (session.expiresAt < new Date()) {
+    await db.adminSession.delete({ where: { id: session.id } }).catch(() => undefined);
+    return null;
+  }
+  if (session.user.status !== "ACTIVE") return null;
+
+  return {
+    id: session.user.id,
+    name: session.user.name,
+    email: session.user.email,
+    role: session.user.role,
+  };
+});
+
+/** Constant-time string comparison helper for sensitive values. */
+export function safeEqual(a: string, b: string): boolean {
+  const ba = Buffer.from(a);
+  const bb = Buffer.from(b);
+  if (ba.length !== bb.length) return false;
+  return timingSafeEqual(ba, bb);
+}
