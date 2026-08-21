@@ -376,7 +376,7 @@ const Hero: React.FC<HeroProps> = ({
         {/* Trust Badge */}
         {trustBadge && (
           <div className="hero-animate-fade-in-down mb-8">
-            <div className="flex items-center gap-2 rounded-full border border-[#fdba74]/30 bg-[#f97316]/10 px-6 py-3 text-sm backdrop-blur-md">
+            <div className="flex items-center gap-2 rounded-full border border-[#fdba74]/30 bg-[#f97316]/10 px-6 py-3 text-[0.875rem]/[1.25rem] backdrop-blur-md">
               {trustBadge.icons && (
                 <div className="flex">
                   {trustBadge.icons.map((icon, index) => (
@@ -403,17 +403,17 @@ const Hero: React.FC<HeroProps> = ({
         <div className="mx-auto max-w-5xl space-y-6 px-4 text-center">
           {/* Main Heading with Animation */}
           <div className="space-y-2">
-            <h1 className="hero-animate-fade-in-up hero-animation-delay-200 bg-gradient-to-r from-[#fdba74] via-[#facc15] to-[#fcd34d] bg-clip-text text-5xl font-bold text-transparent md:text-7xl lg:text-8xl">
+            <h1 className="hero-animate-fade-in-up hero-animation-delay-200 bg-gradient-to-r from-[#fdba74] via-[#facc15] to-[#fcd34d] bg-clip-text text-[3rem]/[1.1] font-bold text-transparent md:text-[4.5rem]/[1.05] lg:text-[6rem]/[1]">
               {headline.line1}
             </h1>
-            <h1 className="hero-animate-fade-in-up hero-animation-delay-400 bg-gradient-to-r from-[#fde047] via-[#fb923c] to-[#f87171] bg-clip-text text-5xl font-bold text-transparent md:text-7xl lg:text-8xl">
+            <h1 className="hero-animate-fade-in-up hero-animation-delay-400 bg-gradient-to-r from-[#fde047] via-[#fb923c] to-[#f87171] bg-clip-text text-[3rem]/[1.1] font-bold text-transparent md:text-[4.5rem]/[1.05] lg:text-[6rem]/[1]">
               {headline.line2}
             </h1>
           </div>
 
           {/* Subtitle with Animation */}
           <div className="hero-animate-fade-in-up hero-animation-delay-600 mx-auto max-w-3xl">
-            <p className="text-lg font-light leading-relaxed text-[#ffedd5]/90 md:text-xl lg:text-2xl">
+            <p className="text-[1.125rem]/[1.75rem] font-light leading-relaxed text-[#ffedd5]/90 md:text-[1.25rem]/[1.75rem] lg:text-[1.5rem]/[2rem]">
               {subtitle}
             </p>
           </div>
@@ -424,7 +424,7 @@ const Hero: React.FC<HeroProps> = ({
               {buttons.primary && (
                 <button
                   onClick={buttons.primary.onClick}
-                  className="rounded-full bg-gradient-to-r from-[#f97316] to-[#eab308] px-8 py-4 text-lg font-semibold text-black transition-all duration-300 hover:scale-105 hover:from-[#ea580c] hover:to-[#ca8a04] hover:shadow-xl hover:shadow-[#f97316]/25 motion-reduce:transition-none motion-reduce:hover:scale-100"
+                  className="rounded-full bg-gradient-to-r from-[#f97316] to-[#eab308] px-8 py-4 text-[1.125rem]/[1.75rem] font-semibold text-black transition-all duration-300 hover:scale-105 hover:from-[#ea580c] hover:to-[#ca8a04] hover:shadow-xl hover:shadow-[#f97316]/25 motion-reduce:transition-none motion-reduce:hover:scale-100"
                 >
                   {buttons.primary.text}
                 </button>
@@ -432,7 +432,7 @@ const Hero: React.FC<HeroProps> = ({
               {buttons.secondary && (
                 <button
                   onClick={buttons.secondary.onClick}
-                  className="rounded-full border border-[#fdba74]/30 bg-[#f97316]/10 px-8 py-4 text-lg font-semibold text-[#ffedd5] backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-[#fdba74]/50 hover:bg-[#f97316]/20 motion-reduce:transition-none motion-reduce:hover:scale-100"
+                  className="rounded-full border border-[#fdba74]/30 bg-[#f97316]/10 px-8 py-4 text-[1.125rem]/[1.75rem] font-semibold text-[#ffedd5] backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-[#fdba74]/50 hover:bg-[#f97316]/20 motion-reduce:transition-none motion-reduce:hover:scale-100"
                 >
                   {buttons.secondary.text}
                 </button>

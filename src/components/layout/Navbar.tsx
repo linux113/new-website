@@ -112,10 +112,14 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
+  // Transparent overlay is only readable over the homepage's dark
+  // hero; every other route gets the solid navbar from the start.
+  const solid = scrolled || pathname !== "/";
+
   return (
     <header
       ref={headerRef}
-      data-surface={scrolled ? undefined : "dark"}
+      data-surface={solid ? undefined : "dark"}
       className={cn(
         "fixed inset-x-0 top-0 z-40",
         "transition-transform duration-(--duration-base) ease-(--ease-inout) motion-reduce:transition-none",
@@ -125,7 +129,7 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
       <div
         className={cn(
           "border-b transition-colors duration-(--duration-base) ease-(--ease-inout) motion-reduce:transition-none",
-          scrolled
+          solid
             ? "border-line bg-paper/85 backdrop-blur-md"
             : "border-paper-raised/15 bg-transparent",
         )}
@@ -135,7 +139,7 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
             aria-label="Main"
             className={cn(
               "flex items-center justify-between gap-6 transition-[height] duration-(--duration-base) ease-(--ease-inout) motion-reduce:transition-none",
-              scrolled ? "h-16" : "h-20",
+              solid && scrolled ? "h-16" : "h-20",
             )}
           >
             {/* Wordmark */}

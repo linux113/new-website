@@ -15,7 +15,7 @@ export function SplineSceneBasic() {
       <div className="flex h-full flex-col md:flex-row">
         {/* Left content */}
         <div className="relative z-10 flex flex-1 flex-col justify-center p-8">
-          <h1 className="bg-gradient-to-b from-[#fafafa] to-[#a3a3a3] bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
+          <h1 className="bg-gradient-to-b from-[#fafafa] to-[#a3a3a3] bg-clip-text text-[2.25rem]/[2.5rem] font-bold text-transparent md:text-[3rem]/[1.1]">
             Interactive 3D
           </h1>
           <p className="mt-4 max-w-lg text-[#d4d4d4]">
