@@ -36,6 +36,10 @@ function cookieOptions() {
     httpOnly: true as const,
     sameSite: CROSS_SITE ? ("none" as const) : ("lax" as const),
     secure: CROSS_SITE || process.env.NODE_ENV === "production",
+    // CHIPS: 2026 browsers drop unpartitioned third-party cookies in
+    // cross-origin iframes even with SameSite=None. Partitioned
+    // cookies are the sanctioned mechanism for embedded contexts.
+    partitioned: CROSS_SITE,
     path: "/" as const,
   };
 }
@@ -44,7 +48,10 @@ function hashToken(token: string): string {
   return createHash("sha256").update(token).digest("hex");
 }
 
-export async function createSession(userId: string): Promise<void> {
+export async function createSession(
+  userId: string,
+  ttlMs: number = SESSION_TTL_MS,
+): Promise<void> {
   const token = randomBytes(32).toString("base64url");
   const h = await headers();
 
@@ -52,7 +59,7 @@ export async function createSession(userId: string): Promise<void> {
     data: {
       tokenHash: hashToken(token),
       userId,
-      expiresAt: new Date(Date.now() + SESSION_TTL_MS),
+      expiresAt: new Date(Date.now() + ttlMs),
       ip: h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null,
       userAgent: h.get("user-agent")?.slice(0, 250) ?? null,
     },
@@ -61,7 +68,7 @@ export async function createSession(userId: string): Promise<void> {
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, token, {
     ...cookieOptions(),
-    maxAge: SESSION_TTL_MS / 1000,
+    maxAge: ttlMs / 1000,
   });
 }
 

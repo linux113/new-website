@@ -362,3 +362,136 @@
     clip-path: none;
   }
 }
+
+/* ============================================================
+   Admin login experience (premium split-screen).
+   Scoped: only used under /admin/login. All effects disabled
+   under prefers-reduced-motion.
+   ============================================================ */
+.login-grid {
+  background-image:
+    linear-gradient(rgba(241, 240, 236, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(241, 240, 236, 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 45%, #000 30%, transparent 78%);
+}
+
+@keyframes login-flow-dash {
+  0%   { stroke-dashoffset: 520; opacity: 0; }
+  8%   { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { stroke-dashoffset: -260; opacity: 0; }
+}
+.login-flow {
+  stroke-dasharray: 90 430;
+  animation: login-flow-dash 7s linear infinite;
+}
+
+@keyframes login-node-pulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 1; }
+}
+.login-node { animation: login-node-pulse 3.4s ease-in-out infinite; }
+
+@keyframes login-particle-drift {
+  0%   { transform: translateY(0); opacity: 0; }
+  12%  { opacity: 0.7; }
+  88%  { opacity: 0.7; }
+  100% { transform: translateY(-110px); opacity: 0; }
+}
+.login-particle { animation: login-particle-drift linear infinite; }
+
+@keyframes login-pulse-ring {
+  0%   { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(3); opacity: 0; }
+}
+.login-pulse { animation: login-pulse-ring 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+
+@keyframes login-reveal-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.login-reveal {
+  opacity: 0;
+  animation: login-reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes login-card-in {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.login-card-enter {
+  animation: login-card-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Animated gradient border + glow that breathes in */
+@keyframes login-border-spin {
+  to { --login-angle: 360deg; }
+}
+@property --login-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.login-border {
+  background: conic-gradient(
+    from var(--login-angle, 0deg),
+    rgba(184, 154, 98, 0) 0%,
+    rgba(184, 154, 98, 0.45) 12%,
+    rgba(184, 154, 98, 0) 26%,
+    rgba(184, 154, 98, 0) 55%,
+    rgba(184, 154, 98, 0.25) 68%,
+    rgba(184, 154, 98, 0) 82%
+  );
+  animation: login-border-spin 9s linear infinite;
+  opacity: 0;
+  transition: opacity 1.2s ease 0.6s;
+}
+.login-card:hover .login-border,
+.login-card:focus-within .login-border,
+.login-card-enter .login-border {
+  opacity: 1;
+}
+
+/* Glass reflection following the cursor */
+.login-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    420px circle at var(--light-x, 30%) var(--light-y, 20%),
+    rgba(241, 240, 236, 0.05),
+    transparent 55%
+  );
+}
+
+/* Error shake — translational, restrained */
+@keyframes login-shake-kf {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(2px); }
+}
+.login-shake { animation: login-shake-kf 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97); }
+
+/* Progress ring */
+@keyframes login-ring-spin { to { transform: rotate(360deg); } }
+.login-ring { animation: login-ring-spin 0.9s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .login-flow,
+  .login-node,
+  .login-particle,
+  .login-pulse,
+  .login-border { animation: none; }
+  .login-particle { opacity: 0.4; }
+  .login-border { opacity: 0.5; }
+  .login-reveal,
+  .login-card-enter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .login-shake { animation: none; }
+}

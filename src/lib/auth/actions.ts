@@ -65,7 +65,9 @@ export async function loginAction(
     where: { id: user.id },
     data: { lastLoginAt: new Date() },
   });
-  await createSession(user.id);
+  // "Remember me" extends the session from 12 hours to 30 days.
+  const remember = formData.get("remember") === "on";
+  await createSession(user.id, remember ? 1000 * 60 * 60 * 24 * 30 : undefined);
   redirect("/admin/dashboard");
 }
 
