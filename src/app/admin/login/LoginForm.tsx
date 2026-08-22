@@ -76,7 +76,7 @@ export function LoginForm() {
       ) : null}
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="login-email" className="font-mono text-[0.66rem] tracking-[0.16em] text-[#A7A9A6]">
+        <label htmlFor="login-email" className="font-mono text-[0.66rem] tracking-[0.16em] text-[#8b98a5]">
           EMAIL
         </label>
         <div className="login-field relative rounded-xl">
@@ -87,13 +87,13 @@ export function LoginForm() {
             autoComplete="username"
             required
             placeholder="you@company.com"
-            className="peer h-12.5 w-full rounded-xl border border-[#2A2E30] bg-[#0B0D0E]/80 px-4 text-[16px] text-[#F1F0EC] placeholder:text-[#4a4f4e] outline-none transition-all duration-300 focus:border-[#B89A62]/70 focus:shadow-[0_0_0_3px_rgba(184,154,98,0.12),0_0_24px_rgba(184,154,98,0.10)]"
+            className="peer h-12.5 w-full rounded-xl border border-white/[0.08] bg-[#05070c]/80 px-4 text-[16px] text-white placeholder:text-[#42505c] outline-none transition-all duration-300 focus:border-[#22d3ee]/60 focus:shadow-[0_0_0_3px_rgba(34,211,238,0.10),0_0_24px_rgba(34,211,238,0.10)]"
           />
         </div>
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="login-password" className="font-mono text-[0.66rem] tracking-[0.16em] text-[#A7A9A6]">
+        <label htmlFor="login-password" className="font-mono text-[0.66rem] tracking-[0.16em] text-[#8b98a5]">
           PASSWORD
         </label>
         <div className="login-field relative rounded-xl">
@@ -104,14 +104,14 @@ export function LoginForm() {
             autoComplete="current-password"
             required
             placeholder="••••••••••••"
-            className="peer h-12.5 w-full rounded-xl border border-[#2A2E30] bg-[#0B0D0E]/80 px-4 pr-12 text-[16px] text-[#F1F0EC] placeholder:text-[#4a4f4e] outline-none transition-all duration-300 focus:border-[#B89A62]/70 focus:shadow-[0_0_0_3px_rgba(184,154,98,0.12),0_0_24px_rgba(184,154,98,0.10)]"
+            className="peer h-12.5 w-full rounded-xl border border-white/[0.08] bg-[#05070c]/80 px-4 pr-12 text-[16px] text-white placeholder:text-[#42505c] outline-none transition-all duration-300 focus:border-[#22d3ee]/60 focus:shadow-[0_0_0_3px_rgba(34,211,238,0.10),0_0_24px_rgba(34,211,238,0.10)]"
           />
           <button
             type="button"
             aria-label={showPassword ? "Hide password" : "Show password"}
             aria-pressed={showPassword}
             onClick={() => setShowPassword((v) => !v)}
-            className="absolute top-1/2 right-1.5 flex size-10 -translate-y-1/2 items-center justify-center rounded-lg text-[#686D6C] transition-colors duration-200 hover:text-[#F1F0EC] focus-visible:outline-2 focus-visible:outline-[#B89A62]"
+            className="absolute top-1/2 right-1.5 flex size-10 -translate-y-1/2 items-center justify-center rounded-lg text-[#5b6b78] transition-colors duration-200 hover:text-white focus-visible:outline-2 focus-visible:outline-[#22d3ee]"
           >
             <span className="relative block size-4.5">
               <Eye
@@ -132,17 +132,17 @@ export function LoginForm() {
       </div>
 
       <div className="flex items-center justify-between">
-        <label className="flex cursor-pointer items-center gap-2.5 text-[0.82rem] text-[#A7A9A6]">
+        <label className="flex cursor-pointer items-center gap-2.5 text-[0.82rem] text-[#8b98a5]">
           <input
             type="checkbox"
             name="remember"
-            className="size-4 cursor-pointer appearance-none rounded border border-[#2A2E30] bg-[#0B0D0E] transition-all duration-200 checked:border-[#B89A62] checked:bg-[#B89A62] checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4%208.5%206.5%2011%2012%205%22%20stroke%3D%22%230B0D0E%22%20stroke-width%3D%222%22%20fill%3D%22none%22/%3E%3C/svg%3E')] bg-center bg-no-repeat focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B89A62]"
+            className="size-4 cursor-pointer appearance-none rounded border border-white/[0.12] bg-[#05070c] transition-all duration-200 checked:border-[#22d3ee] checked:bg-[#22d3ee] checked:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cpath%20d%3D%22M4%208.5%206.5%2011%2012%205%22%20stroke%3D%22%2304141a%22%20stroke-width%3D%222%22%20fill%3D%22none%22/%3E%3C/svg%3E')] bg-center bg-no-repeat focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#22d3ee]"
           />
           Remember me
         </label>
         <a
           href="mailto:info@sriyaanmetals.co?subject=Admin%20password%20reset%20request"
-          className="text-[0.82rem] text-[#A7A9A6] underline-offset-4 transition-colors duration-200 hover:text-[#B89A62] hover:underline"
+          className="text-[0.82rem] text-[#8b98a5] underline-offset-4 transition-colors duration-200 hover:text-[#22d3ee] hover:underline"
         >
           Forgot password?
         </a>
@@ -152,13 +152,13 @@ export function LoginForm() {
         ref={buttonRef}
         type="submit"
         disabled={pending}
-        className="login-cta group relative mt-1 h-13 overflow-hidden rounded-xl bg-[#B89A62] text-[0.8rem] font-semibold tracking-[0.14em] text-[#0B0D0E] uppercase transition-[box-shadow,background-color,transform] duration-300 hover:bg-[#c9ac72] hover:shadow-[0_0_36px_rgba(184,154,98,0.35)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#B89A62] disabled:cursor-not-allowed disabled:opacity-70 motion-reduce:transition-none"
+        className="login-cta group relative mt-1 h-13 overflow-hidden rounded-xl bg-gradient-to-r from-[#0ea5b7] to-[#22d3ee] text-[0.8rem] font-semibold tracking-[0.14em] text-[#04141a] uppercase shadow-[0_0_24px_rgba(34,211,238,0.18)] transition-[box-shadow,filter,transform] duration-300 hover:shadow-[0_0_44px_rgba(34,211,238,0.4)] hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#22d3ee] disabled:cursor-not-allowed disabled:opacity-70 motion-reduce:transition-none"
       >
         {pending ? (
           <span className="flex items-center justify-center gap-2.5">
             <svg className="login-ring size-4.5" viewBox="0 0 20 20" fill="none" aria-hidden>
-              <circle cx="10" cy="10" r="8" stroke="rgba(11,13,14,0.25)" strokeWidth="2.5" />
-              <circle cx="10" cy="10" r="8" stroke="#0B0D0E" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="38" strokeDashoffset="28" />
+              <circle cx="10" cy="10" r="8" stroke="rgba(4,20,26,0.25)" strokeWidth="2.5" />
+              <circle cx="10" cy="10" r="8" stroke="#04141a" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="38" strokeDashoffset="28" />
             </svg>
             Authenticating…
           </span>

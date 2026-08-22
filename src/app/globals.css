@@ -436,12 +436,12 @@
 .login-border {
   background: conic-gradient(
     from var(--login-angle, 0deg),
-    rgba(184, 154, 98, 0) 0%,
-    rgba(184, 154, 98, 0.45) 12%,
-    rgba(184, 154, 98, 0) 26%,
-    rgba(184, 154, 98, 0) 55%,
-    rgba(184, 154, 98, 0.25) 68%,
-    rgba(184, 154, 98, 0) 82%
+    rgba(34, 211, 238, 0) 0%,
+    rgba(34, 211, 238, 0.45) 12%,
+    rgba(34, 211, 238, 0) 26%,
+    rgba(34, 211, 238, 0) 55%,
+    rgba(45, 212, 191, 0.28) 68%,
+    rgba(45, 212, 191, 0) 82%
   );
   animation: login-border-spin 9s linear infinite;
   opacity: 0;
@@ -494,4 +494,40 @@
     transform: none;
   }
   .login-shake { animation: none; }
+}
+
+
+/* ---- Login v2: cyan atmosphere + dashboard preview ---- */
+@keyframes login-breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 0.9;  transform: scale(1.08); }
+}
+.login-glow { animation: login-breathe 9s ease-in-out infinite; }
+
+@keyframes login-float-kf {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.login-float { animation: login-float-kf 7s ease-in-out infinite; }
+
+@keyframes login-draw {
+  from { stroke-dashoffset: var(--draw-len, 600); }
+  to   { stroke-dashoffset: 0; }
+}
+.login-draw {
+  stroke-dasharray: var(--draw-len, 600);
+  stroke-dashoffset: var(--draw-len, 600);
+  animation: login-draw 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes login-fill-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.login-fill { opacity: 0; animation: login-fill-in 0.9s ease forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .login-glow, .login-float { animation: none; }
+  .login-draw { animation: none; stroke-dashoffset: 0; }
+  .login-fill { animation: none; opacity: 1; }
 }
