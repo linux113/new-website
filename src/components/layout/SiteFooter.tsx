@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Container, Hairline } from "@/components/ui";
 import { FOOTER_COLUMNS, LEGAL_LINKS, SITE_NAME } from "@/content/site";
@@ -22,7 +23,10 @@ export async function SiteFooter() {
         <div className="grid grid-cols-4 gap-x-6 gap-y-12 md:grid-cols-12 md:gap-x-8">
           {/* Company block */}
           <div className="col-span-4 flex flex-col gap-4 md:col-span-3">
-            <p className="text-display-md font-display">{SITE_NAME}</p>
+            <div className="flex items-center gap-3">
+              <Image src="/brand/logo-mark.png" alt="" width={44} height={44} className="size-11" />
+              <p className="text-display-md font-display">{SITE_NAME}</p>
+            </div>
             <p className="text-body-sm text-mist max-w-measure">
               {/* PLACEHOLDER-CONTENT until admin sets content.footer.description */}
               {footerDescription}

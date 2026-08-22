@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -145,9 +146,20 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
             {/* Wordmark */}
             <Link
               href="/"
-              className="text-heading-sm font-display font-semibold tracking-tight text-surface-fg whitespace-nowrap"
+              className="flex items-center gap-2.5 whitespace-nowrap"
+              aria-label={`${siteName} — home`}
             >
-              {siteName}
+              <Image
+                src="/brand/logo-mark.png"
+                alt=""
+                width={36}
+                height={36}
+                priority
+                className="size-9 shrink-0"
+              />
+              <span className="text-heading-sm font-display font-semibold tracking-tight text-surface-fg">
+                {siteName}
+              </span>
             </Link>
 
             {/* Desktop links */}

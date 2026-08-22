@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -126,9 +127,12 @@ export function AdminShell({ user, children }: AdminShellProps) {
     <nav aria-label="Admin" className="flex h-full flex-col gap-6 overflow-y-auto p-4">
       <Link
         href="/admin/dashboard"
-        className="text-heading-sm font-display px-2 font-semibold tracking-tight text-paper"
+        className="flex items-center gap-2.5 px-2"
       >
-        SRIYAAN <span className="text-mist">/ ADMIN</span>
+        <Image src="/brand/logo-mark.png" alt="" width={28} height={28} className="size-7" />
+        <span className="text-heading-sm font-display font-semibold tracking-tight text-paper">
+          SRIYAAN <span className="text-mist">/ ADMIN</span>
+        </span>
       </Link>
 
       {NAV_GROUPS.map((group) => (
