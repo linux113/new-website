@@ -14,7 +14,7 @@ import {
   TestimonialsSection,
   WhyChooseUsSection,
 } from "@/components/sections/home";
-import { ScrollFrameHero } from "@/components/sections/home/ScrollFrameHero";
+import { VideoHero } from "@/components/sections/home/VideoHero";
 import { CONTACT, SITE_NAME, SITE_URL } from "@/content/site";
 import { getCompanyInfo } from "@/lib/company";
 
@@ -95,7 +95,7 @@ export default function HomePage() {
           __html: JSON.stringify([organizationSchema, websiteSchema]),
         }}
       />
-      <ScrollFrameHero />
+      <VideoHero />
       <CapabilityStrip />
       <ProductCategoriesSection />
       <FeaturedProductsSection />
