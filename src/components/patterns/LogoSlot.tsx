@@ -20,7 +20,7 @@ export function LogoSlot({ logo, name, className }: LogoSlotProps) {
   return (
     <div
       className={cn(
-        "relative flex aspect-3/2 items-center justify-center border border-edge bg-surface p-6",
+        "relative flex aspect-3/2 items-center justify-center border border-edge bg-ink-soft p-6",
         className,
       )}
     >

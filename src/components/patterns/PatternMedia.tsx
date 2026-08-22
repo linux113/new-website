@@ -51,7 +51,7 @@ export function PatternMedia({
   const frame = cn(
     "relative overflow-hidden",
     RATIO_CLASS[ratio],
-    surface === "media" ? "bg-ink" : "bg-paper-sunken",
+    surface === "media" ? "bg-ink" : "bg-ink-soft",
     className,
   );
 

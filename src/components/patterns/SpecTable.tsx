@@ -32,7 +32,7 @@ export function SpecTable({
             const value = spec.value.value ?? spec.value.placeholder;
             const pending = spec.value.value === null;
             return (
-              <tr key={spec.label} className="border-b border-edge transition-colors duration-(--duration-fast) hover:bg-paper-sunken">
+              <tr key={spec.label} className="border-b border-edge transition-colors duration-(--duration-fast) hover:bg-ink-soft">
                 <th
                   scope="row"
                   className="w-2/5 py-4 pr-8 text-left text-mono-meta font-normal text-surface-muted"

@@ -21,14 +21,14 @@ export function TestimonialCard({ testimonial, className }: TestimonialCardProps
   return (
     <figure
       className={cn(
-        "flex h-full flex-col gap-6 border border-edge bg-paper-raised p-6 lg:p-8",
+        "flex h-full flex-col gap-6 border border-edge bg-ink-soft p-6 lg:p-8",
         className,
       )}
     >
       <blockquote
         className={cn(
           "text-body-lg max-w-measure flex-1",
-          isPlaceholder ? "text-mist" : "text-ink",
+          isPlaceholder ? "text-slate" : "text-paper",
         )}
       >
         {isPlaceholder ? quote : `\u201C${quote}\u201D`}
@@ -36,7 +36,7 @@ export function TestimonialCard({ testimonial, className }: TestimonialCardProps
 
       <figcaption className="flex items-center gap-4 border-t border-edge pt-5">
         {testimonial.avatar?.src ? (
-          <span className="relative block size-10 shrink-0 overflow-hidden rounded-full bg-paper-sunken">
+          <span className="relative block size-10 shrink-0 overflow-hidden rounded-full bg-ink">
             <Image
               src={testimonial.avatar.src}
               alt=""
@@ -47,10 +47,10 @@ export function TestimonialCard({ testimonial, className }: TestimonialCardProps
           </span>
         ) : null}
         <span className="flex flex-col gap-0.5">
-          <span className="text-body-sm font-medium text-ink">
+          <span className="text-body-sm font-medium text-paper">
             {testimonial.name}
           </span>
-          <span className="text-mono-micro text-slate">{testimonial.role}</span>
+          <span className="text-mono-micro text-mist">{testimonial.role}</span>
         </span>
       </figcaption>
     </figure>

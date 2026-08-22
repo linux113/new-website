@@ -30,7 +30,7 @@ export function ProductCard({
   return (
     <article
       className={cn(
-        "group relative flex flex-col border border-edge bg-paper-raised",
+        "group relative flex flex-col border border-edge bg-ink-soft",
         "transition-[border-color,box-shadow,translate] duration-(--duration-base) ease-(--ease-out-quart)",
         "hover:-translate-y-0.5 hover:border-steel hover:shadow-raise",
         "motion-reduce:transition-none motion-reduce:hover:translate-y-0",
@@ -46,13 +46,13 @@ export function ProductCard({
       />
 
       <div className="flex flex-1 flex-col gap-2 p-6 lg:p-8">
-        <p className="text-mono-micro text-slate">
+        <p className="text-mono-micro text-mist">
           {product.category}
           <span aria-hidden="true"> · </span>
           {product.code}
         </p>
 
-        <h3 className="text-heading-sm font-display font-medium text-ink">
+        <h3 className="text-heading-sm font-display font-medium text-paper">
           <Link
             href={`${hrefBase}/${product.slug}`}
             className="after:absolute after:inset-0 focus-visible:outline-none"
@@ -61,11 +61,11 @@ export function ProductCard({
           </Link>
         </h3>
 
-        <p className="text-body-sm text-slate line-clamp-1">{spec}</p>
+        <p className="text-body-sm text-mist line-clamp-1">{spec}</p>
 
         <Hairline className="mt-auto" />
 
-        <p className="flex items-center gap-2 pt-2 text-label text-ink transition-colors duration-(--duration-base) group-hover:text-accent">
+        <p className="flex items-center gap-2 pt-2 text-label text-paper transition-colors duration-(--duration-base) group-hover:text-accent">
           Enquire
           <span
             aria-hidden="true"
@@ -93,7 +93,7 @@ function ProductCardSkeleton({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex flex-col border border-edge bg-paper-raised",
+        "flex flex-col border border-edge bg-ink-soft",
         className,
       )}
     >

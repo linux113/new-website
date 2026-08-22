@@ -21,13 +21,10 @@ export function QuoteCTASection() {
               <p className="text-mono-meta text-accent-ondark">
                 SM–14 / Enquiry
               </p>
-              <h2
-                id="home-quote"
-                className="text-display-xl mt-6 text-balance"
-              >
-                Send the specification.
-                <br />
-                We take it from there.
+              <h2 id="home-quote" className="text-display-xl mt-6">
+                <span className="hero-line"><span className="hero-line-inner" style={{ animationDelay: "100ms" }}>Let&apos;s build</span></span>
+                <span className="hero-line"><span className="hero-line-inner" style={{ animationDelay: "190ms" }}>something</span></span>
+                <span className="hero-line"><span className="hero-line-inner" style={{ animationDelay: "280ms" }}>precise.</span></span>
               </h2>
               <p className="text-body-lg text-surface-muted max-w-measure mt-6">
                 Share your requirement — material, quantity, delivery point —

@@ -10,22 +10,22 @@
 @theme {
   /* ---- Color: core palette (DS §3.1) ---- */
   --color-*: initial;
-  --color-ink: #0b0f14;
-  --color-ink-soft: #161c24;
-  --color-steel: #2e3a47;
-  --color-slate: #5b6b7b;
-  --color-mist: #9aa7b4;
-  --color-line: #dce1e7;
-  --color-line-dark: #232b35;
-  --color-paper: #f5f6f7;
+  --color-ink: #0b0d0e;
+  --color-ink-soft: #111416;
+  --color-steel: #3a3e40;
+  --color-slate: #686d6c;
+  --color-mist: #a7a9a6;
+  --color-line: #ddd9d0;
+  --color-line-dark: #2a2e30;
+  --color-paper: #f1f0ec;
   --color-paper-raised: #ffffff;
-  --color-paper-sunken: #edeff1;
+  --color-paper-sunken: #e9e7e1;
 
   /* ---- Color: accent (DS §3.2) ---- */
-  --color-accent: #c8461b;
-  --color-accent-hover: #a93a15;
-  --color-accent-tint: #fbede7;
-  --color-accent-on-dark: #e0592b;
+  --color-accent: #b89a62;
+  --color-accent-hover: #9f824e;
+  --color-accent-tint: #f2ead9;
+  --color-accent-on-dark: #c9ac72;
 
   /* ---- Color: functional (DS §3.3) ---- */
   --color-success: #1e7f4f;
@@ -83,10 +83,12 @@
    (Hairline, Eyebrow, text) adapt without per-component logic.
    ============================================================ */
 :root {
-  --surface-bg: var(--color-paper);
-  --surface-fg: var(--color-ink);
-  --surface-fg-muted: var(--color-slate);
-  --surface-edge: var(--color-line);
+  /* Public site is dark-first (client visual system). Admin keeps its
+     own explicit light classes and is unaffected by these vars. */
+  --surface-bg: var(--color-ink);
+  --surface-fg: var(--color-paper);
+  --surface-fg-muted: var(--color-mist);
+  --surface-edge: var(--color-line-dark);
 
   /* Motion durations (DS §20) — used with Tailwind duration-(--duration-*) */
   --duration-fast: 150ms;
@@ -103,7 +105,7 @@
 }
 
 [data-surface="sunken"] {
-  --surface-bg: var(--color-paper-sunken);
+  --surface-bg: var(--color-ink-soft);
 }
 
 /* ============================================================
@@ -115,8 +117,8 @@
   }
 
   body {
-    background-color: var(--color-paper);
-    color: var(--color-ink);
+    background-color: var(--color-ink);
+    color: var(--color-paper);
     font-family: var(--font-sans);
     font-size: 1rem;
     line-height: 1.6;
@@ -143,7 +145,7 @@
 
   ::selection {
     background-color: var(--color-accent);
-    color: var(--color-paper-raised);
+    color: var(--color-ink);
   }
 
   /* Reduced motion: kill animation/transition timing globally (DS §20) */

@@ -120,7 +120,7 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
   return (
     <header
       ref={headerRef}
-      data-surface={solid ? undefined : "dark"}
+      data-surface="dark"
       className={cn(
         "fixed inset-x-0 top-0 z-40",
         "transition-transform duration-(--duration-base) ease-(--ease-inout) motion-reduce:transition-none",
@@ -131,8 +131,8 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
         className={cn(
           "border-b transition-colors duration-(--duration-base) ease-(--ease-inout) motion-reduce:transition-none",
           solid
-            ? "border-line bg-paper/85 backdrop-blur-md"
-            : "border-paper-raised/15 bg-transparent",
+            ? "border-line-dark bg-ink/85 backdrop-blur-md"
+            : "border-paper/10 bg-transparent",
         )}
       >
         <Container>
@@ -140,7 +140,7 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
             aria-label="Main"
             className={cn(
               "flex items-center justify-between gap-6 transition-[height] duration-(--duration-base) ease-(--ease-inout) motion-reduce:transition-none",
-              solid && scrolled ? "h-16" : "h-20",
+              solid && scrolled ? "h-[4.5rem]" : "h-[5.5rem]",
             )}
           >
             {/* Wordmark */}
@@ -223,7 +223,7 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
                   "transition-colors duration-(--duration-base) hover:bg-accent-hover",
                 )}
               >
-                {cta.label}
+                {cta.label} <span aria-hidden>↗</span>
               </Link>
               <button
                 type="button"

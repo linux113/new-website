@@ -111,7 +111,7 @@ export function Carousel({
             aria-label="Previous slide"
             className={cn(
               "flex size-11 items-center justify-center rounded-xs border border-edge text-surface-fg",
-              "transition-colors duration-(--duration-base) hover:bg-paper-sunken",
+              "transition-colors duration-(--duration-base) hover:bg-ink-soft",
               "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent",
             )}
           >
@@ -124,7 +124,7 @@ export function Carousel({
             aria-label="Next slide"
             className={cn(
               "flex size-11 items-center justify-center rounded-xs border border-edge text-surface-fg",
-              "transition-colors duration-(--duration-base) hover:bg-paper-sunken",
+              "transition-colors duration-(--duration-base) hover:bg-ink-soft",
               "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-transparent",
             )}
           >

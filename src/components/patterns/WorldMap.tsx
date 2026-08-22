@@ -35,7 +35,7 @@ export function WorldMap({
   return (
     <div
       className={cn(
-        "relative aspect-video overflow-hidden border border-edge bg-surface",
+        "relative aspect-video overflow-hidden border border-edge bg-ink-soft",
         className,
       )}
       role="img"
@@ -95,7 +95,7 @@ export function WorldMap({
           {regions.map((region) => (
             <li
               key={region.code}
-              className="border border-edge bg-paper-raised px-2 py-1 text-mono-micro text-ink"
+              className="border border-edge bg-ink-soft px-2 py-1 text-mono-micro text-paper"
             >
               {region.label}
             </li>

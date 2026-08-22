@@ -16,7 +16,7 @@ export function Skeleton({ className }: SkeletonProps) {
     <div
       aria-hidden="true"
       className={cn(
-        "bg-paper-sunken animate-pulse motion-reduce:animate-none",
+        "bg-ink-soft animate-pulse motion-reduce:animate-none",
         className,
       )}
     />

@@ -49,7 +49,7 @@ export function IndustryRow({
   const rowClass = cn(
     "group flex items-start gap-6 border-b border-edge py-6 lg:py-8",
     "transition-colors duration-(--duration-base) motion-reduce:transition-none",
-    industry.href && "hover:bg-paper-sunken",
+    industry.href && "hover:bg-ink-soft",
     className,
   );
 

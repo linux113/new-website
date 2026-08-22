@@ -71,7 +71,7 @@ export function MegaMenu({ id, open, categories, allHref, onClose }: MegaMenuPro
       inert={!open}
       className={cn(
         "absolute inset-x-0 top-full hidden lg:block",
-        "bg-paper-raised text-ink shadow-float border-b border-line",
+        "bg-ink-soft text-paper shadow-float border-b border-line-dark",
         "transition-[opacity,translate] duration-(--duration-fast) ease-(--ease-out-quart) motion-reduce:transition-none",
         open
           ? "pointer-events-auto translate-y-0 opacity-100"
@@ -79,7 +79,7 @@ export function MegaMenu({ id, open, categories, allHref, onClose }: MegaMenuPro
       )}
     >
       <Container className="py-10">
-        <p className="text-mono-meta text-slate">
+        <p className="text-mono-meta text-mist">
           Products / <span className="text-accent">placeholder categories</span>
         </p>
 
@@ -90,18 +90,18 @@ export function MegaMenu({ id, open, categories, allHref, onClose }: MegaMenuPro
                 href={cat.href}
                 onClick={() => onClose()}
                 className={cn(
-                  "group flex items-baseline gap-6 border-b border-line py-4",
-                  "transition-colors duration-(--duration-base) hover:bg-paper-sunken",
+                  "group flex items-baseline gap-6 border-b border-line-dark py-4",
+                  "transition-colors duration-(--duration-base) hover:bg-ink",
                 )}
               >
-                <span className="text-mono-meta text-slate tabular-nums transition-colors duration-(--duration-base) group-hover:text-accent">
+                <span className="text-mono-meta text-mist tabular-nums transition-colors duration-(--duration-base) group-hover:text-accent">
                   {cat.index}
                 </span>
-                <span className="text-heading-sm text-ink">{cat.label}</span>
+                <span className="text-heading-sm text-paper">{cat.label}</span>
                 <span className="text-mono-micro text-mist">{cat.meta}</span>
                 <ArrowRightIcon
                   size={16}
-                  className="ml-auto self-center text-slate opacity-0 transition-[opacity,translate] duration-(--duration-base) group-hover:translate-x-1 group-hover:opacity-100 motion-reduce:transition-none"
+                  className="ml-auto self-center text-mist opacity-0 transition-[opacity,translate] duration-(--duration-base) group-hover:translate-x-1 group-hover:opacity-100 motion-reduce:transition-none"
                 />
               </Link>
             </li>
@@ -111,7 +111,7 @@ export function MegaMenu({ id, open, categories, allHref, onClose }: MegaMenuPro
         <Link
           href={allHref}
           onClick={() => onClose()}
-          className="group mt-6 inline-flex items-center gap-2 text-label text-ink transition-colors duration-(--duration-base) hover:text-accent"
+          className="group mt-6 inline-flex items-center gap-2 text-label text-paper transition-colors duration-(--duration-base) hover:text-accent"
         >
           View all products
           <ArrowRightIcon

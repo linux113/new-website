@@ -24,12 +24,12 @@ const SIZE: Record<Size, string> = {
 
 const VARIANT: Record<Variant, string> = {
   primary: cn(
-    "bg-accent text-paper-raised rounded-xs",
+    "bg-accent text-ink rounded-xs",
     "hover:bg-accent-hover",
   ),
   secondary: cn(
-    "border border-ink text-ink rounded-xs bg-transparent",
-    "hover:bg-ink hover:text-paper",
+    "border border-paper/40 text-paper rounded-xs bg-transparent",
+    "hover:border-paper hover:bg-paper hover:text-ink",
   ),
   secondaryDark: cn(
     "border border-paper text-paper rounded-xs bg-transparent",

@@ -38,7 +38,7 @@ export function PublicForm({
         className="border border-success/30 bg-success-tint p-6 lg:p-8"
       >
         <p className="text-heading-sm text-success">{successTitle}</p>
-        <p className="mt-2 text-body-sm text-ink">{successBody}</p>
+        <p className="mt-2 text-body-sm text-paper">{successBody}</p>
       </div>
     );
   }
@@ -72,7 +72,7 @@ export function PublicForm({
         <button
           type="submit"
           disabled={pending}
-          className="h-13 rounded-xs bg-accent px-8 text-label text-paper-raised transition-colors duration-(--duration-base) hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
+          className="h-13 rounded-xs bg-accent px-8 text-label text-ink transition-colors duration-(--duration-base) hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
         >
           {pending ? "Sending…" : submitLabel}
         </button>
@@ -111,7 +111,7 @@ export function Field({ name, label, error, optional, children }: FieldProps) {
 
 const controlClass = (invalid: boolean) =>
   cn(
-    "w-full rounded-xs border bg-paper-sunken px-4 text-[16px] text-ink",
+    "w-full rounded-xs border bg-ink-soft px-4 text-[16px] text-paper",
     "focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent",
     invalid ? "border-error" : "border-line",
   );

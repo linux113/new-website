@@ -23,7 +23,7 @@ export function CertSlot({ certification, className }: CertSlotProps) {
   return (
     <div
       className={cn(
-        "flex aspect-3/2 flex-col items-center justify-center gap-3 border border-edge bg-surface p-6 text-center",
+        "flex aspect-3/2 flex-col items-center justify-center gap-3 border border-edge bg-ink-soft p-6 text-center",
         className,
       )}
     >
@@ -48,16 +48,16 @@ export function CertSlot({ certification, className }: CertSlotProps) {
             ) : (
               <a
                 href={certification.document.src}
-                className="flex items-center gap-2 text-slate transition-colors duration-(--duration-fast) hover:text-ink"
+                className="flex items-center gap-2 text-mist transition-colors duration-(--duration-fast) hover:text-paper"
               >
                 <Icon icon={FileText} size={20} />
                 <span className="text-mono-micro">VIEW DOCUMENT</span>
               </a>
             )
           ) : (
-            <Icon icon={FileText} size={24} className="text-slate" />
+            <Icon icon={FileText} size={24} className="text-mist" />
           )}
-          <p className="text-mono-meta text-ink">{certification.name}</p>
+          <p className="text-mono-meta text-paper">{certification.name}</p>
         </>
       )}
     </div>

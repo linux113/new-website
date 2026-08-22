@@ -47,7 +47,7 @@ export function HeroVideo() {
       <div
         aria-hidden
         className="absolute inset-0 bg-cover bg-[position:70%_top]"
-        style={{ backgroundImage: "url(/hero-frames/frame-50.jpg)" }}
+        style={{ backgroundImage: "url(/hero-frames/frame-46.jpg)" }}
       />
     );
   }
