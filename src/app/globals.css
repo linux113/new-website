@@ -298,54 +298,65 @@
 }
 
 /* ============================================================
-   Hero entrance timeline (Apogee-style reference).
-   Elements start opacity-0 in markup and are revealed purely by
-   CSS animation with `forwards` fill — no JS, no observers.
-   Easing: cubic-bezier(0.16, 1, 0.3, 1) ("ease-out-expo" feel).
-   Reduced motion: reveal instantly, no movement.
+   Hero entrance choreography (client reference).
+   Pure CSS: elements start hidden in markup, revealed by keyframes
+   with forwards fill. Easings from the reference:
+   EXPO  cubic-bezier(.16,1,.3,1)   — wipes, logo
+   QUINT cubic-bezier(.22,1,.36,1)  — risers
+   TYPE  cubic-bezier(.22,.85,.24,1)— headline line rise
+   QUART cubic-bezier(.25,1,.5,1)   — rules
+   Reduced motion: everything visible/static instantly.
    ============================================================ */
-@keyframes hero-fade-up {
-  from { opacity: 0; transform: translateY(24px); }
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes hero-fade-down {
-  from { opacity: 0; transform: translateY(-16px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes hero-line-rise {
+  from { transform: translateY(120%); }
+  to   { transform: translateY(0); }
 }
-@keyframes hero-fade-scale {
-  from { opacity: 0; transform: scale(0.92); }
-  to   { opacity: 1; transform: scale(1); }
+@keyframes hero-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
 }
-@keyframes hero-bar-grow {
-  from { transform: scaleY(0); opacity: 0; }
-  to   { transform: scaleY(1); opacity: 1; }
+@keyframes hero-rule-grow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
 }
 
-@utility hero-anim-up {
+@utility hero-rise {
   opacity: 0;
-  animation: hero-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: hero-rise 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
-@utility hero-anim-down {
-  opacity: 0;
-  animation: hero-fade-down 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+@utility hero-line {
+  display: block;
+  overflow: hidden;
+  /* protect descenders during the mask rise */
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
 }
-@utility hero-anim-scale {
-  opacity: 0;
-  animation: hero-fade-scale 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+@utility hero-line-inner {
+  display: block;
+  transform: translateY(120%);
+  animation: hero-line-rise 0.98s cubic-bezier(0.22, 0.85, 0.24, 1) forwards;
 }
-@utility hero-anim-bar {
-  opacity: 0;
-  transform-origin: bottom;
-  animation: hero-bar-grow 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+@utility hero-wipe {
+  clip-path: inset(0 100% 0 0);
+  animation: hero-wipe 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@utility hero-rule {
+  transform: scaleY(0);
+  animation: hero-rule-grow 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-anim-up,
-  .hero-anim-down,
-  .hero-anim-scale,
-  .hero-anim-bar {
+  .hero-rise,
+  .hero-wipe,
+  .hero-rule,
+  .hero-line-inner {
     animation: none;
     opacity: 1;
     transform: none;
+    clip-path: none;
   }
 }
