@@ -20,6 +20,26 @@ import type { AdminRole } from "@/generated/prisma/enums";
 const COOKIE_NAME = "sm_admin_session";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 12; // 12 hours
 
+/**
+ * Cookie policy.
+ * Default: SameSite=Lax (CSRF mitigation), Secure in production.
+ * PREVIEW_CROSS_SITE_COOKIES=1 (sandbox preview ONLY): the preview
+ * embeds the site in an iframe on another origin, and browsers drop
+ * Lax cookies in cross-site iframes — the session dies immediately
+ * after login. SameSite=None requires Secure; the preview proxy is
+ * HTTPS so the browser accepts it. Never enable this in production.
+ */
+const CROSS_SITE = process.env.PREVIEW_CROSS_SITE_COOKIES === "1";
+
+function cookieOptions() {
+  return {
+    httpOnly: true as const,
+    sameSite: CROSS_SITE ? ("none" as const) : ("lax" as const),
+    secure: CROSS_SITE || process.env.NODE_ENV === "production",
+    path: "/" as const,
+  };
+}
+
 function hashToken(token: string): string {
   return createHash("sha256").update(token).digest("hex");
 }
@@ -40,10 +60,7 @@ export async function createSession(userId: string): Promise<void> {
 
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
+    ...cookieOptions(),
     maxAge: SESSION_TTL_MS / 1000,
   });
 }
