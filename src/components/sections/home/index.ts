@@ -8,6 +8,7 @@ export { HeroSection } from "./HeroSection";
 export { CapabilityStrip } from "./CapabilityStrip";
 export { ProductCategoriesSection } from "./ProductCategoriesSection";
 export { FeaturedProductsSection } from "./FeaturedProductsSection";
+export { KineticSection } from "./KineticSection";
 export { WhyChooseUsSection } from "./WhyChooseUsSection";
 export { ManufacturingSection } from "./ManufacturingSection";
 export { QualitySection } from "./QualitySection";

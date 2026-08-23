@@ -14,6 +14,7 @@ import {
   TestimonialsSection,
   WhyChooseUsSection,
 } from "@/components/sections/home";
+import { KineticSection } from "@/components/sections/home/KineticSection";
 import { VideoHero } from "@/components/sections/home/VideoHero";
 import { CONTACT, SITE_NAME, SITE_URL } from "@/content/site";
 import { getCompanyInfo } from "@/lib/company";
@@ -96,6 +97,7 @@ export default function HomePage() {
         }}
       />
       <VideoHero />
+      <KineticSection />
       <CapabilityStrip />
       <ProductCategoriesSection />
       <FeaturedProductsSection />

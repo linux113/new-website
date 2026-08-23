@@ -46,8 +46,8 @@ export function HeroVideo() {
     return (
       <div
         aria-hidden
-        className="absolute inset-0 bg-cover bg-[position:70%_top]"
-        style={{ backgroundImage: "url(/hero-frames/frame-46.jpg)" }}
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url(/hero-frames/frame-46-hd.jpg)" }}
       />
     );
   }
@@ -55,8 +55,8 @@ export function HeroVideo() {
   return (
     <video
       ref={videoRef}
-      className="absolute inset-0 h-full w-full object-cover object-[70%_top] lg:object-[right_top]"
-      src="/hero.mp4"
+      className="absolute inset-0 h-full w-full object-cover object-center"
+      src="/hero.mp4?v=hd2"
       poster="/hero-frames/frame-01.jpg"
       autoPlay
       muted

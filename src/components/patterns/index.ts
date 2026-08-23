@@ -12,6 +12,7 @@ export { ProductGrid } from "./ProductGrid";
 export { CategoryTile } from "./CategoryTile";
 export { StatItem } from "./StatItem";
 export { FeatureItem } from "./FeatureItem";
+export { GlowCard } from "./GlowCard";
 export { LogoSlot } from "./LogoSlot";
 export { TestimonialCard } from "./TestimonialCard";
 export { BlogCard } from "./BlogCard";
