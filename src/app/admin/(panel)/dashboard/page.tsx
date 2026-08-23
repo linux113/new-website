@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
-import { CountUp, MonthlyBarChart, ProductBars, StatusDonut, type MonthPoint } from "@/components/admin/dashboard/charts";
-import { ActivityTimeline, KpiCard, QuickActions, Reveal, type ActivityItem } from "@/components/admin/dashboard/widgets";
+import { MonthlyBarChart, ProductBars, StatusDonut, type MonthPoint } from "@/components/admin/dashboard/charts";
+import { KpiCard, QuickActions, Reveal } from "@/components/admin/dashboard/widgets";
 import { RecentEnquiries, type EnquiryRow } from "@/components/admin/dashboard/RecentEnquiries";
 import { WorldMap } from "@/components/admin/dashboard/WorldMap";
 
@@ -45,31 +45,22 @@ export default async function AdminDashboardPage() {
   const [
     productCount,
     productPublished,
-    productDraft,
     categoryCount,
     blogCount,
     customerCount,
-    mediaCount,
     enquiryDates,
     contactDates,
     vendorDates,
     enquiryByStatus,
     productEnquiryCounts,
     recentEnquiries,
-    recentProducts,
-    recentPosts,
-    recentContacts,
-    recentVendors,
     countries,
-    latestProducts,
   ] = await Promise.all([
     db.product.count(),
     db.product.count({ where: { status: "PUBLISHED" } }),
-    db.product.count({ where: { status: "DRAFT" } }),
     db.category.count(),
     db.blogPost.count(),
     db.customer.count(),
-    db.mediaAsset.count(),
     db.productEnquiry.findMany({ where: { createdAt: { gte: since } }, select: { createdAt: true } }),
     db.contactMessage.findMany({ where: { createdAt: { gte: since } }, select: { createdAt: true } }),
     db.vendorRequest.findMany({ where: { createdAt: { gte: since } }, select: { createdAt: true } }),
@@ -86,12 +77,7 @@ export default async function AdminDashboardPage() {
       take: 30,
       include: { product: { select: { name: true } } },
     }),
-    db.product.findMany({ where: { status: "PUBLISHED" }, orderBy: { updatedAt: "desc" }, take: 3, select: { id: true, name: true, updatedAt: true } }),
-    db.blogPost.findMany({ where: { status: "PUBLISHED" }, orderBy: { updatedAt: "desc" }, take: 2, select: { id: true, title: true, updatedAt: true } }),
-    db.contactMessage.findMany({ orderBy: { createdAt: "desc" }, take: 2, select: { id: true, name: true, subject: true, createdAt: true } }),
-    db.vendorRequest.findMany({ orderBy: { createdAt: "desc" }, take: 2, select: { id: true, company: true, offering: true, createdAt: true } }),
     db.globalCountry.findMany({ where: { status: "PUBLISHED" }, orderBy: { sortOrder: "asc" }, select: { code: true, label: true, direction: true } }),
-    db.product.findMany({ orderBy: { createdAt: "desc" }, take: 4, select: { id: true, name: true, productCode: true, status: true } }),
   ]);
 
   /* ---- Daily series (for KPI sparklines + comparisons) ---- */
@@ -231,61 +217,6 @@ export default async function AdminDashboardPage() {
     createdAt: e.createdAt.getTime(),
   }));
 
-  /* ---- Activity timeline (merged real events) ---- */
-  const fmt = (d: Date) => d.toLocaleDateString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
-  const activity: ActivityItem[] = [
-    ...recentEnquiries.slice(0, 3).map((e) => ({
-      id: `enq-${e.id}`,
-      title: `${e.name}${e.company ? ` — ${e.company}` : ""}`,
-      meta: `${e.product?.name ?? "General"} · ${fmt(e.createdAt)}`,
-      href: `/admin/enquiries/${e.id}`,
-      kind: "enquiry" as const,
-      at: e.createdAt.getTime(),
-    })),
-    ...recentContacts.map((c) => ({
-      id: `con-${c.id}`,
-      title: `${c.name}${c.subject ? ` — ${c.subject}` : ""}`,
-      meta: fmt(c.createdAt),
-      href: "/admin/enquiries?tab=contacts",
-      kind: "contact" as const,
-      at: c.createdAt.getTime(),
-    })),
-    ...recentVendors.map((v) => ({
-      id: `ven-${v.id}`,
-      title: `${v.company} — ${v.offering}`,
-      meta: fmt(v.createdAt),
-      href: `/admin/vendor-requests/${v.id}`,
-      kind: "vendor" as const,
-      at: v.createdAt.getTime(),
-    })),
-    ...recentProducts.map((p) => ({
-      id: `prd-${p.id}`,
-      title: p.name,
-      meta: fmt(p.updatedAt),
-      href: `/admin/products/${p.id}/edit`,
-      kind: "product" as const,
-      at: p.updatedAt.getTime(),
-    })),
-    ...recentPosts.map((b) => ({
-      id: `blg-${b.id}`,
-      title: b.title,
-      meta: fmt(b.updatedAt),
-      href: `/admin/blogs/${b.id}/edit`,
-      kind: "blog" as const,
-      at: b.updatedAt.getTime(),
-    })),
-  ]
-    .sort((a, b) => b.at - a.at)
-    .slice(0, 8);
-
-  const inventory = [
-    { label: "Total products", value: productCount, href: "/admin/products" },
-    { label: "Published", value: productPublished, href: "/admin/products" },
-    { label: "Drafts", value: productDraft, href: "/admin/products" },
-    { label: "Categories", value: categoryCount, href: "/admin/categories" },
-    { label: "Media assets", value: mediaCount, href: "/admin/media" },
-  ];
-
   return (
     <div className="mx-auto flex max-w-[100rem] flex-col gap-6">
       {/* Header */}
@@ -334,25 +265,18 @@ export default async function AdminDashboardPage() {
         </Reveal>
       </section>
 
-      {/* Product performance + activity */}
-      <section className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Reveal delay={0.05} className="adm-glow-card p-5 xl:col-span-2">
-          <div className="mb-5 flex items-baseline justify-between gap-3">
-            <h2 className="text-heading-sm text-ink">Product performance</h2>
-            <span className="text-mono-micro text-mist">Enquiries per product · all time</span>
-          </div>
-          {bars.length ? (
-            <ProductBars rows={bars} unit="enq." />
-          ) : (
-            <p className="py-8 text-center text-body-sm text-mist">No product-linked enquiries yet.</p>
-          )}
-        </Reveal>
-
-        <Reveal delay={0.12} className="adm-glow-card p-5">
-          <h2 className="mb-4 text-heading-sm text-ink">Recent activity</h2>
-          <ActivityTimeline items={activity} />
-        </Reveal>
-      </section>
+      {/* Product performance */}
+      <Reveal delay={0.05} className="adm-glow-card p-5">
+        <div className="mb-5 flex items-baseline justify-between gap-3">
+          <h2 className="text-heading-sm text-ink">Product performance</h2>
+          <span className="text-mono-micro text-mist">Enquiries per product · all time</span>
+        </div>
+        {bars.length ? (
+          <ProductBars rows={bars} unit="enq." />
+        ) : (
+          <p className="py-8 text-center text-body-sm text-mist">No product-linked enquiries yet.</p>
+        )}
+      </Reveal>
 
       {/* Recent enquiries table */}
       <Reveal delay={0.05} className="adm-glow-card p-5">
@@ -365,10 +289,9 @@ export default async function AdminDashboardPage() {
         <RecentEnquiries rows={tableRows} />
       </Reveal>
 
-      {/* Global reach + inventory snapshot */}
-      <section className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Reveal delay={0.05} className="adm-glow-card p-5 xl:col-span-2">
-          <div className="mb-2 flex flex-wrap items-baseline justify-between gap-3">
+      {/* Global reach */}
+      <Reveal delay={0.05} className="adm-glow-card p-5">
+        <div className="mb-2 flex flex-wrap items-baseline justify-between gap-3">
             <h2 className="text-heading-sm text-ink">Global reach</h2>
             <span className="text-mono-micro text-mist">
               {countries.length} active market{countries.length === 1 ? "" : "s"} · from Mumbai HQ
@@ -387,40 +310,7 @@ export default async function AdminDashboardPage() {
           ) : (
             <p className="mt-3 text-body-sm text-mist">No markets published yet — add them under Global reach.</p>
           )}
-        </Reveal>
-
-        <Reveal delay={0.12} className="adm-glow-card p-5">
-          <h2 className="text-heading-sm text-ink">Catalogue snapshot</h2>
-          <dl className="mt-4 space-y-1.5">
-            {inventory.map((row) => (
-              <Link
-                key={row.label}
-                href={row.href}
-                className="flex items-center justify-between gap-3 rounded-xs px-2.5 py-2 transition-colors hover:bg-ink-soft"
-              >
-                <dt className="text-body-sm text-slate">{row.label}</dt>
-                <dd className="text-body-sm font-medium text-ink tabular-nums">
-                  <CountUp value={row.value} />
-                </dd>
-              </Link>
-            ))}
-          </dl>
-          <h3 className="mt-5 text-mono-micro text-mist">Recently added</h3>
-          <ul className="mt-2 space-y-1">
-            {latestProducts.map((p) => (
-              <li key={p.id}>
-                <Link
-                  href={`/admin/products/${p.id}/edit`}
-                  className="flex items-center justify-between gap-3 rounded-xs px-2.5 py-2 transition-colors hover:bg-ink-soft"
-                >
-                  <span className="min-w-0 truncate text-body-sm text-ink">{p.name}</span>
-                  <span className="shrink-0 text-mono-micro text-mist">{p.productCode ?? p.status}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-      </section>
+      </Reveal>
 
       {/* Quick actions */}
       <section aria-label="Quick actions">
