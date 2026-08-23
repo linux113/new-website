@@ -91,11 +91,12 @@ export function KpiCard({ label, value, href, icon, change, compareText, spark, 
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, delay: 0.08 + index * 0.07, ease: EASE }}
     >
-      <Link href={href} className="adm-card adm-card-hover group block p-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+      <Link href={href} className="adm-glow-card adm-glow-hover group block p-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+        <span aria-hidden className="adm-sheen"><span style={{ animationDelay: `${index * 1.1}s` }} /></span>
         <div className="flex items-start justify-between gap-3">
           <p className="text-mono-micro text-slate">{label}</p>
-          <span className="flex size-8 shrink-0 items-center justify-center rounded-xs border border-line bg-ink-soft text-accent transition-colors group-hover:border-accent/30">
-            <Icon size={15} strokeWidth={1.5} aria-hidden />
+          <span className="adm-icon-glow flex size-9 shrink-0 items-center justify-center rounded-xs text-accent">
+            <Icon size={16} strokeWidth={1.5} aria-hidden />
           </span>
         </div>
 
@@ -157,7 +158,7 @@ export function QuickActions() {
           >
             <Link
               href={a.href}
-              className="adm-card adm-card-hover flex items-center gap-2.5 px-3.5 py-3 text-body-sm text-slate hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="adm-glow-card adm-glow-hover flex items-center gap-2.5 px-3.5 py-3 text-body-sm text-slate hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               <Icon size={16} strokeWidth={1.5} aria-hidden className="shrink-0 text-accent" />
               <span className="truncate">{a.label}</span>

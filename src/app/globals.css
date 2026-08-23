@@ -675,3 +675,83 @@
   .adm-rise { animation: none; opacity: 1; }
   .adm-card-hover, .adm-card-hover:hover { transform: none; transition: none; }
 }
+
+/* ---- Admin glow pass (client reference: glossy KPI cards + bar chart) ---- */
+.adm-glow-card {
+  position: relative;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background:
+    radial-gradient(120% 90% at 50% -30%, rgba(56, 189, 248, 0.12), transparent 55%),
+    linear-gradient(180deg, rgba(148, 163, 184, 0.05), rgba(148, 163, 184, 0) 45%),
+    var(--color-paper-raised);
+  overflow: hidden;
+}
+/* Glowing hairline along the top edge */
+.adm-glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 8%, rgba(125, 211, 252, 0.85) 50%, transparent 92%);
+  opacity: 0.75;
+}
+/* Soft bloom under the hairline */
+.adm-glow-card::after {
+  content: "";
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  width: 70%;
+  height: 56px;
+  transform: translateX(-50%);
+  background: radial-gradient(50% 100% at 50% 100%, rgba(56, 189, 248, 0.28), transparent 70%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+.adm-glow-hover {
+  transition: transform 220ms var(--ease-out-quart), box-shadow 220ms ease, border-color 220ms ease;
+}
+.adm-glow-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow:
+    0 0 0 1px rgba(56, 189, 248, 0.12),
+    0 8px 24px rgb(2 6 18 / 0.55),
+    0 0 44px rgba(56, 189, 248, 0.14);
+}
+
+/* Glowing icon badge */
+.adm-icon-glow {
+  background:
+    radial-gradient(100% 100% at 50% 0%, rgba(56, 189, 248, 0.28), rgba(56, 189, 248, 0.06)),
+    var(--color-ink-soft);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Slow sheen sweep across glossy cards */
+@keyframes adm-sheen-kf {
+  0%   { transform: translateX(-140%) skewX(-18deg); }
+  55%, 100% { transform: translateX(240%) skewX(-18deg); }
+}
+.adm-sheen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.adm-sheen > span {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  width: 34%;
+  background: linear-gradient(90deg, transparent, rgba(186, 230, 253, 0.05), transparent);
+  animation: adm-sheen-kf 7.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adm-sheen > span { animation: none; opacity: 0; }
+  .adm-glow-hover, .adm-glow-hover:hover { transform: none; transition: none; }
+}

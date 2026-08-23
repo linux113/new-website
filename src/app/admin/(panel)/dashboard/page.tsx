@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
-import { CountUp, PerformanceChart, ProductBars, StatusDonut, type DailyPoint } from "@/components/admin/dashboard/charts";
+import { CountUp, MonthlyBarChart, ProductBars, StatusDonut, type MonthPoint } from "@/components/admin/dashboard/charts";
 import { ActivityTimeline, KpiCard, QuickActions, Reveal, type ActivityItem } from "@/components/admin/dashboard/widgets";
 import { RecentEnquiries, type EnquiryRow } from "@/components/admin/dashboard/RecentEnquiries";
 import { WorldMap } from "@/components/admin/dashboard/WorldMap";
@@ -15,10 +15,6 @@ export const dynamic = "force-dynamic";
  */
 
 const DAY = 86_400_000;
-
-function isoDay(d: Date) {
-  return d.toISOString().slice(0, 10);
-}
 
 function pctChange(current: number, previous: number): number | null {
   if (previous === 0 && current === 0) return null;
@@ -90,24 +86,48 @@ export default async function AdminDashboardPage() {
       take: 30,
       include: { product: { select: { name: true } } },
     }),
-    db.product.findMany({ orderBy: { updatedAt: "desc" }, take: 3, select: { id: true, name: true, updatedAt: true } }),
-    db.blogPost.findMany({ orderBy: { updatedAt: "desc" }, take: 2, select: { id: true, title: true, updatedAt: true } }),
+    db.product.findMany({ where: { status: "PUBLISHED" }, orderBy: { updatedAt: "desc" }, take: 3, select: { id: true, name: true, updatedAt: true } }),
+    db.blogPost.findMany({ where: { status: "PUBLISHED" }, orderBy: { updatedAt: "desc" }, take: 2, select: { id: true, title: true, updatedAt: true } }),
     db.contactMessage.findMany({ orderBy: { createdAt: "desc" }, take: 2, select: { id: true, name: true, subject: true, createdAt: true } }),
     db.vendorRequest.findMany({ orderBy: { createdAt: "desc" }, take: 2, select: { id: true, company: true, offering: true, createdAt: true } }),
     db.globalCountry.findMany({ where: { status: "PUBLISHED" }, orderBy: { sortOrder: "asc" }, select: { code: true, label: true, direction: true } }),
     db.product.findMany({ orderBy: { createdAt: "desc" }, take: 4, select: { id: true, name: true, productCode: true, status: true } }),
   ]);
 
-  /* ---- Daily series for the performance chart (365 days) ---- */
+  /* ---- Daily series (for KPI sparklines + comparisons) ---- */
   const enqDaily = dailySeries(enquiryDates.map((r) => r.createdAt), 365, now);
   const conDaily = dailySeries(contactDates.map((r) => r.createdAt), 365, now);
   const venDaily = dailySeries(vendorDates.map((r) => r.createdAt), 365, now);
-  const chartData: DailyPoint[] = enqDaily.map((v, i) => ({
-    d: isoDay(new Date(now - (364 - i) * DAY)),
-    enquiries: v,
-    contacts: conDaily[i],
-    vendors: venDaily[i],
-  }));
+
+  /* ---- Monthly buckets for the glowing bar chart (last 12 months) ---- */
+  const monthKey = (d: Date) => `${d.getFullYear()}-${d.getMonth()}`;
+  const months: MonthPoint[] = [];
+  const monthIndex = new Map<string, number>();
+  for (let i = 11; i >= 0; i--) {
+    const ref = new Date(now);
+    ref.setDate(1);
+    ref.setMonth(ref.getMonth() - i);
+    monthIndex.set(monthKey(ref), months.length);
+    months.push({
+      label: ref.toLocaleDateString("en-GB", { month: "short" }),
+      full: ref.toLocaleDateString("en-GB", { month: "short", year: "numeric" }),
+      enquiries: 0,
+      contacts: 0,
+      vendors: 0,
+    });
+  }
+  for (const r of enquiryDates) {
+    const i = monthIndex.get(monthKey(r.createdAt));
+    if (i != null) months[i].enquiries += 1;
+  }
+  for (const r of contactDates) {
+    const i = monthIndex.get(monthKey(r.createdAt));
+    if (i != null) months[i].contacts += 1;
+  }
+  for (const r of vendorDates) {
+    const i = monthIndex.get(monthKey(r.createdAt));
+    if (i != null) months[i].vendors += 1;
+  }
 
   /* ---- KPI comparisons: last 30d vs previous 30d ---- */
   const sum = (arr: number[], from: number, to: number) => arr.slice(from, to).reduce((a, b) => a + b, 0);
@@ -291,15 +311,15 @@ export default async function AdminDashboardPage() {
 
       {/* Performance + donut */}
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Reveal delay={0.05} className="adm-card p-5 xl:col-span-2">
+        <Reveal delay={0.05} className="adm-glow-card p-5 xl:col-span-2">
           <div className="mb-1 flex items-baseline justify-between gap-3">
             <h2 className="text-heading-sm text-ink">Business performance</h2>
-            <span className="text-mono-micro text-mist">Lead volume · daily</span>
+            <span className="text-mono-micro text-mist">Lead volume · monthly · last 12 months</span>
           </div>
-          <PerformanceChart data={chartData} />
+          <MonthlyBarChart data={months} />
         </Reveal>
 
-        <Reveal delay={0.12} className="adm-card p-5">
+        <Reveal delay={0.12} className="adm-glow-card p-5">
           <h2 className="text-heading-sm text-ink">Enquiry pipeline</h2>
           <p className="mt-0.5 text-mono-micro text-mist">Product enquiries by status</p>
           <div className="mt-5">
@@ -316,7 +336,7 @@ export default async function AdminDashboardPage() {
 
       {/* Product performance + activity */}
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Reveal delay={0.05} className="adm-card p-5 xl:col-span-2">
+        <Reveal delay={0.05} className="adm-glow-card p-5 xl:col-span-2">
           <div className="mb-5 flex items-baseline justify-between gap-3">
             <h2 className="text-heading-sm text-ink">Product performance</h2>
             <span className="text-mono-micro text-mist">Enquiries per product · all time</span>
@@ -328,14 +348,14 @@ export default async function AdminDashboardPage() {
           )}
         </Reveal>
 
-        <Reveal delay={0.12} className="adm-card p-5">
+        <Reveal delay={0.12} className="adm-glow-card p-5">
           <h2 className="mb-4 text-heading-sm text-ink">Recent activity</h2>
           <ActivityTimeline items={activity} />
         </Reveal>
       </section>
 
       {/* Recent enquiries table */}
-      <Reveal delay={0.05} className="adm-card p-5">
+      <Reveal delay={0.05} className="adm-glow-card p-5">
         <div className="mb-4 flex items-baseline justify-between gap-3">
           <h2 className="text-heading-sm text-ink">Recent enquiries</h2>
           <Link href="/admin/enquiries" className="text-body-sm text-accent hover:text-accent-hover">
@@ -347,7 +367,7 @@ export default async function AdminDashboardPage() {
 
       {/* Global reach + inventory snapshot */}
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <Reveal delay={0.05} className="adm-card overflow-hidden p-5 xl:col-span-2">
+        <Reveal delay={0.05} className="adm-glow-card p-5 xl:col-span-2">
           <div className="mb-2 flex flex-wrap items-baseline justify-between gap-3">
             <h2 className="text-heading-sm text-ink">Global reach</h2>
             <span className="text-mono-micro text-mist">
@@ -369,7 +389,7 @@ export default async function AdminDashboardPage() {
           )}
         </Reveal>
 
-        <Reveal delay={0.12} className="adm-card p-5">
+        <Reveal delay={0.12} className="adm-glow-card p-5">
           <h2 className="text-heading-sm text-ink">Catalogue snapshot</h2>
           <dl className="mt-4 space-y-1.5">
             {inventory.map((row) => (

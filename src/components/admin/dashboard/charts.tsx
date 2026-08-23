@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/cn";
 
@@ -96,239 +96,155 @@ export function Sparkline({
   );
 }
 
-/* ---------------- Performance area chart ---------------- */
+/* ---------------- Glowing monthly bar chart ---------------- */
 
-export interface DailyPoint {
-  /** ISO date (yyyy-mm-dd) */
-  d: string;
+export interface MonthPoint {
+  /** e.g. "Jan" */
+  label: string;
+  /** e.g. "Jul 2026" for the tooltip */
+  full: string;
   enquiries: number;
   contacts: number;
   vendors: number;
 }
 
-const RANGES = [
-  { key: "7D", days: 7 },
-  { key: "30D", days: 30 },
-  { key: "90D", days: 90 },
-  { key: "1Y", days: 365 },
-] as const;
-
-const SERIES = [
-  { key: "enquiries", label: "Product enquiries", color: "#38bdf8" },
-  { key: "contacts", label: "Contact messages", color: "#818cf8" },
-  { key: "vendors", label: "Vendor requests", color: "#34d399" },
-] as const;
-
-function bucketize(data: DailyPoint[], days: number): DailyPoint[] {
-  const slice = data.slice(-days);
-  if (days <= 30) return slice;
-  // Aggregate into ~30 buckets for readability on long ranges.
-  const size = Math.ceil(slice.length / 30);
-  const out: DailyPoint[] = [];
-  for (let i = 0; i < slice.length; i += size) {
-    const chunk = slice.slice(i, i + size);
-    out.push({
-      d: chunk[chunk.length - 1].d,
-      enquiries: chunk.reduce((a, c) => a + c.enquiries, 0),
-      contacts: chunk.reduce((a, c) => a + c.contacts, 0),
-      vendors: chunk.reduce((a, c) => a + c.vendors, 0),
-    });
-  }
-  return out;
-}
-
-function fmtDate(iso: string) {
-  return new Date(iso + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" });
-}
-
-export function PerformanceChart({ data }: { data: DailyPoint[] }) {
+export function MonthlyBarChart({ data }: { data: MonthPoint[] }) {
   const reduced = useReducedMotion();
-  const [range, setRange] = useState<(typeof RANGES)[number]["key"]>("30D");
-  const [hover, setHover] = useState<number | null>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
-
-  const days = RANGES.find((r) => r.key === range)!.days;
-  const points = useMemo(() => bucketize(data, days), [data, days]);
+  const [active, setActive] = useState<number | null>(null);
+  const totals = data.map((m) => m.enquiries + m.contacts + m.vendors);
+  const peak = totals.indexOf(Math.max(...totals));
+  const focus = active ?? peak;
+  const max = Math.max(...totals, 4);
+  const niceMax = Math.ceil(max / 4) * 4;
 
   const W = 820;
-  const H = 280;
-  const PAD = { l: 34, r: 10, t: 14, b: 26 };
+  const H = 300;
+  const PAD = { l: 34, r: 14, t: 30, b: 30 };
   const iw = W - PAD.l - PAD.r;
   const ih = H - PAD.t - PAD.b;
-  const max = Math.max(4, ...points.flatMap((p) => [p.enquiries, p.contacts, p.vendors]));
-  const niceMax = Math.ceil(max / 4) * 4;
-  const x = (i: number) => PAD.l + (i / Math.max(points.length - 1, 1)) * iw;
-  const y = (v: number) => PAD.t + ih - (v / niceMax) * ih;
-
-  const smooth = (vals: number[]) => {
-    if (vals.length < 2) return "";
-    let d = `M${x(0).toFixed(1)},${y(vals[0]).toFixed(1)}`;
-    for (let i = 1; i < vals.length; i++) {
-      const x0 = x(i - 1);
-      const x1 = x(i);
-      const cx = (x0 + x1) / 2;
-      d += ` C${cx.toFixed(1)},${y(vals[i - 1]).toFixed(1)} ${cx.toFixed(1)},${y(vals[i]).toFixed(1)} ${x1.toFixed(1)},${y(vals[i]).toFixed(1)}`;
-    }
-    return d;
-  };
-
-  const paths = SERIES.map((s) => {
-    const vals = points.map((p) => p[s.key]);
-    const line = smooth(vals);
-    return { ...s, line, area: `${line} L${x(points.length - 1).toFixed(1)},${(PAD.t + ih).toFixed(1)} L${PAD.l},${(PAD.t + ih).toFixed(1)} Z` };
-  });
-
-  const onMove = (e: React.MouseEvent<SVGSVGElement>) => {
-    const rect = svgRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    const px = ((e.clientX - rect.left) / rect.width) * W;
-    const i = Math.round(((px - PAD.l) / iw) * (points.length - 1));
-    setHover(Math.max(0, Math.min(points.length - 1, i)));
-  };
-
+  const slot = iw / data.length;
+  const barW = Math.min(34, slot * 0.52);
+  const x = (i: number) => PAD.l + i * slot + (slot - barW) / 2;
+  const barH = (v: number) => (v / niceMax) * ih;
   const gridLines = [0, 0.25, 0.5, 0.75, 1];
-  const h = hover != null ? points[hover] : null;
+  const f = data[focus];
 
   return (
-    <div>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-4">
-          {SERIES.map((s) => (
-            <span key={s.key} className="flex items-center gap-1.5 text-mono-micro text-slate">
-              <span className="size-2 rounded-full" style={{ backgroundColor: s.color }} aria-hidden />
-              {s.label}
-            </span>
-          ))}
-        </div>
-        <div role="tablist" aria-label="Date range" className="flex rounded-xs border border-line p-0.5">
-          {RANGES.map((r) => (
-            <button
-              key={r.key}
-              role="tab"
-              aria-selected={range === r.key}
-              onClick={() => {
-                setRange(r.key);
-                setHover(null);
-              }}
-              className={cn(
-                "relative rounded-[6px] px-3 py-1.5 text-mono-micro transition-colors",
-                range === r.key ? "text-[#04101f]" : "text-slate hover:text-ink",
-              )}
+    <div className="relative">
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        role="img"
+        aria-label="Monthly lead volume"
+        className="w-full"
+        onMouseLeave={() => setActive(null)}
+      >
+        <defs>
+          <linearGradient id="bar-dim" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#334761" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#1a2338" stopOpacity="0.55" />
+          </linearGradient>
+          <linearGradient id="bar-lit" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#7dd3fc" />
+            <stop offset="55%" stopColor="#38bdf8" />
+            <stop offset="100%" stopColor="#2563eb" />
+          </linearGradient>
+          <filter id="bar-glow" x="-80%" y="-80%" width="260%" height="260%">
+            <feGaussianBlur stdDeviation="7" result="b" />
+            <feMerge>
+              <feMergeNode in="b" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* Grid + y labels */}
+        {gridLines.map((g) => {
+          const gy = PAD.t + ih - g * ih;
+          return (
+            <g key={g}>
+              <line x1={PAD.l} x2={W - PAD.r} y1={gy} y2={gy} stroke="#1a2338" strokeWidth="1" strokeDasharray={g === 0 ? undefined : "3 5"} />
+              <text x={PAD.l - 8} y={gy + 3} textAnchor="end" fontSize="9" fill="#5f6b86" fontFamily="var(--font-mono)">
+                {Math.round(g * niceMax)}
+              </text>
+            </g>
+          );
+        })}
+
+        {data.map((m, i) => {
+          const v = totals[i];
+          const lit = i === focus;
+          const h = Math.max(barH(v), v > 0 ? 3 : 0);
+          const yTop = PAD.t + ih - h;
+          return (
+            <g
+              key={m.full}
+              onMouseEnter={() => setActive(i)}
+              className="cursor-pointer"
+              tabIndex={0}
+              onFocus={() => setActive(i)}
+              aria-label={`${m.full}: ${v} leads`}
             >
-              {range === r.key ? (
-                <motion.span
-                  layoutId="perf-range"
-                  transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 500, damping: 38 }}
-                  className="absolute inset-0 rounded-[6px] bg-accent"
-                  aria-hidden
+              {/* hit area */}
+              <rect x={PAD.l + i * slot} y={PAD.t} width={slot} height={ih} fill="transparent" />
+              {/* track */}
+              <rect x={x(i)} y={PAD.t} width={barW} height={ih} rx="7" fill="#111a2e" opacity="0.5" />
+              {/* bar */}
+              {v > 0 ? (
+                <motion.rect
+                  x={x(i)}
+                  width={barW}
+                  rx="7"
+                  fill={lit ? "url(#bar-lit)" : "url(#bar-dim)"}
+                  filter={lit ? "url(#bar-glow)" : undefined}
+                  initial={reduced ? { y: yTop, height: h } : { y: PAD.t + ih, height: 0 }}
+                  animate={{ y: yTop, height: h }}
+                  transition={{ duration: 0.8, delay: 0.1 + i * 0.05, ease: [0.22, 1, 0.36, 1] }}
                 />
               ) : null}
-              <span className="relative z-10">{r.key}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="relative mt-4">
-        <svg
-          ref={svgRef}
-          viewBox={`0 0 ${W} ${H}`}
-          role="img"
-          aria-label="Lead volume over time"
-          className="w-full cursor-crosshair"
-          onMouseMove={onMove}
-          onMouseLeave={() => setHover(null)}
-        >
-          <defs>
-            {paths.map((p) => (
-              <linearGradient key={p.key} id={`area-${p.key}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={p.color} stopOpacity="0.22" />
-                <stop offset="100%" stopColor={p.color} stopOpacity="0" />
-              </linearGradient>
-            ))}
-          </defs>
-
-          {/* Grid + y labels */}
-          {gridLines.map((g) => {
-            const gy = PAD.t + ih - g * ih;
-            return (
-              <g key={g}>
-                <line x1={PAD.l} x2={W - PAD.r} y1={gy} y2={gy} stroke="#1a2338" strokeWidth="1" strokeDasharray={g === 0 ? undefined : "3 5"} />
-                <text x={PAD.l - 8} y={gy + 3} textAnchor="end" fontSize="9" fill="#5f6b86" fontFamily="var(--font-mono)">
-                  {Math.round(g * niceMax)}
-                </text>
-              </g>
-            );
-          })}
-          {/* x labels */}
-          {points.map((p, i) => {
-            const every = Math.ceil(points.length / 6);
-            if (i % every !== 0 && i !== points.length - 1) return null;
-            return (
-              <text key={p.d} x={x(i)} y={H - 8} textAnchor="middle" fontSize="9" fill="#5f6b86" fontFamily="var(--font-mono)">
-                {fmtDate(p.d)}
+              {/* cap highlight on lit bar */}
+              {v > 0 && lit ? (
+                <motion.rect
+                  x={x(i) + barW * 0.22}
+                  width={barW * 0.56}
+                  height="2.5"
+                  rx="1.25"
+                  fill="#e0f2fe"
+                  initial={reduced ? { y: yTop + 6, opacity: 1 } : { y: PAD.t + ih, opacity: 0 }}
+                  animate={{ y: yTop + 6, opacity: 0.9 }}
+                  transition={{ duration: 0.8, delay: 0.15 + i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                />
+              ) : null}
+              <text x={x(i) + barW / 2} y={H - 10} textAnchor="middle" fontSize="9.5" fill={lit ? "#a5c8e4" : "#5f6b86"} fontFamily="var(--font-mono)">
+                {m.label}
               </text>
-            );
-          })}
-
-          {/* Areas + lines */}
-          {paths.map((p, si) => (
-            <g key={`${p.key}-${range}`}>
-              <motion.path
-                d={p.area}
-                fill={`url(#area-${p.key})`}
-                initial={reduced ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.3 + si * 0.12 }}
-              />
-              <motion.path
-                d={p.line}
-                fill="none"
-                stroke={p.color}
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                initial={reduced ? false : { pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1.1, delay: si * 0.12, ease: [0.22, 1, 0.36, 1] }}
-              />
             </g>
-          ))}
+          );
+        })}
+      </svg>
 
-          {/* Hover crosshair + points */}
-          {h != null && hover != null ? (
-            <g>
-              <line x1={x(hover)} x2={x(hover)} y1={PAD.t} y2={PAD.t + ih} stroke="#38bdf8" strokeOpacity="0.35" strokeWidth="1" />
-              {SERIES.map((s) => (
-                <circle key={s.key} cx={x(hover)} cy={y(h[s.key])} r="3.4" fill={s.color} stroke="#0c1322" strokeWidth="1.5" />
-              ))}
-            </g>
-          ) : null}
-        </svg>
-
-        {/* Tooltip */}
-        {h != null && hover != null ? (
-          <div
-            role="status"
-            className="adm-card pointer-events-none absolute top-2 z-10 w-44 p-3 shadow-float"
-            style={{
-              left: `calc(${((x(hover) / W) * 100).toFixed(2)}% ${x(hover) / W > 0.72 ? "- 12rem" : "+ 0.75rem"})`,
-            }}
-          >
-            <p className="text-mono-micro text-mist">{fmtDate(h.d)}</p>
-            <dl className="mt-1.5 flex flex-col gap-1">
-              {SERIES.map((s) => (
-                <div key={s.key} className="flex items-center justify-between gap-2">
-                  <dt className="flex items-center gap-1.5 text-mono-micro text-slate">
-                    <span className="size-1.5 rounded-full" style={{ backgroundColor: s.color }} aria-hidden />
-                    {s.label.split(" ")[0]}
-                  </dt>
-                  <dd className="text-body-sm font-medium text-ink tabular-nums">{h[s.key]}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        ) : null}
-      </div>
+      {/* Floating tooltip pinned to focused bar */}
+      {f ? (
+        <div
+          role="status"
+          className="adm-card pointer-events-none z-10 w-max max-w-48 p-2.5 text-center shadow-float"
+          style={{
+            // .adm-card sets position:relative (unlayered CSS wins over the
+            // Tailwind utility), so pin it inline.
+            position: "absolute",
+            left: `${(((x(focus) + barW / 2) / W) * 100).toFixed(2)}%`,
+            bottom: `${Math.min(((barH(totals[focus]) + PAD.b + 12) / H) * 100, 66).toFixed(2)}%`,
+            transform: `translateX(${focus > data.length - 3 ? "-90%" : focus < 2 ? "-10%" : "-50%"})`,
+          }}
+        >
+          <p className="text-mono-micro text-mist whitespace-nowrap">{f.full}</p>
+          <p className="mt-0.5 text-body-sm font-semibold text-ink tabular-nums whitespace-nowrap">
+            {totals[focus]} leads
+          </p>
+          <p className="text-mono-micro text-slate whitespace-nowrap">
+            {f.enquiries} enq · {f.contacts} msg · {f.vendors} vendor
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }
