@@ -755,3 +755,142 @@
   .adm-sheen > span { animation: none; opacity: 0; }
   .adm-glow-hover, .adm-glow-hover:hover { transform: none; transition: none; }
 }
+
+/* ============================================================
+   GlowCard — neon border, bloom, counter-rotating conic arcs
+   ============================================================ */
+@property --glow-a1 {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@property --glow-a2 {
+  syntax: "<angle>";
+  initial-value: 180deg;
+  inherits: false;
+}
+
+@keyframes glow-a1 {
+  to { --glow-a1: 360deg; }
+}
+@keyframes glow-a2 {
+  to { --glow-a2: 360deg; }
+}
+
+.glow-card {
+  --glow: #00f0ff;
+  position: relative;
+  isolation: isolate;
+  height: 100%;
+  transition: transform 250ms var(--ease-out-quart);
+}
+.glow-card:hover {
+  transform: translateY(-3px);
+}
+
+.glow-card-arcs {
+  position: absolute;
+  inset: -22%;
+  z-index: 0;
+  pointer-events: none;
+}
+.glow-card-arc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  filter: blur(28px);
+  opacity: 0.55;
+  transition: opacity 250ms var(--ease-out-quart);
+}
+.glow-card:hover .glow-card-arc {
+  opacity: 0.9;
+}
+.glow-card-arc-1 {
+  background: conic-gradient(
+    from var(--glow-a1),
+    transparent 0 62%,
+    var(--glow) 72%,
+    transparent 84%
+  );
+  animation: glow-a1 5.5s linear infinite;
+}
+.glow-card-arc-2 {
+  background: conic-gradient(
+    from var(--glow-a2),
+    transparent 0 58%,
+    var(--glow) 70%,
+    transparent 82%
+  );
+  animation: glow-a2 9s linear infinite reverse;
+}
+
+.glow-card-face {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  border-radius: 14px;
+  background: #0d0d0d;
+  border: 1px solid color-mix(in srgb, var(--glow) 55%, transparent);
+  padding: 1.75rem 1.75rem 1.85rem;
+  box-shadow:
+    0 0 22px color-mix(in srgb, var(--glow) 26%, transparent),
+    0 0 56px color-mix(in srgb, var(--glow) 10%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #ffffff 14%, transparent),
+    inset 0 -28px 48px color-mix(in srgb, var(--glow) 8%, transparent);
+  transition:
+    border-color 250ms var(--ease-out-quart),
+    box-shadow 250ms var(--ease-out-quart);
+}
+.glow-card:hover .glow-card-face {
+  border-color: color-mix(in srgb, var(--glow) 90%, transparent);
+  box-shadow:
+    0 0 28px color-mix(in srgb, var(--glow) 42%, transparent),
+    0 0 72px color-mix(in srgb, var(--glow) 18%, transparent),
+    0 18px 40px rgb(0 0 0 / 0.45),
+    inset 0 1px 0 color-mix(in srgb, #ffffff 18%, transparent),
+    inset 0 -32px 56px color-mix(in srgb, var(--glow) 14%, transparent);
+}
+
+.glow-card-icon {
+  color: var(--glow);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--glow) 55%, transparent));
+}
+
+.glow-card-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem 0.28rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--glow) 40%, transparent);
+  background: color-mix(in srgb, var(--glow) 8%, transparent);
+  color: var(--glow);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px color-mix(in srgb, var(--glow) 55%, transparent);
+}
+.glow-card-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--glow);
+  box-shadow:
+    0 0 6px var(--glow),
+    0 0 14px color-mix(in srgb, var(--glow) 70%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glow-card,
+  .glow-card:hover {
+    transform: none;
+    transition: none;
+  }
+  .glow-card-arc-1,
+  .glow-card-arc-2 {
+    animation: none;
+  }
+}

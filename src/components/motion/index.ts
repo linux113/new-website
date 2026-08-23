@@ -14,3 +14,4 @@ export { Stagger } from "./Stagger";
 export { Parallax } from "./Parallax";
 export { CountUp } from "./CountUp";
 export { useReducedMotion } from "./useReducedMotion";
+export { SmoothScroll } from "./SmoothScroll";
