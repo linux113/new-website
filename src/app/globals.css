@@ -1,0 +1,757 @@
+/* ============================================================
+   SRIYAAN METALS — Design Tokens (FORGE/01 v1.0.0)
+   Single source of truth. Components consume tokens only —
+   no raw hex, px paddings, or ad-hoc shadows in JSX.
+   See docs/DESIGN-SYSTEM.md §3–§9, §30.
+   ============================================================ */
+
+@import "tailwindcss";
+
+@theme {
+  /* ---- Color: core palette (DS §3.1) ---- */
+  --color-*: initial;
+  --color-ink: #0b0d0e;
+  --color-ink-soft: #111416;
+  --color-steel: #3a3e40;
+  --color-slate: #686d6c;
+  --color-mist: #a7a9a6;
+  --color-line: #ddd9d0;
+  --color-line-dark: #2a2e30;
+  --color-paper: #f1f0ec;
+  --color-paper-raised: #ffffff;
+  --color-paper-sunken: #e9e7e1;
+
+  /* ---- Color: accent (DS §3.2) ---- */
+  --color-accent: #b89a62;
+  --color-accent-hover: #9f824e;
+  --color-accent-tint: #f2ead9;
+  --color-accent-on-dark: #c9ac72;
+
+  /* ---- Color: functional (DS §3.3) ---- */
+  --color-success: #1e7f4f;
+  --color-success-tint: #e7f3ec;
+  --color-warning: #9a6b00;
+  --color-warning-tint: #fbf3e0;
+  --color-error: #b3261e;
+  --color-error-tint: #fbeae9;
+  --color-info: #22577a;
+  --color-info-tint: #e8f0f5;
+
+  /* Required by Tailwind internals / defaults we still want */
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* ---- Radius (DS §7) — machined, near-square ---- */
+  --radius-*: initial;
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-full: 9999px;
+
+  /* ---- Shadows (DS §8) ---- */
+  --shadow-*: initial;
+  --shadow-hairline: 0 0 0 1px var(--color-line);
+  --shadow-raise: 0 1px 2px rgb(11 15 20 / 0.06), 0 4px 12px rgb(11 15 20 / 0.06);
+  --shadow-float: 0 4px 8px rgb(11 15 20 / 0.08), 0 12px 32px rgb(11 15 20 / 0.1);
+  --shadow-modal: 0 8px 16px rgb(11 15 20 / 0.1), 0 24px 64px rgb(11 15 20 / 0.16);
+
+  /* ---- Motion (DS §20) ---- */
+  --ease-*: initial;
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- Layout (DS §18) ---- */
+  --container-content: 85rem; /* 1360px — the one page container */
+
+  /* ---- Type scale anchors (fluid values live in utilities below) ---- */
+  --text-*: initial;
+}
+
+/* Font families reference next/font CSS variables set on <html> (DS §4–§5) */
+@theme inline {
+  --font-*: initial;
+  --font-display: var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+}
+
+/* ============================================================
+   Semantic surface variables.
+   <Section surface="…"> flips these via data-surface so children
+   (Hairline, Eyebrow, text) adapt without per-component logic.
+   ============================================================ */
+:root {
+  /* Public site is dark-first (client visual system). Admin keeps its
+     own explicit light classes and is unaffected by these vars. */
+  --surface-bg: var(--color-ink);
+  --surface-fg: var(--color-paper);
+  --surface-fg-muted: var(--color-mist);
+  --surface-edge: var(--color-line-dark);
+
+  /* Motion durations (DS §20) — used with Tailwind duration-(--duration-*) */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 500ms;
+  --duration-counter: 1200ms;
+}
+
+[data-surface="dark"] {
+  --surface-bg: var(--color-ink);
+  --surface-fg: var(--color-paper);
+  --surface-fg-muted: var(--color-mist);
+  --surface-edge: var(--color-line-dark);
+}
+
+[data-surface="sunken"] {
+  --surface-bg: var(--color-ink-soft);
+}
+
+/* ============================================================
+   Base layer — accessibility & document foundations (DS §23)
+   ============================================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (min-width: 64rem) {
+    body {
+      font-size: 1.0625rem; /* 17px ≥ lg (DS §4) */
+      line-height: 1.65;
+    }
+  }
+
+  /* Visible keyboard focus everywhere (DS §23.2) */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  [data-surface="dark"] :focus-visible {
+    outline-color: var(--color-paper);
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-ink);
+  }
+
+  /* Reduced motion: kill animation/transition timing globally (DS §20) */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Media defaults: no CLS from unsized media */
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ============================================================
+   Typography hierarchy utilities (DS §17)
+   Named steps — raw sizes never appear in JSX.
+   ============================================================ */
+@utility text-display-xl {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.5rem, 1.9rem + 3.2vw, 4.75rem); /* 40 → 76px */
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+}
+
+@utility text-display-lg {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2rem, 1.55rem + 1.9vw, 3.25rem); /* 32 → 52px */
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+@utility text-display-md {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.5rem, 1.35rem + 0.7vw, 2rem); /* 24 → 32px */
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+@utility text-heading-sm {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: clamp(1.125rem, 1.08rem + 0.2vw, 1.25rem); /* 18 → 20px */
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+@utility text-stat {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 2rem + 2vw, 4rem); /* 40 → 64px */
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+@utility text-body-lg {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: clamp(1.125rem, 1.08rem + 0.2vw, 1.25rem); /* 18 → 20px */
+  line-height: 1.6;
+}
+
+@utility text-body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: clamp(1rem, 0.97rem + 0.12vw, 1.0625rem); /* 16 → 17px */
+  line-height: 1.6;
+}
+
+@utility text-body-sm {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.55;
+}
+
+@utility text-label {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@utility text-mono-meta {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@utility text-mono-micro {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.6875rem; /* 11px */
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Surface-aware helper utilities
+   ============================================================ */
+@utility bg-surface {
+  background-color: var(--surface-bg);
+}
+
+@utility text-surface-fg {
+  color: var(--surface-fg);
+}
+
+@utility text-surface-muted {
+  color: var(--surface-fg-muted);
+}
+
+@utility border-edge {
+  border-color: var(--surface-edge);
+}
+
+/* Max reading measure (DS §4) */
+@utility max-w-measure {
+  max-width: 65ch;
+}
+
+/* Image fade-in on load / crossfade (DS §27.5, §15) */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   Hero entrance choreography (client reference).
+   Pure CSS: elements start hidden in markup, revealed by keyframes
+   with forwards fill. Easings from the reference:
+   EXPO  cubic-bezier(.16,1,.3,1)   — wipes, logo
+   QUINT cubic-bezier(.22,1,.36,1)  — risers
+   TYPE  cubic-bezier(.22,.85,.24,1)— headline line rise
+   QUART cubic-bezier(.25,1,.5,1)   — rules
+   Reduced motion: everything visible/static instantly.
+   ============================================================ */
+@keyframes hero-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes hero-line-rise {
+  from { transform: translateY(120%); }
+  to   { transform: translateY(0); }
+}
+@keyframes hero-wipe {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+@keyframes hero-rule-grow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+@utility hero-rise {
+  opacity: 0;
+  animation: hero-rise 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@utility hero-line {
+  display: block;
+  overflow: hidden;
+  /* protect descenders during the mask rise */
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+@utility hero-line-inner {
+  display: block;
+  transform: translateY(120%);
+  animation: hero-line-rise 0.98s cubic-bezier(0.22, 0.85, 0.24, 1) forwards;
+}
+@utility hero-wipe {
+  clip-path: inset(0 100% 0 0);
+  animation: hero-wipe 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@utility hero-rule {
+  transform: scaleY(0);
+  animation: hero-rule-grow 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise,
+  .hero-wipe,
+  .hero-rule,
+  .hero-line-inner {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+  }
+}
+
+/* ============================================================
+   Admin login experience (premium split-screen).
+   Scoped: only used under /admin/login. All effects disabled
+   under prefers-reduced-motion.
+   ============================================================ */
+.login-grid {
+  background-image:
+    linear-gradient(rgba(241, 240, 236, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(241, 240, 236, 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 45%, #000 30%, transparent 78%);
+}
+
+@keyframes login-flow-dash {
+  0%   { stroke-dashoffset: 520; opacity: 0; }
+  8%   { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { stroke-dashoffset: -260; opacity: 0; }
+}
+.login-flow {
+  stroke-dasharray: 90 430;
+  animation: login-flow-dash 7s linear infinite;
+}
+
+@keyframes login-node-pulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 1; }
+}
+.login-node { animation: login-node-pulse 3.4s ease-in-out infinite; }
+
+@keyframes login-particle-drift {
+  0%   { transform: translateY(0); opacity: 0; }
+  12%  { opacity: 0.7; }
+  88%  { opacity: 0.7; }
+  100% { transform: translateY(-110px); opacity: 0; }
+}
+.login-particle { animation: login-particle-drift linear infinite; }
+
+@keyframes login-pulse-ring {
+  0%   { transform: scale(1); opacity: 0.7; }
+  100% { transform: scale(3); opacity: 0; }
+}
+.login-pulse { animation: login-pulse-ring 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+
+@keyframes login-reveal-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.login-reveal {
+  opacity: 0;
+  animation: login-reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes login-card-in {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.login-card-enter {
+  animation: login-card-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Animated gradient border + glow that breathes in */
+@keyframes login-border-spin {
+  to { --login-angle: 360deg; }
+}
+@property --login-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.login-border {
+  background: conic-gradient(
+    from var(--login-angle, 0deg),
+    rgba(34, 211, 238, 0) 0%,
+    rgba(34, 211, 238, 0.45) 12%,
+    rgba(34, 211, 238, 0) 26%,
+    rgba(34, 211, 238, 0) 55%,
+    rgba(45, 212, 191, 0.28) 68%,
+    rgba(45, 212, 191, 0) 82%
+  );
+  animation: login-border-spin 9s linear infinite;
+  opacity: 0;
+  transition: opacity 1.2s ease 0.6s;
+}
+.login-card:hover .login-border,
+.login-card:focus-within .login-border,
+.login-card-enter .login-border {
+  opacity: 1;
+}
+
+/* Glass reflection following the cursor */
+.login-sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    420px circle at var(--light-x, 30%) var(--light-y, 20%),
+    rgba(241, 240, 236, 0.05),
+    transparent 55%
+  );
+}
+
+/* Error shake — translational, restrained */
+@keyframes login-shake-kf {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(2px); }
+}
+.login-shake { animation: login-shake-kf 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97); }
+
+/* Progress ring */
+@keyframes login-ring-spin { to { transform: rotate(360deg); } }
+.login-ring { animation: login-ring-spin 0.9s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .login-flow,
+  .login-node,
+  .login-particle,
+  .login-pulse,
+  .login-border { animation: none; }
+  .login-particle { opacity: 0.4; }
+  .login-border { opacity: 0.5; }
+  .login-reveal,
+  .login-card-enter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .login-shake { animation: none; }
+}
+
+
+/* ---- Login v2: cyan atmosphere + dashboard preview ---- */
+@keyframes login-breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 0.9;  transform: scale(1.08); }
+}
+.login-glow { animation: login-breathe 9s ease-in-out infinite; }
+
+@keyframes login-float-kf {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.login-float { animation: login-float-kf 7s ease-in-out infinite; }
+
+@keyframes login-draw {
+  from { stroke-dashoffset: var(--draw-len, 600); }
+  to   { stroke-dashoffset: 0; }
+}
+.login-draw {
+  stroke-dasharray: var(--draw-len, 600);
+  stroke-dashoffset: var(--draw-len, 600);
+  animation: login-draw 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes login-fill-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.login-fill { opacity: 0; animation: login-fill-in 0.9s ease forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .login-glow, .login-float { animation: none; }
+  .login-draw { animation: none; stroke-dashoffset: 0; }
+  .login-fill { animation: none; opacity: 1; }
+}
+
+/* ============================================================
+   ADMIN COMMAND CENTER — scoped dark theme (2026 redesign)
+   The entire admin subtree gets a midnight-navy + cyan system by
+   remapping the global design tokens inside `.admin-dark`. Tailwind
+   v4 utilities resolve to var(--color-*) at the element, so every
+   admin component (tables, forms, badges) inherits automatically.
+   The public site and /admin/login are untouched.
+   ============================================================ */
+.admin-dark {
+  color-scheme: dark;
+
+  /* Text */
+  --color-ink: #e8edf6;            /* primary text */
+  --color-ink-soft: #111a2e;       /* hover fills */
+  --color-steel: #7d89a3;
+  --color-slate: #9aa6bd;          /* secondary text */
+  --color-mist: #5f6b86;           /* muted / placeholder */
+
+  /* Surfaces */
+  --color-paper: #0b1120;
+  --color-paper-raised: #0c1322;   /* cards */
+  --color-paper-sunken: #060a13;   /* page bg + inputs */
+  --color-line: #1a2338;           /* 1px borders */
+  --color-line-dark: #24304c;
+
+  /* Accent — electric cyan/blue */
+  --color-accent: #38bdf8;
+  --color-accent-hover: #7dd3fc;
+  --color-accent-tint: rgba(56, 189, 248, 0.1);
+  --color-accent-on-dark: #38bdf8;
+
+  /* Functional (dark tints) */
+  --color-success: #34d399;
+  --color-success-tint: rgba(52, 211, 153, 0.1);
+  --color-warning: #fbbf24;
+  --color-warning-tint: rgba(251, 191, 36, 0.1);
+  --color-error: #f87171;
+  --color-error-tint: rgba(248, 113, 113, 0.1);
+  --color-info: #60a5fa;
+  --color-info-tint: rgba(96, 165, 250, 0.1);
+
+  /* Geometry: softer, modern SaaS radii inside admin only */
+  --radius-xs: 0.5rem;   /* 8px  — controls, chips */
+  --radius-sm: 0.875rem; /* 14px — cards, dialogs */
+
+  /* Depth on dark */
+  --shadow-raise: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 20px rgb(2 6 18 / 0.45);
+  --shadow-float: 0 4px 12px rgb(0 0 0 / 0.45), 0 16px 40px rgb(2 6 18 / 0.55);
+  --shadow-modal: 0 8px 24px rgb(0 0 0 / 0.5), 0 32px 80px rgb(2 6 18 / 0.65);
+}
+
+/* Atmospheric backdrop: two soft light sources + technical grid. */
+.adm-atmosphere {
+  background:
+    radial-gradient(52rem 30rem at 82% -12%, rgba(56, 189, 248, 0.07), transparent 62%),
+    radial-gradient(44rem 28rem at 8% 112%, rgba(59, 130, 246, 0.055), transparent 60%);
+}
+.adm-grid {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(70rem 40rem at 60% 0%, black 30%, transparent 78%);
+  animation: adm-grid-drift 60s linear infinite;
+}
+@keyframes adm-grid-drift {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 44px 44px, 44px 44px; }
+}
+
+/* Card treatment: 1px border, faint glass sheen, hover lift. */
+.adm-card {
+  position: relative;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(180deg, rgba(148, 163, 184, 0.045), rgba(148, 163, 184, 0) 42%),
+    var(--color-paper-raised);
+}
+.adm-card-hover {
+  transition: transform 200ms var(--ease-out-quart), border-color 200ms ease, box-shadow 200ms ease;
+}
+.adm-card-hover:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-line-dark);
+  box-shadow: 0 10px 30px rgb(2 6 18 / 0.5);
+}
+
+/* Notification / live-status pulse */
+@keyframes adm-pulse-kf {
+  0%   { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.45); }
+  70%  { box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
+.adm-pulse { animation: adm-pulse-kf 2.4s ease-out infinite; }
+.adm-pulse-cyan { animation: adm-pulse-kf 2.4s ease-out infinite; --tw-shadow-color: rgba(56,189,248,0.45); }
+@keyframes adm-pulse-cyan-kf {
+  0%   { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.45); }
+  70%  { box-shadow: 0 0 0 6px rgba(56, 189, 248, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+}
+.adm-pulse-cyan { animation: adm-pulse-cyan-kf 2.4s ease-out infinite; }
+
+/* SVG chart drawing */
+@keyframes adm-draw-kf {
+  from { stroke-dashoffset: var(--adm-draw-len, 900); }
+  to   { stroke-dashoffset: 0; }
+}
+.adm-draw {
+  stroke-dasharray: var(--adm-draw-len, 900);
+  stroke-dashoffset: var(--adm-draw-len, 900);
+  animation: adm-draw-kf 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes adm-fade-kf { from { opacity: 0; } to { opacity: 1; } }
+.adm-fade { opacity: 0; animation: adm-fade-kf 0.8s ease 0.5s forwards; }
+
+/* Map pins: expanding ping ring (CSS geometry animation) */
+@keyframes adm-ping-kf {
+  0%   { r: 0.7; opacity: 0.7; }
+  80%  { r: 2.6; opacity: 0; }
+  100% { r: 2.6; opacity: 0; }
+}
+.adm-ping { animation: adm-ping-kf 2.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+/* Timeline reveal */
+@keyframes adm-rise-kf {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.adm-rise {
+  opacity: 0;
+  animation: adm-rise-kf 0.55s var(--ease-out-quart) forwards;
+  animation-delay: var(--adm-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adm-grid { animation: none; }
+  .adm-pulse, .adm-pulse-cyan, .adm-ping { animation: none; }
+  .adm-draw { animation: none; stroke-dashoffset: 0; }
+  .adm-fade { animation: none; opacity: 1; }
+  .adm-rise { animation: none; opacity: 1; }
+  .adm-card-hover, .adm-card-hover:hover { transform: none; transition: none; }
+}
+
+/* ---- Admin glow pass (client reference: glossy KPI cards + bar chart) ---- */
+.adm-glow-card {
+  position: relative;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background:
+    radial-gradient(120% 90% at 50% -30%, rgba(56, 189, 248, 0.12), transparent 55%),
+    linear-gradient(180deg, rgba(148, 163, 184, 0.05), rgba(148, 163, 184, 0) 45%),
+    var(--color-paper-raised);
+  overflow: hidden;
+}
+/* Glowing hairline along the top edge */
+.adm-glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 8%, rgba(125, 211, 252, 0.85) 50%, transparent 92%);
+  opacity: 0.75;
+}
+/* Soft bloom under the hairline */
+.adm-glow-card::after {
+  content: "";
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  width: 70%;
+  height: 56px;
+  transform: translateX(-50%);
+  background: radial-gradient(50% 100% at 50% 100%, rgba(56, 189, 248, 0.28), transparent 70%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+.adm-glow-hover {
+  transition: transform 220ms var(--ease-out-quart), box-shadow 220ms ease, border-color 220ms ease;
+}
+.adm-glow-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(56, 189, 248, 0.35);
+  box-shadow:
+    0 0 0 1px rgba(56, 189, 248, 0.12),
+    0 8px 24px rgb(2 6 18 / 0.55),
+    0 0 44px rgba(56, 189, 248, 0.14);
+}
+
+/* Glowing icon badge */
+.adm-icon-glow {
+  background:
+    radial-gradient(100% 100% at 50% 0%, rgba(56, 189, 248, 0.28), rgba(56, 189, 248, 0.06)),
+    var(--color-ink-soft);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Slow sheen sweep across glossy cards */
+@keyframes adm-sheen-kf {
+  0%   { transform: translateX(-140%) skewX(-18deg); }
+  55%, 100% { transform: translateX(240%) skewX(-18deg); }
+}
+.adm-sheen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.adm-sheen > span {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  width: 34%;
+  background: linear-gradient(90deg, transparent, rgba(186, 230, 253, 0.05), transparent);
+  animation: adm-sheen-kf 7.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adm-sheen > span { animation: none; opacity: 0; }
+  .adm-glow-hover, .adm-glow-hover:hover { transform: none; transition: none; }
+}
