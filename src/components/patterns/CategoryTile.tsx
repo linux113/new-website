@@ -25,7 +25,7 @@ export function CategoryTile({
 }: CategoryTileProps) {
   return (
     <Link
-      href={`${hrefBase}?category=${category.slug}`}
+      href={`/products/category/${category.slug}`}
       className={cn("group relative block", className)}
     >
       <PatternMedia

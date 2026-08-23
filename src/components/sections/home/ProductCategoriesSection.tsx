@@ -2,6 +2,8 @@ import { Reveal } from "@/components/motion";
 import { ButtonLink, Container, Section, SectionHeading } from "@/components/ui";
 import { CategoryTile } from "@/components/patterns";
 import { PLACEHOLDER_CATEGORIES } from "@/content/placeholders";
+import { getPublishedCategories } from "@/lib/repositories/categories";
+import { toMediaRef } from "@/lib/mappers";
 
 /**
  * SM–03 / PRODUCT CATEGORIES.
@@ -10,8 +12,20 @@ import { PLACEHOLDER_CATEGORIES } from "@/content/placeholders";
  * placeholder module; clearly-marked slots until the client
  * catalogue lands. Staggered reveal via per-tile delays.
  */
-export function ProductCategoriesSection() {
+export async function ProductCategoriesSection() {
   const spans = ["md:col-span-7", "md:col-span-5", "md:col-span-5", "md:col-span-7"];
+
+  const dbCategories = await getPublishedCategories().catch(() => []);
+  const categories =
+    dbCategories.length > 0
+      ? dbCategories.slice(0, 4).map((cat, i) => ({
+          slug: cat.slug,
+          index: (i + 1).toString().padStart(2, "0"),
+          title: cat.name,
+          image: toMediaRef(cat.image) ?? PLACEHOLDER_CATEGORIES[i]?.image ?? null,
+          description: cat.description ?? undefined,
+        }))
+      : PLACEHOLDER_CATEGORIES.slice(0, 4);
 
   return (
     <Section rule aria-labelledby="home-categories">
@@ -22,12 +36,12 @@ export function ProductCategoriesSection() {
             code="SM–03"
             eyebrow="Product range"
             title="Material, by category"
-            lede="Material organised the way buyers specify it. The full catalogue is being finalised — enquiries are open now."
+            lede="Material organised the way buyers specify it — every category is enquiry-driven."
           />
         </Reveal>
 
         <div className="mt-16 grid grid-cols-4 gap-6 md:grid-cols-12 md:gap-8">
-          {PLACEHOLDER_CATEGORIES.slice(0, 4).map((category, i) => (
+          {categories.map((category, i) => (
             <Reveal
               key={category.slug}
               delay={i * 70}
