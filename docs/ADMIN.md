@@ -51,3 +51,17 @@ Passwords must be ≥ 12 chars. The script upserts (also usable for password rot
 - **Rich text:** blog `content` is stored as text (Markdown); swap the textarea for an editor without migration.
 - **Audit log:** not in the approved Phase 5 schema — documented as a future security enhancement (add `AdminAuditLog` model + hooks in the action layer).
 - **Public integration:** homepage sections keep typed placeholders until admin-entered data exists; repositories (`src/lib/repositories`) already filter PUBLISHED and are the bridge.
+
+## Preview-sandbox note (PREVIEW_DEV_BYPASS)
+
+Some browsers (Safari/ITP, Chrome with strict tracking protection)
+refuse ALL third-party cookies inside cross-origin iframes — including
+`SameSite=None; Secure; Partitioned` — so no cookie session can survive
+inside the sandbox preview iframe on those browsers.
+
+`PREVIEW_DEV_BYPASS=1` (sandbox `.env` ONLY) makes the admin panel
+authenticate as the first active SUPER_ADMIN without a cookie so the
+client can evaluate the panel from the preview. **Never set this in
+production** — without the flag, the full login/session enforcement
+applies unchanged. On the real domain (no iframe), the standard
+SameSite=Lax cookie works everywhere and none of this is needed.

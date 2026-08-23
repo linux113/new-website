@@ -96,6 +96,21 @@ export interface SessionUser {
  * suspended users. Cached per-request via React cache().
  */
 export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
+  // PREVIEW-ONLY BYPASS: some browsers refuse ALL third-party iframe
+  // cookies (Safari/ITP; Chrome strict mode), including Partitioned —
+  // sessions cannot survive inside the sandbox preview iframe there.
+  // With PREVIEW_DEV_BYPASS=1 (sandbox .env ONLY, never production),
+  // the panel authenticates as the first active SUPER_ADMIN so the
+  // client can work. Real login remains fully enforced without it.
+  if (process.env.PREVIEW_DEV_BYPASS === "1") {
+    const admin = await db.adminUser.findFirst({
+      where: { status: "ACTIVE", role: "SUPER_ADMIN" },
+    });
+    if (admin) {
+      return { id: admin.id, name: admin.name, email: admin.email, role: admin.role };
+    }
+  }
+
   const cookieStore = await cookies();
   const token = cookieStore.get(COOKIE_NAME)?.value;
   if (!token) return null;
