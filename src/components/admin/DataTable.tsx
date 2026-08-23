@@ -57,11 +57,11 @@ export function DataTable<Row>({
   };
 
   return (
-    <div className="border border-line bg-paper-raised">
+    <div className="adm-card overflow-hidden">
       {/* ≥ md: table */}
       <table className="hidden w-full border-collapse md:table">
         <thead>
-          <tr className="border-b border-line">
+          <tr className="border-b border-line bg-ink-soft/60">
             {columns.map((col) => (
               <th
                 key={col.key}
@@ -77,7 +77,7 @@ export function DataTable<Row>({
           {rows.map((row) => (
             <tr
               key={rowKey(row)}
-              className="border-b border-line last:border-b-0 hover:bg-paper-sunken"
+              className="border-b border-line transition-colors duration-(--duration-fast) last:border-b-0 hover:bg-ink-soft/50"
             >
               {columns.map((col) => (
                 <td key={col.key} className="px-4 py-3 text-body-sm text-ink">

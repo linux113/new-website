@@ -65,7 +65,7 @@ export function ConfirmDelete({
       <dialog
         ref={dialogRef}
         aria-labelledby="confirm-delete-title"
-        className="m-auto w-[min(28rem,calc(100vw-2rem))] rounded-sm border border-line bg-paper-raised p-6 shadow-modal backdrop:bg-ink/60"
+        className="m-auto w-[min(28rem,calc(100vw-2rem))] rounded-sm border border-line bg-paper-raised p-6 shadow-modal backdrop:bg-black/70"
       >
         <h2 id="confirm-delete-title" className="text-heading-sm text-ink">
           Delete {label}?

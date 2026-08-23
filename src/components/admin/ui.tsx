@@ -72,7 +72,7 @@ export function AdminCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className={cn("border border-line bg-paper-raised", className)}>
+    <section className={cn("adm-card overflow-hidden", className)}>
       {title ? (
         <h2 className="border-b border-line px-4 py-3 text-mono-meta text-slate">
           {title}
@@ -86,24 +86,24 @@ export function AdminCard({
 /* ---------------- AdminStatusBadge ---------------- */
 
 const STATUS_STYLES: Record<string, string> = {
-  PUBLISHED: "bg-success-tint text-success",
-  DRAFT: "bg-paper-sunken text-slate",
-  ARCHIVED: "bg-paper-sunken text-mist",
-  NEW: "bg-info-tint text-info",
-  IN_PROGRESS: "bg-warning-tint text-warning",
-  CONTACTED: "bg-info-tint text-info",
-  CLOSED: "bg-success-tint text-success",
-  SPAM: "bg-error-tint text-error",
-  ACTIVE: "bg-success-tint text-success",
-  SUSPENDED: "bg-error-tint text-error",
+  PUBLISHED: "border-success/25 bg-success-tint text-success",
+  DRAFT: "border-line bg-paper-sunken text-slate",
+  ARCHIVED: "border-line bg-paper-sunken text-mist",
+  NEW: "border-info/25 bg-info-tint text-info",
+  IN_PROGRESS: "border-warning/25 bg-warning-tint text-warning",
+  CONTACTED: "border-accent/25 bg-accent-tint text-accent",
+  CLOSED: "border-success/25 bg-success-tint text-success",
+  SPAM: "border-error/25 bg-error-tint text-error",
+  ACTIVE: "border-success/25 bg-success-tint text-success",
+  SUSPENDED: "border-error/25 bg-error-tint text-error",
 };
 
 export function AdminStatusBadge({ status }: { status: string }) {
   return (
     <span
       className={cn(
-        "inline-block rounded-xs px-2 py-0.5 text-mono-micro",
-        STATUS_STYLES[status] ?? "bg-paper-sunken text-slate",
+        "inline-block rounded-full border px-2 py-0.5 text-mono-micro whitespace-nowrap",
+        STATUS_STYLES[status] ?? "border-line bg-paper-sunken text-slate",
       )}
     >
       {status.replace("_", " ")}
@@ -123,7 +123,7 @@ export function AdminEmptyState({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center gap-3 border border-dashed border-line bg-paper-raised px-6 py-16 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-sm border border-dashed border-line bg-paper-raised px-6 py-16 text-center">
       <p className="text-heading-sm text-ink">{title}</p>
       {description ? <p className="text-body-sm text-slate max-w-105">{description}</p> : null}
       {action ? <div className="mt-2">{action}</div> : null}
@@ -133,10 +133,10 @@ export function AdminEmptyState({
 
 export function AdminLoadingState({ label = "Loading…" }: { label?: string }) {
   return (
-    <div aria-busy="true" className="flex flex-col gap-2 border border-line bg-paper-raised p-4">
+    <div aria-busy="true" className="adm-card flex flex-col gap-2 p-4">
       <span className="sr-only">{label}</span>
       {[0, 1, 2, 3, 4].map((i) => (
-        <div key={i} aria-hidden className="h-10 animate-pulse bg-paper-sunken motion-reduce:animate-none" />
+        <div key={i} aria-hidden className="h-10 animate-pulse rounded-xs bg-paper-sunken motion-reduce:animate-none" />
       ))}
     </div>
   );
@@ -144,7 +144,7 @@ export function AdminLoadingState({ label = "Loading…" }: { label?: string }) 
 
 export function AdminErrorState({ message }: { message: string }) {
   return (
-    <div role="alert" className="border border-error/30 bg-error-tint px-4 py-3 text-body-sm text-error">
+    <div role="alert" className="rounded-xs border border-error/30 bg-error-tint px-4 py-3 text-body-sm text-error">
       {message}
     </div>
   );
@@ -168,8 +168,8 @@ export function AdminButtonLink({
         "inline-flex h-10 items-center gap-2 rounded-xs px-4 text-label",
         "transition-colors duration-(--duration-fast)",
         variant === "primary"
-          ? "bg-accent text-paper-raised hover:bg-accent-hover"
-          : "border border-line bg-paper-raised text-ink hover:bg-paper-sunken",
+          ? "bg-accent font-semibold text-[#04101f] hover:bg-accent-hover"
+          : "border border-line bg-paper-raised text-ink hover:bg-ink-soft",
       )}
     >
       {children}

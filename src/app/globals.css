@@ -531,3 +531,147 @@
   .login-draw { animation: none; stroke-dashoffset: 0; }
   .login-fill { animation: none; opacity: 1; }
 }
+
+/* ============================================================
+   ADMIN COMMAND CENTER — scoped dark theme (2026 redesign)
+   The entire admin subtree gets a midnight-navy + cyan system by
+   remapping the global design tokens inside `.admin-dark`. Tailwind
+   v4 utilities resolve to var(--color-*) at the element, so every
+   admin component (tables, forms, badges) inherits automatically.
+   The public site and /admin/login are untouched.
+   ============================================================ */
+.admin-dark {
+  color-scheme: dark;
+
+  /* Text */
+  --color-ink: #e8edf6;            /* primary text */
+  --color-ink-soft: #111a2e;       /* hover fills */
+  --color-steel: #7d89a3;
+  --color-slate: #9aa6bd;          /* secondary text */
+  --color-mist: #5f6b86;           /* muted / placeholder */
+
+  /* Surfaces */
+  --color-paper: #0b1120;
+  --color-paper-raised: #0c1322;   /* cards */
+  --color-paper-sunken: #060a13;   /* page bg + inputs */
+  --color-line: #1a2338;           /* 1px borders */
+  --color-line-dark: #24304c;
+
+  /* Accent — electric cyan/blue */
+  --color-accent: #38bdf8;
+  --color-accent-hover: #7dd3fc;
+  --color-accent-tint: rgba(56, 189, 248, 0.1);
+  --color-accent-on-dark: #38bdf8;
+
+  /* Functional (dark tints) */
+  --color-success: #34d399;
+  --color-success-tint: rgba(52, 211, 153, 0.1);
+  --color-warning: #fbbf24;
+  --color-warning-tint: rgba(251, 191, 36, 0.1);
+  --color-error: #f87171;
+  --color-error-tint: rgba(248, 113, 113, 0.1);
+  --color-info: #60a5fa;
+  --color-info-tint: rgba(96, 165, 250, 0.1);
+
+  /* Geometry: softer, modern SaaS radii inside admin only */
+  --radius-xs: 0.5rem;   /* 8px  — controls, chips */
+  --radius-sm: 0.875rem; /* 14px — cards, dialogs */
+
+  /* Depth on dark */
+  --shadow-raise: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 20px rgb(2 6 18 / 0.45);
+  --shadow-float: 0 4px 12px rgb(0 0 0 / 0.45), 0 16px 40px rgb(2 6 18 / 0.55);
+  --shadow-modal: 0 8px 24px rgb(0 0 0 / 0.5), 0 32px 80px rgb(2 6 18 / 0.65);
+}
+
+/* Atmospheric backdrop: two soft light sources + technical grid. */
+.adm-atmosphere {
+  background:
+    radial-gradient(52rem 30rem at 82% -12%, rgba(56, 189, 248, 0.07), transparent 62%),
+    radial-gradient(44rem 28rem at 8% 112%, rgba(59, 130, 246, 0.055), transparent 60%);
+}
+.adm-grid {
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.045) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(70rem 40rem at 60% 0%, black 30%, transparent 78%);
+  animation: adm-grid-drift 60s linear infinite;
+}
+@keyframes adm-grid-drift {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: 44px 44px, 44px 44px; }
+}
+
+/* Card treatment: 1px border, faint glass sheen, hover lift. */
+.adm-card {
+  position: relative;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(180deg, rgba(148, 163, 184, 0.045), rgba(148, 163, 184, 0) 42%),
+    var(--color-paper-raised);
+}
+.adm-card-hover {
+  transition: transform 200ms var(--ease-out-quart), border-color 200ms ease, box-shadow 200ms ease;
+}
+.adm-card-hover:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-line-dark);
+  box-shadow: 0 10px 30px rgb(2 6 18 / 0.5);
+}
+
+/* Notification / live-status pulse */
+@keyframes adm-pulse-kf {
+  0%   { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.45); }
+  70%  { box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
+.adm-pulse { animation: adm-pulse-kf 2.4s ease-out infinite; }
+.adm-pulse-cyan { animation: adm-pulse-kf 2.4s ease-out infinite; --tw-shadow-color: rgba(56,189,248,0.45); }
+@keyframes adm-pulse-cyan-kf {
+  0%   { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.45); }
+  70%  { box-shadow: 0 0 0 6px rgba(56, 189, 248, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+}
+.adm-pulse-cyan { animation: adm-pulse-cyan-kf 2.4s ease-out infinite; }
+
+/* SVG chart drawing */
+@keyframes adm-draw-kf {
+  from { stroke-dashoffset: var(--adm-draw-len, 900); }
+  to   { stroke-dashoffset: 0; }
+}
+.adm-draw {
+  stroke-dasharray: var(--adm-draw-len, 900);
+  stroke-dashoffset: var(--adm-draw-len, 900);
+  animation: adm-draw-kf 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes adm-fade-kf { from { opacity: 0; } to { opacity: 1; } }
+.adm-fade { opacity: 0; animation: adm-fade-kf 0.8s ease 0.5s forwards; }
+
+/* Map pins: expanding ping ring (CSS geometry animation) */
+@keyframes adm-ping-kf {
+  0%   { r: 0.7; opacity: 0.7; }
+  80%  { r: 2.6; opacity: 0; }
+  100% { r: 2.6; opacity: 0; }
+}
+.adm-ping { animation: adm-ping-kf 2.8s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+/* Timeline reveal */
+@keyframes adm-rise-kf {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.adm-rise {
+  opacity: 0;
+  animation: adm-rise-kf 0.55s var(--ease-out-quart) forwards;
+  animation-delay: var(--adm-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .adm-grid { animation: none; }
+  .adm-pulse, .adm-pulse-cyan, .adm-ping { animation: none; }
+  .adm-draw { animation: none; stroke-dashoffset: 0; }
+  .adm-fade { animation: none; opacity: 1; }
+  .adm-rise { animation: none; opacity: 1; }
+  .adm-card-hover, .adm-card-hover:hover { transform: none; transition: none; }
+}

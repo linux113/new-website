@@ -101,8 +101,8 @@ export default async function AdminVendorRequestsPage({
           <Link
             href={filterHref()}
             className={cn(
-              "rounded-xs border px-2.5 py-1.5 text-mono-micro",
-              !status ? "border-ink bg-ink text-paper" : "border-line text-slate hover:text-ink",
+              "rounded-full border px-2.5 py-1.5 text-mono-micro transition-colors",
+              !status ? "border-accent/40 bg-accent-tint text-accent" : "border-line text-slate hover:text-ink",
             )}
           >
             ALL
@@ -112,8 +112,8 @@ export default async function AdminVendorRequestsPage({
               key={s}
               href={filterHref(s)}
               className={cn(
-                "rounded-xs border px-2.5 py-1.5 text-mono-micro",
-                status === s ? "border-ink bg-ink text-paper" : "border-line text-slate hover:text-ink",
+                "rounded-full border px-2.5 py-1.5 text-mono-micro transition-colors",
+                status === s ? "border-accent/40 bg-accent-tint text-accent" : "border-line text-slate hover:text-ink",
               )}
             >
               {s.replace("_", " ")}
