@@ -8,6 +8,7 @@ import {
   type GlobalRegion,
 } from "@/content/global-regions";
 import { project } from "./world-map-data";
+import { extractSvgInner } from "@/lib/svg";
 
 /**
  * Premium world-map visualisation.
@@ -339,10 +340,4 @@ function curvedPath(
   )}, ${cx2.toFixed(1)} ${cy2.toFixed(1)}, ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
 }
 
-/** Extract the inner content of a <svg>…</svg> string. */
-function extractSvgInner(svg: string): string {
-  const open = svg.indexOf(">");
-  const close = svg.lastIndexOf("</svg>");
-  if (open === -1 || close === -1) return "";
-  return svg.slice(open + 1, close);
-}
+

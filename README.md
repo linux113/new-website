@@ -30,15 +30,23 @@ trading, import and export company.
 ## Local setup
 
 ```bash
-cp .env.example .env        # fill DATABASE_URL
 npm install
-npm run db:generate         # generate the Prisma client
-npm run db:migrate:apply    # apply database migrations
-npm run db:seed             # optional: seed catalogue content
-npm run dev                 # http://localhost:3000
+node scripts/start-local-pg.mjs   # embedded PostgreSQL (terminal 1)
+                                  # → writes DATABASE_URL to .env.local
+npm run db:generate               # Prisma client (offline-safe fallback)
+npm run db:migrate:apply          # apply database migrations
+npm run db:seed                   # optional: development placeholders
+npx tsx scripts/seed-content.ts   # optional: full catalogue content
+npx tsx scripts/seed-site.ts      # optional: industries, certifications…
+npx tsx scripts/seed-blog.ts      # optional: sample articles
+npm run dev                       # http://localhost:3000
 ```
 
+If you already run a PostgreSQL server, copy `.env.example` → `.env`,
+fill `DATABASE_URL`, and skip the embedded-PostgreSQL step.
+
 Admin panel: `http://localhost:3000/admin/login`
+(first admin: `npx tsx scripts/create-admin.ts`)
 
 ## Environment variables
 

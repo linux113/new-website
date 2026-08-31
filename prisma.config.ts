@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "./scripts/env.mjs";
 import { defineConfig } from "prisma/config";
 
 /**

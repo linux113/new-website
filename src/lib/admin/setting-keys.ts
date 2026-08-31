@@ -24,9 +24,8 @@ export const SETTING_KEYS: Record<string, SettingDef> = {
   "contact.address": { group: "contact", label: "Address", multiline: true },
   "contact.gst": { group: "contact", label: "GSTIN" },
   // group: social
-  "social.linkedin": { group: "social", label: "LinkedIn URL" },
-  "social.x": { group: "social", label: "X (Twitter) URL" },
-  "social.youtube": { group: "social", label: "YouTube URL" },
+  "social.instagram": { group: "social", label: "Instagram URL" },
+  "social.facebook": { group: "social", label: "Facebook URL" },
   // group: content (managed under /admin/content)
   "content.hero.headline": { group: "content", label: "Hero headline", multiline: true },
   "content.hero.subline": { group: "content", label: "Hero supporting copy", multiline: true },

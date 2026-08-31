@@ -242,8 +242,8 @@ export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
               onClick={onClose}
               className="flex items-center gap-3 rounded-xs border border-edge px-4 py-3 text-body-sm font-medium text-surface-fg"
             >
-              <Download size={15} strokeWidth={1.8} aria-hidden className="text-accent" />
-              {c.label}
+              <Download size={15} strokeWidth={1.8} aria-hidden className="shrink-0 text-accent" />
+              <span className="min-w-0 flex-1 break-words">{c.label}</span>
             </a>
           ))}
         </div>

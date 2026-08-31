@@ -1424,7 +1424,12 @@ canvas.is-ready { opacity: 1 !important; }
 [data-theme="light"] [class*="text-[#E5C074]"]:not(.keep-dark, .keep-dark *) { color: #9a742f; }
 [data-theme="light"] [class*="text-[#D8A84E]"]:not(.keep-dark, .keep-dark *) { color: #936d2c; }
 [data-theme="light"] [class*="text-[#C8A45D]"]:not(.keep-dark, .keep-dark *),
-[data-theme="light"] [class*="text-[#c9ac72]"]:not(.keep-dark, .keep-dark *) { color: #8a682a; }
+[data-theme="light"] [class*="text-[#c9ac72]"]:not(.keep-dark, .keep-dark *),
+[data-theme="light"] [class*="text-[#B89A62]"]:not(.keep-dark, .keep-dark *) { color: #8a682a; }
+/* status indicator blue: darkened for contrast on white */
+[data-theme="light"] [class*="text-[#7DD3FC]"]:not(.keep-dark, .keep-dark *) { color: #0e7490; }
+/* sunken grid divider tone */
+[data-theme="light"] [class*="bg-[#252A2D]"]:not(.keep-dark, .keep-dark *) { background-color: #e3e0d9; }
 
 /* ---------- gradients ---------- */
 [data-theme="light"] [class*="from-[#050608]"]:not(.keep-dark, .keep-dark *),
@@ -1463,6 +1468,27 @@ canvas.is-ready { opacity: 1 !important; }
 [data-theme="light"] [class*="to-[#E5C074]"]:not(.keep-dark, .keep-dark *) { --tw-gradient-to: #a87b30; }
 [data-theme="light"] [class*="to-[#C8A45D]"]:not(.keep-dark, .keep-dark *) { --tw-gradient-to: #8a682a; }
 [data-theme="light"] [class*="to-[#B8892E]"]:not(.keep-dark, .keep-dark *) { --tw-gradient-to: #8a682a; }
+[data-theme="light"] [class*="from-[#C8A45D]"]:not(.keep-dark, .keep-dark *) { --tw-gradient-from: #8a682a; }
+[data-theme="light"] [class*="from-[#D8A84E]"]:not(.keep-dark, .keep-dark *) { --tw-gradient-from: #a87b30; }
+[data-theme="light"] [class*="from-[#B89A62]"]:not(.keep-dark, .keep-dark *) { --tw-gradient-from: #a87b30; }
+[data-theme="light"] [class*="via-[#D8A84E]"]:not(.keep-dark, .keep-dark *) { --tw-gradient-via: #9a742f; }
+[data-theme="light"] [class*="via-[#C8A45D]"]:not(.keep-dark, .keep-dark *) { --tw-gradient-via: #9a742f; }
+[data-theme="light"] [class*="via-[#E5C074]"]:not(.keep-dark, .keep-dark *) { --tw-gradient-via: #b98f37; }
+[data-theme="light"] [class*="to-[#D8A84E]"]:not(.keep-dark, .keep-dark *) { --tw-gradient-to: #8a682a; }
+
+/* ---------- gold gradient headline text (page-level .ql-gold etc.) ----------
+   These live in per-page <style> blocks with light gold stops; darken them
+   for contrast on white. Higher specificity than the page-level rules. */
+[data-theme="light"] .ql-gold:not(.keep-dark, .keep-dark *),
+[data-theme="light"] .in-gold:not(.keep-dark, .keep-dark *),
+[data-theme="light"] .ab-gold:not(.keep-dark, .keep-dark *) {
+  background-image: linear-gradient(90deg, #a87b30, #9a742f 55%, #8a682a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+[data-theme="light"] .ab-gold { background-size: 200% 100%; }
 
 /* ---------- glass fills, borders, dividers ---------- */
 [data-theme="light"] [class*="bg-white/"]:not(.keep-dark, .keep-dark *) {

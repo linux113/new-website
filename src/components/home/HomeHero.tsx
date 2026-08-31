@@ -39,7 +39,7 @@ export function HomeHero({ company }: { company: HeroCompany }) {
 
               <h1
                 id="home-hero-title"
-                className="hh-line mt-6 font-display text-[clamp(2.4rem,5.4vw,5rem)] font-semibold leading-[1.02] tracking-[-0.025em] text-[#F5F7F8]"
+                className="hh-line mt-6 font-display text-[clamp(2.75rem,6.2vw,5.75rem)] font-semibold leading-[1.02] tracking-[-0.025em] text-[#F5F7F8]"
               >
                 Precision metals,
                 <br />
@@ -110,7 +110,7 @@ export function HomeHero({ company }: { company: HeroCompany }) {
               <InfoCell
                 icon={<ShieldCheck size={18} strokeWidth={1.6} />}
                 value="100%"
-                label="Commitment to quality & reliability"
+                label="Commitment to quality"
               />
             </div>
           </div>
@@ -148,10 +148,10 @@ function InfoCell({
         {icon}
       </span>
       <div className="min-w-0">
-        <p className="font-mono text-xs font-semibold tracking-[0.1em] text-[#F5F7F8] [overflow-wrap:anywhere]">
+        <p className="font-mono text-[13px] font-semibold tracking-[0.08em] text-[#F5F7F8] [overflow-wrap:anywhere]">
           {value}
         </p>
-        <p className="mt-0.5 text-xs leading-snug text-[#A9B2BA] [overflow-wrap:anywhere]">
+        <p className="mt-0.5 text-[13px] leading-snug text-[#A9B2BA]">
           {label}
         </p>
       </div>

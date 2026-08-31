@@ -40,7 +40,7 @@ export function IndustriesClient() {
 
           <h1
             id="industries-heading"
-            className="in-line mt-6 font-display text-[clamp(2.2rem,4.2vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.025em] text-[#F5F7F8]"
+            className="in-line mt-6 font-display text-[clamp(2.5rem,5.2vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.025em] text-[#F5F7F8]"
             style={{ animationDelay: "160ms" }}
           >
             Where the

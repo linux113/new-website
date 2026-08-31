@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "./env.mjs";
 import { createInterface } from "node:readline/promises";
 import bcrypt from "bcryptjs";
 import { PrismaPg } from "@prisma/adapter-pg";

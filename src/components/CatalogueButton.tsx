@@ -47,7 +47,7 @@ export function CatalogueButton() {
 
       <div
         inert={!open}
-        className={`absolute right-0 top-full z-50 mt-3 w-72 max-w-[calc(100vw-1.5rem)] origin-top-right rounded-xl border border-[#C8A45D]/30 bg-[#0A1015]/95 p-2 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.85)] backdrop-blur-xl transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none ${
+        className={`absolute right-0 top-full z-50 mt-3 w-80 max-w-[calc(100vw-1.5rem)] origin-top-right rounded-xl border border-[#C8A45D]/30 bg-[#0A1015]/95 p-2 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.85)] backdrop-blur-xl transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none ${
           open
             ? "visible pointer-events-auto translate-y-0 opacity-100"
             : "invisible pointer-events-none -translate-y-1 opacity-0"
@@ -72,7 +72,7 @@ export function CatalogueButton() {
             <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md border border-white/10 text-[#D8A84E] transition-colors group-hover:border-[#D8A84E]/40">
               <FileText size={15} strokeWidth={1.6} aria-hidden />
             </span>
-            <span className="min-w-0 flex-0 text-[13px] font-medium leading-tight text-[#F5F7F8] transition-colors group-hover:text-[#F0C66D]">
+            <span className="min-w-0 flex-1 break-words text-[13px] font-medium leading-tight text-[#F5F7F8] transition-colors group-hover:text-[#F0C66D]">
               {c.label}
               <span className="mt-0.5 block text-xs text-[#A9B2BA]">PDF — opens in new tab</span>
             </span>

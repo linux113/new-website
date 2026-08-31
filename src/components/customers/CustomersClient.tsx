@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { extractSvgInner } from "@/lib/svg";
 import {
   ArrowRight,
   Building2,
@@ -60,13 +61,6 @@ const POINTS = [
 
 function project(lat: number, lng: number) {
   return { x: ((lng + 180) / 360) * 1000, y: ((90 - lat) / 180) * 500 };
-}
-
-function extractSvgInner(svg: string): string {
-  const open = svg.indexOf(">");
-  const close = svg.lastIndexOf("</svg>");
-  if (open === -1 || close === -1) return "";
-  return svg.slice(open + 1, close);
 }
 
 /* --------------------------- scroll reveal --------------------------- */
