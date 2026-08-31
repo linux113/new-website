@@ -208,7 +208,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
                             href={doc.media.publicUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-3 border border-edge px-4 py-3 text-body-sm text-ink transition-colors duration-(--duration-fast) hover:bg-paper-sunken"
+                            className="flex items-center gap-3 border border-edge px-4 py-3 text-body-sm text-surface-fg transition-colors duration-(--duration-fast) hover:bg-white/[0.04]"
                           >
                             <Icon icon={FileText} size={20} className="text-slate" />
                             {doc.name}
@@ -260,7 +260,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
               )}
             />
             <div className="mt-10">
-              <Link href="/products" className="group inline-flex items-center gap-2 text-label text-ink transition-colors duration-(--duration-base) hover:text-accent">
+              <Link href="/products" className="group inline-flex items-center gap-2 text-label text-surface-fg transition-colors duration-(--duration-base) hover:text-accent">
                 All products
                 <span aria-hidden className="transition-transform duration-(--duration-base) group-hover:translate-x-1 motion-reduce:transition-none">→</span>
               </Link>

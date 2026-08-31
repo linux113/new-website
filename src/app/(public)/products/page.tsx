@@ -63,7 +63,7 @@ export default async function ProductsPage({
                 "border px-3 py-2 text-mono-meta transition-colors duration-(--duration-fast)",
                 !category
                   ? "border-ink bg-ink text-paper"
-                  : "border-line text-slate hover:border-steel hover:text-ink",
+                  : "border-line text-slate hover:border-steel hover:text-surface-fg",
               )}
             >
               ALL
@@ -76,7 +76,7 @@ export default async function ProductsPage({
                   "border px-3 py-2 text-mono-meta transition-colors duration-(--duration-fast)",
                   category === cat.slug
                     ? "border-ink bg-ink text-paper"
-                    : "border-line text-slate hover:border-steel hover:text-ink",
+                    : "border-line text-slate hover:border-steel hover:text-surface-fg",
                 )}
               >
                 {cat.name.toUpperCase()}

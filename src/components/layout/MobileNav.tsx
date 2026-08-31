@@ -225,7 +225,7 @@ export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
       </nav>
 
       {/* Catalogue + theme — safe-area padded */}
-      <div className="flex shrink-0 flex-col gap-3 border-t border-edge px-6 pt-5">
+      <div className="flex shrink-0 flex-col gap-3 border-t border-edge px-5 pb-4 pt-5 md:px-8">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-surface-fg-muted">
           Download Catalogue
         </p>
@@ -247,7 +247,7 @@ export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
             </a>
           ))}
         </div>
-        <div className="mt-1 flex items-center justify-between">
+        <div className="mt-1 flex items-center justify-between pb-1">
           <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-surface-fg-muted">Theme</span>
           <ThemeToggle />
         </div>

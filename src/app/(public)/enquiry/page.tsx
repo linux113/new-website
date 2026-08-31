@@ -38,7 +38,7 @@ export default async function EnquiryPage() {
                 <div key={phone.href} className="flex items-baseline gap-4">
                   <dt className="text-mono-micro w-20 text-surface-muted">PHONE</dt>
                   <dd>
-                    <a href={phone.href} className="text-body text-ink hover:text-accent">
+                    <a href={phone.href} className="text-body text-surface-fg hover:text-accent">
                       {phone.value}
                     </a>
                   </dd>
@@ -47,7 +47,7 @@ export default async function EnquiryPage() {
               <div className="flex items-baseline gap-4">
                 <dt className="text-mono-micro w-20 text-surface-muted">EMAIL</dt>
                 <dd>
-                  <a href={company.emails[1].href} className="text-body text-ink hover:text-accent">
+                  <a href={company.emails[1].href} className="text-body text-surface-fg hover:text-accent">
                     {company.emails[1].value}
                   </a>
                 </dd>

@@ -47,7 +47,7 @@ export function CatalogueButton() {
 
       <div
         inert={!open}
-        className={`absolute right-0 top-full z-50 mt-2 w-72 origin-top-right rounded-xl border border-[#C8A45D]/30 bg-[#0A1015]/95 p-2 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.85)] backdrop-blur-xl transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none ${
+        className={`absolute right-0 top-full z-50 mt-3 w-72 max-w-[calc(100vw-1.5rem)] origin-top-right rounded-xl border border-[#C8A45D]/30 bg-[#0A1015]/95 p-2 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.85)] backdrop-blur-xl transition-[opacity,transform] duration-200 ease-out motion-reduce:transition-none ${
           open
             ? "visible pointer-events-auto translate-y-0 opacity-100"
             : "invisible pointer-events-none -translate-y-1 opacity-0"
