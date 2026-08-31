@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronDown, Download } from "lucide-react";
+import { ArrowRight, ChevronDown, Download } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { useReducedMotion } from "@/components/motion";
 import type { NavItem } from "@/content/types";
@@ -117,11 +117,17 @@ export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
       </div>
 
       {/* Links */}
-      <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-5 py-6 md:px-8">
+      <nav
+        aria-label="Mobile"
+        className="flex-1 overflow-y-auto overscroll-contain px-5 py-6 md:px-8"
+      >
         <ul>
           {nav.map((item, i) => {
             const hasChildren = !!item.children?.length;
             const isOpen = expanded === item.label;
+            const sectionId = `mobile-section-${item.label
+              .toLowerCase()
+              .replace(/[^a-z]+/g, "-")}`;
 
             return (
               <li
@@ -142,75 +148,74 @@ export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
                     <button
                       type="button"
                       aria-expanded={isOpen}
-                      aria-controls={`mobile-section-${item.label.toLowerCase().replace(/[^a-z]+/g, "-")}`}
+                      aria-controls={sectionId}
                       onClick={() => setExpanded(isOpen ? null : item.label)}
-                      className="group flex w-full items-baseline gap-5 py-4 text-left"
+                      className="group flex min-h-14 w-full items-center gap-4 py-3 text-left"
                     >
-                      <span className="text-mono-meta text-mist tabular-nums">
+                      <span className="w-7 shrink-0 text-mono-meta text-mist tabular-nums">
                         {(i + 1).toString().padStart(2, "0")}
                       </span>
-                      <span className="flex-1 text-display-md">{item.label}</span>
+                      <span className="min-w-0 flex-1 font-display text-[clamp(1.35rem,6vw,1.75rem)] leading-tight font-medium tracking-tight break-words">
+                        {item.label}
+                      </span>
                       <ChevronDown
-                        size={20}
+                        size={22}
                         strokeWidth={1.8}
                         aria-hidden
                         className={cn(
-                          "self-center text-mist transition-transform duration-(--duration-base) motion-reduce:transition-none",
+                          "shrink-0 text-mist transition-transform duration-(--duration-base) motion-reduce:transition-none",
                           isOpen && "rotate-180 text-accent",
                         )}
                       />
                     </button>
 
-                    {/* Expandable sub-links */}
-                    <div
-                      id={`mobile-section-${item.label.toLowerCase().replace(/[^a-z]+/g, "-")}`}
-                      className={cn(
-                        "grid transition-[grid-template-rows,opacity] duration-(--duration-base) ease-(--ease-out-quart) motion-reduce:transition-none",
-                        isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
-                      )}
-                    >
-                      <div className="overflow-hidden">
-                        <ul className="pb-3 pl-12">
-                          {item.children!.map((child) => (
-                            <li key={child.label}>
-                              <Link
-                                href={child.href}
-                                onClick={onClose}
-                                className="group flex items-center gap-3 border-l border-line-dark py-2.5 pl-4 text-body-lg text-mist transition-colors hover:border-accent hover:text-paper"
-                              >
-                                <span className="text-mono-micro text-mist/70 tabular-nums transition-colors group-hover:text-accent">
-                                  {child.index}
-                                </span>
-                                {child.label}
-                              </Link>
-                            </li>
-                          ))}
-                          <li>
+                    {/* Expandable sub-links — conditionally rendered so the
+                        dropdown behaves identically on every mobile browser
+                        (no grid-template-rows animation dependency). */}
+                    {isOpen ? (
+                      <ul
+                        id={sectionId}
+                        className="mnav-sub ml-[1.9rem] border-l border-line-dark pb-3"
+                      >
+                        {item.children!.map((child) => (
+                          <li key={child.label}>
                             <Link
-                              href={item.href}
+                              href={child.href}
                               onClick={onClose}
-                              className="group flex items-center gap-3 border-l border-line-dark py-2.5 pl-4 text-body-lg text-mist transition-colors hover:border-accent hover:text-paper"
+                              className="group flex min-h-11 items-center gap-3 py-2 pr-2 pl-4 text-[0.95rem] text-mist transition-colors hover:text-paper"
                             >
-                              <span className="text-mono-micro text-mist/70 transition-colors group-hover:text-accent">
-                                →
+                              <span className="shrink-0 text-mono-micro text-mist/70 tabular-nums transition-colors group-hover:text-accent">
+                                {child.index}
                               </span>
-                              View all
+                              <span className="min-w-0 break-words">{child.label}</span>
                             </Link>
                           </li>
-                        </ul>
-                      </div>
-                    </div>
+                        ))}
+                        <li>
+                          <Link
+                            href={item.href}
+                            onClick={onClose}
+                            className="group flex min-h-11 items-center gap-3 py-2 pr-2 pl-4 text-[0.95rem] font-medium text-accent transition-colors hover:text-paper"
+                          >
+                            <ArrowRight size={14} strokeWidth={2} aria-hidden className="shrink-0" />
+                            View all
+                          </Link>
+                        </li>
+                      </ul>
+                    ) : null}
                   </>
                 ) : (
                   <Link
                     href={item.href}
                     onClick={onClose}
-                    className="group flex items-baseline gap-5 py-4"
+                    className="group flex min-h-14 items-center gap-4 py-3"
                   >
-                    <span className="text-mono-meta text-mist tabular-nums">
+                    <span className="w-7 shrink-0 text-mono-meta text-mist tabular-nums">
                       {(i + 1).toString().padStart(2, "0")}
                     </span>
-                    <span className="text-display-md">{item.label}</span>
+                    <span className="min-w-0 flex-1 font-display text-[clamp(1.35rem,6vw,1.75rem)] leading-tight font-medium tracking-tight break-words">
+                      {item.label}
+                    </span>
                   </Link>
                 )}
               </li>
@@ -262,6 +267,17 @@ export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
           {cta.label}
         </Link>
       </div>
+
+      <style>{`
+        @keyframes mnav-sub-in {
+          from { opacity: 0; transform: translateY(-6px); }
+          to { opacity: 1; transform: none; }
+        }
+        .mnav-sub { animation: mnav-sub-in 220ms cubic-bezier(0.22,1,0.36,1) both; }
+        @media (prefers-reduced-motion: reduce) {
+          .mnav-sub { animation: none; }
+        }
+      `}</style>
     </div>
   );
 }
