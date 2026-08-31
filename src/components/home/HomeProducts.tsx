@@ -57,7 +57,7 @@ export function HomeProducts() {
                   {c.index}
                 </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block font-display text-lg font-medium text-[#F5F7F8] transition-colors duration-300 group-hover:text-white sm:text-xl">
+                  <span className="block font-display text-[1.35rem] font-medium text-[#F5F7F8] transition-colors duration-300 group-hover:text-white sm:text-[1.5rem]">
                     {c.name}
                   </span>
                   <span className="mt-0.5 block text-[13px] text-[#727D86]">

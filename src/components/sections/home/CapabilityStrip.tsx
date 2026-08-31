@@ -137,7 +137,7 @@ export function CapabilityStrip() {
                   </span>
                 </span>
 
-                <span className="mt-5 font-display text-[15px] font-semibold uppercase tracking-[0.14em] text-[#F5F7F8] transition-colors duration-300 group-hover:text-[#F0C66D] sm:text-base">
+                <span className="mt-5 font-display text-[1.05rem] font-semibold uppercase tracking-[0.14em] text-[#F5F7F8] transition-colors duration-300 group-hover:text-[#F0C66D] sm:text-[1.2rem]">
                   {label}
                 </span>
                 <span

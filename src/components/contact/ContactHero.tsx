@@ -30,9 +30,8 @@ export function ContactHero() {
             className="object-cover object-center opacity-35"
           />
         </div>
-        {/* Dark vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#080A0B]/70 via-[#080A0B]/55 to-[#080A0B]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080A0B]/85 via-transparent to-[#080A0B]/40" />
+        {/* Even vertical scrim — no half/left-side shading over the photo */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080A0B]/55 via-[#080A0B]/40 to-[#080A0B]/85" />
         {/* Controlled champagne glow */}
         <div
           className="absolute left-1/2 top-1/3 h-[42rem] w-[42rem] -translate-x-1/2 -translate-y-1/2 rounded-full"

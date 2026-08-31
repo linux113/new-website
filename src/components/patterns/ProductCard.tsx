@@ -48,7 +48,7 @@ export function ProductCard({
       <div className="flex flex-1 flex-col gap-2 p-6 lg:p-8">
         <p className="text-mono-micro text-mist">{product.category}</p>
 
-        <h3 className="text-heading-sm font-display font-medium text-paper">
+        <h3 className="font-display text-[1.35rem] font-medium leading-snug text-paper sm:text-[1.5rem]">
           <Link
             href={`${hrefBase}/${product.slug}`}
             className="after:absolute after:inset-0 focus-visible:outline-none"

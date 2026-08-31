@@ -107,12 +107,8 @@ export function ManufacturingSection() {
                   sizes="(min-width: 64rem) 55vw, 100vw"
                   className="object-cover transition-transform duration-700 ease-out hover:scale-[1.02] motion-reduce:transition-none motion-reduce:hover:scale-100"
                 />
-                {/* quiet grade so text overlays stay legible */}
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#05080B]/55 via-transparent to-transparent"
-                />
-                <span className="absolute bottom-4 left-4 font-mono text-xs tracking-[0.05em] text-[#C9D0D5]">
+                {/* No shade over the photo — caption carries its own backdrop */}
+                <span className="absolute bottom-4 left-4 rounded bg-[#05080B]/70 px-2.5 py-1.5 font-mono text-xs tracking-[0.05em] text-[#C9D0D5] backdrop-blur-[2px]">
                   FIG. 01 — Intake, inspection and staging
                 </span>
               </div>
@@ -127,11 +123,7 @@ export function ManufacturingSection() {
                   sizes="(min-width: 64rem) 55vw, 100vw"
                   className="object-cover transition-transform duration-700 ease-out hover:scale-[1.02] motion-reduce:transition-none motion-reduce:hover:scale-100"
                 />
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#05080B]/55 via-transparent to-transparent"
-                />
-                <span className="absolute bottom-3 left-4 font-mono text-xs tracking-[0.05em] text-[#C9D0D5]">
+                <span className="absolute bottom-3 left-4 rounded bg-[#05080B]/70 px-2.5 py-1.5 font-mono text-xs tracking-[0.05em] text-[#C9D0D5] backdrop-blur-[2px]">
                   FIG. 02 — Packaging and dispatch
                 </span>
               </div>
@@ -158,7 +150,7 @@ export function ManufacturingSection() {
                         <span className="font-mono text-[15px] font-semibold tabular-nums text-[#C8A45D]">
                           {step.index}
                         </span>
-                        <span className="font-display text-lg font-semibold tracking-tight text-[#F5F7F8]">
+                        <span className="font-display text-[1.35rem] font-semibold tracking-tight text-[#F5F7F8] sm:text-[1.5rem]">
                           {step.title}
                         </span>
                       </span>

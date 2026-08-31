@@ -106,7 +106,7 @@ export function ManufacturingClient() {
                       className="text-[#D8A84E] transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(214,168,74,0.7)]"
                       aria-hidden
                     />
-                    <p className="font-display text-sm font-medium tracking-tight text-[#F5F7F8] transition-colors duration-300 group-hover:text-white">
+                    <p className="font-display text-[1.05rem] font-medium tracking-tight text-[#F5F7F8] transition-colors duration-300 group-hover:text-white">
                       {f.title}
                     </p>
                   </div>
@@ -149,13 +149,10 @@ export function ManufacturingClient() {
               sizes="(min-width: 1024px) 46vw, 100vw"
               className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.015]"
             />
-            {/* Hover gradient overlay */}
-            <div
-              aria-hidden
-              className="absolute inset-0 z-10 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-100"
-            />
+            {/* No gradient scrim — photo stays unshaded; the caption
+                carries its own small backdrop for legibility. */}
             <p
-              className="absolute bottom-4 left-4 z-20 font-mono text-xs tracking-[0.08em] text-[#A9B2BA] transition-colors duration-500 group-hover:text-[#C9D0D5]"
+              className="absolute bottom-4 left-4 z-20 rounded bg-[#05080B]/70 px-2.5 py-1.5 font-mono text-xs tracking-[0.08em] text-[#A9B2BA] backdrop-blur-[2px] transition-colors duration-500 group-hover:text-[#C9D0D5]"
             >
               FIG. 01 · Representative imagery — client facility photography pending
             </p>
@@ -175,11 +172,7 @@ export function ManufacturingClient() {
               sizes="(min-width: 1024px) 26vw, 100vw"
               className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.03]"
             />
-            <div
-              aria-hidden
-              className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"
-            />
-            <p className="absolute bottom-3 left-4 right-4 font-mono text-xs tracking-[0.08em] text-[#A9B2BA]">
+            <p className="absolute bottom-3 left-4 right-4 rounded bg-[#05080B]/70 px-2.5 py-1.5 font-mono text-xs tracking-[0.08em] text-[#A9B2BA] backdrop-blur-[2px]">
               FIG. 02 · Material detail — representative imagery
             </p>
           </div>
@@ -205,7 +198,7 @@ export function ManufacturingClient() {
               className="text-[#D8A84E]"
               aria-hidden
             />
-            <p className="mt-4 font-display text-lg font-medium leading-tight tracking-tight text-[#F5F7F8]">
+            <p className="mt-4 font-display text-[1.35rem] font-medium leading-tight tracking-tight text-[#F5F7F8]">
               Supplying strength
               <br />
               across industries
@@ -256,10 +249,6 @@ export function ManufacturingClient() {
                   sizes="(min-width: 768px) 50vw, 100vw"
                   className="object-cover transition-all duration-[600ms] ease-out group-hover:scale-[1.03] group-hover:brightness-110"
                 />
-                <div
-                  aria-hidden
-                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent"
-                />
                 <span
                   aria-hidden
                   className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -274,7 +263,7 @@ export function ManufacturingClient() {
                   <p className="font-mono text-xs tracking-[0.08em] text-[#A9B2BA] transition-colors duration-400 group-hover:text-[#C9D0D5]">
                     {item.figure} · {item.caption}
                   </p>
-                  <p className="mt-2 font-display text-sm font-medium uppercase tracking-wide text-[#F5F7F8] sm:text-base">
+                  <p className="mt-2 font-display text-[1.05rem] font-medium uppercase tracking-wide text-[#F5F7F8] sm:text-[1.25rem]">
                     {item.description}
                   </p>
                 </div>

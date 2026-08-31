@@ -161,19 +161,7 @@ export function CertificateCard({ cert, index, onOpen }: Props) {
               transition: "transform 400ms cubic-bezier(0.22,1,0.36,1)",
             }}
           >
-            {/* Reflection sweep (diagonal, appears on hover) */}
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-0 z-20 overflow-hidden rounded-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            >
-              <span
-                className="absolute -inset-y-10 left-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/35 to-transparent"
-                style={{
-                  transform:
-                    "translateX(calc(var(--mx, 50%) * 0.6 - 80%))",
-                }}
-              />
-            </span>
+            {/* No white glare sweep — the certificate surface shows clean */}
 
             <span
               className="relative block aspect-[4/3] w-full"
@@ -209,7 +197,7 @@ export function CertificateCard({ cert, index, onOpen }: Props) {
             <p className="inline-flex items-center rounded-md border border-[#D8A84E]/40 bg-[#D8A84E]/10 px-2 py-1 font-mono text-xs font-semibold uppercase tracking-[0.14em] text-[#F0C66D] transition-[border-color,box-shadow] duration-300 group-hover:border-[#D8A84E]/70 group-hover:shadow-[0_0_16px_-6px_rgba(216,168,78,0.8)]">
               View Document
             </p>
-            <p className="mt-0.5 font-display text-[13px] font-semibold leading-snug text-[#F5F7F8]">
+            <p className="mt-1 font-display text-[15px] font-semibold leading-snug text-[#F5F7F8] sm:text-[1.05rem]">
               {cert.title}
             </p>
           </div>

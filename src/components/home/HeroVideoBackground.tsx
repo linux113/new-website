@@ -47,20 +47,14 @@ export function HeroVideoBackground() {
         className="absolute inset-0 h-full w-full scale-[1.02] object-cover"
       />
 
-      {/* Cinematic grade — keeps foreground text high-contrast,
-          lighter at the top so the animation reads clearly */}
+      {/* Even vertical scrim only — the footage stays visible across the
+          full frame. No side/horizontal shading: it used to darken one
+          half of the video. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(5,8,11,0.30) 0%, rgba(5,8,11,0.10) 30%, rgba(5,8,11,0.55) 62%, rgba(5,8,11,0.92) 100%)",
-        }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(5,8,11,0.60) 0%, rgba(5,8,11,0.28) 42%, rgba(5,8,11,0.10) 70%, rgba(5,8,11,0.55) 100%)",
+            "linear-gradient(180deg, rgba(5,8,11,0.16) 0%, rgba(5,8,11,0.10) 38%, rgba(5,8,11,0.38) 74%, rgba(5,8,11,0.78) 100%)",
         }}
       />
     </div>
