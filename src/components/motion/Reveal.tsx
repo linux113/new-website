@@ -18,13 +18,13 @@ interface RevealProps {
 }
 
 /**
- * Scroll reveal (DS §20 allowed list, item 1).
+ * Scroll reveal allowed list, item 1).
  * opacity 0→1 + translateY 16px→0 over --duration-slow with
  * ease-out-quart, triggered at 20% visibility via IntersectionObserver.
  * Runs once per page load by default. Under reduced motion (or
  * `disabled`), renders the final state with no transition.
  *
- * Apply to section blocks, not individual paragraphs (DS §20).
+ * Apply to section blocks, not individual paragraphs.
  * Never wrap the LCP/hero content in a Reveal.
  */
 export function Reveal({

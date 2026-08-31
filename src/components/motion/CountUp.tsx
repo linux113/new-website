@@ -5,7 +5,7 @@ import { cn } from "@/lib/cn";
 import { useReducedMotion } from "./useReducedMotion";
 
 interface CountUpProps {
-  /** Target value. When null, renders the placeholder (DS §31.1). */
+  /** Target value. When null, renders the placeholder. */
   value: number | null;
   /** Placeholder shown when value is null, e.g. "[—]". */
   placeholder?: string;
@@ -19,10 +19,10 @@ interface CountUpProps {
 }
 
 const EASE_OUT_QUART = (t: number) => 1 - Math.pow(1 - t, 4);
-const DURATION = 1200; // --duration-counter (DS §20)
+const DURATION = 1200; // --duration-counter
 
 /**
- * Number counter (DS §20 allowed list, item 5).
+ * Number counter allowed list, item 5).
  * Counts up once on first visibility over --duration-counter with
  * ease-out; tabular-nums so width never shifts (zero CLS). Under
  * reduced motion the final value renders immediately. Never loops.

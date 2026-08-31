@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn";
 interface IconProps {
   /** Lucide icon component, e.g. `import { Factory } from "lucide-react"`. */
   icon: LucideIcon;
-  /** Grid sizes only (DS §26): 16 / 20 / 24. */
+  /** Grid sizes only: 16 / 20 / 24. */
   size?: 16 | 20 | 24;
   /** Announce to AT. Omit for decorative (default: hidden). */
   label?: string;
@@ -12,7 +12,7 @@ interface IconProps {
 }
 
 /**
- * The Lucide wrapper (DS §26). Enforces the single icon style:
+ * The Lucide wrapper. Enforces the single icon style:
  * 1.5px stroke, fixed grid sizes, color inherited from text.
  * Decorative by default; pass `label` to expose to screen readers.
  * No filled icons, no tinted-circle chips (those are forbidden).

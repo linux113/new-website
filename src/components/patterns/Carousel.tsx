@@ -12,7 +12,7 @@ interface CarouselProps {
   label: string;
   /**
    * Slide width classes per breakpoint. Default shows a ~12% peek of
-   * the next slide on mobile (DS §24.3) and 2–3-up on larger screens.
+   * the next slide on mobile and 2–3-up on larger screens.
    */
   itemClassName?: string;
   /** Hide prev/next buttons (mobile galleries where swipe suffices). */
@@ -21,7 +21,7 @@ interface CarouselProps {
 }
 
 /**
- * Carousel foundation (DS §24.3, §23.2).
+ * Carousel foundation, §23.2).
  * Native CSS scroll-snap (touch-friendly, no JS momentum) + button
  * controls (carousels must be operable via buttons, not just swipe).
  * Keyboard: the scroll region is focusable; buttons step one slide.

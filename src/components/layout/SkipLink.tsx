@@ -1,5 +1,5 @@
 /**
- * Skip-to-content link (DS §23.2). First element in the DOM;
+ * Skip-to-content link. First element in the DOM;
  * visually hidden until focused, then presented as a solid
  * accent block in the top-left corner.
  */

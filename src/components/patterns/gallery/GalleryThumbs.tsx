@@ -19,7 +19,7 @@ const KIND_TAG: Record<NonNullable<MediaRef["kind"]>, string> = {
 };
 
 /**
- * Thumbnail strip (DS §15).
+ * Thumbnail strip.
  * 1:1 hairline-bordered thumbs; active = 2px accent inset. Keyboard:
  * roving tabindex — Arrow keys move, Enter/Space selects (native
  * button). Mono media-type tag on non-photo entries.

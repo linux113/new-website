@@ -8,7 +8,7 @@ type ContainerProps<T extends React.ElementType> = {
 } & Omit<React.ComponentPropsWithoutRef<T>, "as" | "className" | "children">;
 
 /**
- * The single page container (DS §18).
+ * The single page container.
  * Full-width (fills the viewport) with responsive gutters:
  * 20px mobile / 32px ≥ md / 48px ≥ xl / 64px ≥ 2xl.
  */

@@ -115,7 +115,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
           />
 
           <div className="grid grid-cols-4 gap-8 lg:grid-cols-12">
-            {/* Gallery — sticky left column ≥ lg (DS §15) */}
+            {/* Gallery — sticky left column ≥ lg */}
             <div className="col-span-4 lg:col-span-7">
               <div className="lg:sticky lg:top-24">
                 <ProductGallery

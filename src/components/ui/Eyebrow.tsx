@@ -12,7 +12,7 @@ interface EyebrowProps {
 }
 
 /**
- * Mono meta-layer eyebrow (DS §17): `CAPABILITIES`.
+ * Mono meta-layer eyebrow: `CAPABILITIES`.
  * 12px IBM Plex Mono, uppercase, tracked, in the surface's muted
  * foreground. The legacy "SM–NN / " code prefix has been removed
  * from the design — only the label renders.

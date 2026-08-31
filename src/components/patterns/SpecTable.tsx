@@ -9,11 +9,11 @@ interface SpecTableProps {
 }
 
 /**
- * Specification table (DS §24.5).
+ * Specification table.
  * ≥ md: semantic two-column table with row headers.
  * < md: stacked definition-list style (mono label above value).
  * Missing values render their explicit placeholder — never invented
- * specifications (DS §31). Tabular numerals throughout.
+ * specifications. Tabular numerals throughout.
  */
 export function SpecTable({
   specifications,

@@ -1,4 +1,4 @@
-# SRIYAAN METALS — Database (Phase 5)
+# Database
 
 **Stack:** PostgreSQL · Prisma 7 (pg driver adapter) · Zod validation
 **Schema:** `prisma/schema.prisma` · **Client output:** `src/generated/prisma/` (gitignored, regenerate with `npm run db:generate`)

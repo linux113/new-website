@@ -3,7 +3,7 @@ import type { MapRegion } from "@/content/types";
 
 interface WorldMapProps {
   /**
-   * Confirmed markets (DS §31.5). Ships empty — zero highlighted
+   * Confirmed markets. Ships empty — zero highlighted
    * countries until the client confirms export markets. When data
    * arrives, regions render as highlighted markers/labels and the
    * pending note disappears.
@@ -15,7 +15,7 @@ interface WorldMapProps {
 }
 
 /**
- * Global reach map (DS §31.5) — lightweight neutral state.
+ * Global reach map — lightweight neutral state.
  *
  * Deliberately no heavy map dependency: until real export-market data
  * exists there is nothing truthful to plot, so the neutral state is a
@@ -45,7 +45,7 @@ export function WorldMap({
           : "World map — export markets to be confirmed"
       }
     >
-      {/* Graticule — technical lat/long grid, subtle (DS §2 "subtle grid systems") */}
+      {/* Graticule — technical lat/long grid, subtle "subtle grid systems") */}
       <svg
         aria-hidden="true"
         className="absolute inset-0 h-full w-full text-(--surface-edge)"
@@ -102,7 +102,7 @@ export function WorldMap({
           ))}
         </ul>
       ) : (
-        /* Neutral pending state (DS §31.5) */
+        /* Neutral pending state */
         <div className="absolute inset-0 flex items-center justify-center p-6">
           <p className="border border-edge bg-surface px-4 py-3 text-mono-meta text-surface-muted">
             {pendingNote}

@@ -7,10 +7,8 @@ import type {
 
 /**
  * SRIYAAN METALS — site structure & company data.
- *
- * CONTACT/GST/ADDRESS/HOURS below are VERIFIED client-supplied data.
- * Everything bracketed remains PLACEHOLDER-CONTENT (DS §31) awaiting
- * client input. This module is the single sweep point for the shell.
+ * Contact, GST, address and hours are client-verified values; this
+ * module is the single place to update the site shell.
  */
 
 export const SITE_NAME = "SRIYAAN METALS";
@@ -65,7 +63,7 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
   {
     heading: "Products",
     links: [
-      // PLACEHOLDER-CONTENT: mirrors mega-menu category slots.
+      // mirrors mega-menu category slots.
       { label: "Category A — placeholder", href: "/products" },
       { label: "Category B — placeholder", href: "/products" },
       { label: "Category C — placeholder", href: "/products" },

@@ -5,7 +5,7 @@ interface SkeletonProps {
 }
 
 /**
- * Skeleton block (DS §27.1). Exact-geometry placeholder: consumers
+ * Skeleton block. Exact-geometry placeholder: consumers
  * size it identically to the loaded content (zero CLS). Zinc Wash
  * fill with a subtle opacity pulse; static under reduced motion.
  * Wrap groups in aria-busy on the container; the block itself is

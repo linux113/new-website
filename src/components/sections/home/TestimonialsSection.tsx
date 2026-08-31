@@ -7,7 +7,7 @@ import { toMediaRef, stripDemoMarkers } from "@/lib/mappers";
 /**
  * SM–12 / TESTIMONIALS.
  * Published testimonials from the database; controlled pending
- * placeholders while none exist (DS §31.3 — never invented voices).
+ * placeholders while none exist — never invented voices).
  */
 export async function TestimonialsSection() {
   const dbTestimonials = await getPublishedTestimonials().catch(() => []);

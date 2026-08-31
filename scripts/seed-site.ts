@@ -3,8 +3,8 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 
 /**
- * Supplementary DEMO seed for client presentations — fills the tables
- * that seed-demo-content.ts does not cover, so every section of the
+ * Supplementary content seed for client presentations — fills the tables
+ * that seed-content.ts does not cover, so every section of the
  * site + admin panel has representative data:
  *
  *   - Industries (Construction / Automotive / Engineering / Infrastructure)
@@ -342,7 +342,7 @@ async function main() {
     await update(row.id, { seo: { connect: { id: seo.id } } });
   }
 
-  // Categories in demo seed use slugs fasteners, stainless-steel, etc.
+  // Categories in content seed use slugs fasteners, stainless-steel, etc.
   const allCats = await db.category.findMany({ where: { status: "PUBLISHED" } });
   for (const c of allCats) {
     await attachSeo(
@@ -381,7 +381,7 @@ async function main() {
     );
   }
 
-  console.log("Supplementary demo content seed complete.");
+  console.log("Supplementary content seed complete.");
 }
 
 main()

@@ -15,7 +15,7 @@ function getSnapshot(): boolean {
 }
 
 /**
- * The shared reduced-motion hook (DS §20).
+ * The shared reduced-motion hook.
  * Every component in src/components/motion/ MUST consume this —
  * it is the single enforcement point for prefers-reduced-motion.
  *

@@ -16,7 +16,7 @@ interface LightboxProps {
 }
 
 /**
- * Full-screen lightbox (DS §15).
+ * Full-screen lightbox.
  * Carbon 95% backdrop, shadow-modal image, mono caption + counter.
  * Esc/backdrop close; arrows + swipe navigate; focus trapped; body
  * scroll locked. Crossfade only (reduced motion: instant).

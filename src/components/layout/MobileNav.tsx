@@ -18,7 +18,7 @@ interface MobileNavProps {
 }
 
 /**
- * Mobile navigation (DS §12 Mobile).
+ * Mobile navigation Mobile).
  * Full-screen Carbon sheet: links as oversized display rows with mono
  * indices, staggered entrance (~30ms/item, skipped under reduced
  * motion), CTA pinned at the bottom with safe-area padding. Body
@@ -166,7 +166,7 @@ export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
         </div>
       </div>
 
-      {/* Pinned CTA — safe-area padded (DS §24.9) */}
+      {/* Pinned CTA — safe-area padded */}
       <div className="border-t border-line-dark px-5 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-8">
         <Link
           href={cta.href}

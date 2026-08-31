@@ -24,7 +24,7 @@ interface NavbarProps {
 const SCROLLED_AFTER = 8;
 
 /**
- * Premium navbar (DS §12).
+ * Premium navbar.
  * Top-of-page: transparent overlay (dark-hero aware), 80px tall.
  * Scrolled: 64px, Paper 85% + backdrop blur (the single sanctioned
  * glass use), full hairline. Hides on scroll-down after 400px,

@@ -13,7 +13,7 @@ interface ProductGalleryProps {
 }
 
 /**
- * Product gallery composition (DS §15).
+ * Product gallery composition.
  * Stage (4:3) + 5-up thumb strip + full-screen lightbox. The sticky
  * left-column placement on product pages is the *page's* concern
  * (`lg:sticky lg:top-24` on the wrapper) — the gallery itself stays

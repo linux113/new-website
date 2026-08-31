@@ -8,11 +8,11 @@ interface TestimonialCardProps {
 }
 
 /**
- * Testimonial card (DS §31.3).
+ * Testimonial card.
  * Quote + attribution. Placeholder quotes render bracketed and muted
  * — no invented names, roles or companies, ever. Avatar optional;
  * renders only when a real image is supplied (radius-full is
- * sanctioned for avatars, DS §7).
+ * sanctioned for avatars,.
  */
 export function TestimonialCard({ testimonial, className }: TestimonialCardProps) {
   const isPlaceholder = testimonial.quote.value === null;

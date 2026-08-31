@@ -1,5 +1,5 @@
 /**
- * Minimal inline icon set for the layout shell (DS §26: single stroke
+ * Minimal inline icon set for the layout shell: single stroke
  * style, 1.5px, squared terminals; no icon library dependency added
  * for four glyphs). Decorative by default (aria-hidden) — icon-only
  * buttons carry their own aria-label.

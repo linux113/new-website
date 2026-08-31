@@ -5,11 +5,11 @@ import { ProductCard } from "./ProductCard";
 
 interface ProductGridProps {
   products: Product[];
-  /** Render skeletons instead of content (DS §27). */
+  /** Render skeletons instead of content. */
   loading?: boolean;
   /** Skeleton count while loading. */
   skeletonCount?: number;
-  /** Allow the 4-up tier on ≥ xl (index pages only — DS §14). */
+  /** Allow the 4-up tier on ≥ xl (index pages only —. */
   wide?: boolean;
   /** Action node for the empty state (Secondary/Ghost, never Primary). */
   emptyAction?: React.ReactNode;
@@ -18,7 +18,7 @@ interface ProductGridProps {
 }
 
 /**
- * Product grid (DS §14): 1-up mobile, 2-up ≥ sm, 3-up ≥ lg,
+ * Product grid: 1-up mobile, 2-up ≥ sm, 3-up ≥ lg,
  * 4-up ≥ xl only when `wide` (index pages). Consistent token gutters;
  * loading and empty states built in.
  */

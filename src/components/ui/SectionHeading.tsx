@@ -11,7 +11,7 @@ interface SectionHeadingProps {
   /** Optional lede paragraph (body-lg, max 65ch). */
   lede?: string;
   /**
-   * Layout (DS §18 "Editorial offsets"):
+   * Layout "Editorial offsets"):
    * - "offset": heading cols 1–5, lede cols 7–12 (the signature split)
    * - "start":  stacked, left-aligned
    */
@@ -24,7 +24,7 @@ interface SectionHeadingProps {
 }
 
 /**
- * The mandatory section heading pattern (DS §17):
+ * The mandatory section heading pattern:
  * mono eyebrow → display-lg title → optional body-lg lede,
  * set on the 12-column editorial grid.
  */

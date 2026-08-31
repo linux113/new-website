@@ -41,7 +41,7 @@ async function main() {
   await media("images/material-detail.jpg", "material-detail.jpg", "Metal detail — representative imagery", 1536, 1024);
 
   /* ---- Purge demo analytics (admin shows only REAL submissions) ---- */
-  // Demo rows are marked source="demo-seed" / "(demo)" — real enquiries,
+  // Content rows are marked source="demo-seed" / "(demo)" — real enquiries,
   // contacts and vendor requests from the public forms are never touched.
   await db.productEnquiry.deleteMany({
     where: { OR: [{ source: "demo-seed" }, { company: { contains: "(demo)" } }] },
@@ -53,7 +53,7 @@ async function main() {
     where: { OR: [{ source: "demo-seed" }, { offering: { contains: "(demo)" } }] },
   });
 
-  /* ---- Clear ALL previous demo content (bulletproof purge) ---- */
+  /* ---- Clear ALL previous content (bulletproof purge) ---- */
   const KEEP_SLUGS = [
     "hex-bolts", "stud-bolts-threaded-rods", "screws", "nuts", "washers",
     "anchor-bolts", "foundation-bolts", "rivet-nuts-inserts",
@@ -203,7 +203,7 @@ async function main() {
   const customers = ["Apex Engineering", "Coastal Infra", "Precision Tools Co", "Metro Buildwell", "Orbit Industries", "Sterling Projects"];
   for (const [i, name] of customers.entries()) {
     const existing = await db.customer.findFirst({ where: { name } });
-    // Demo consent = true so the customer logo strip renders for the
+    // Content consent = true so the customer logo strip renders for the
     // presentation. (DEMO ONLY — real rows require written consent.)
     if (!existing) await db.customer.create({ data: { name, status: "PUBLISHED", sortOrder: i, consent: true, website: "https://example.com" } });
     else await db.customer.update({ where: { id: existing.id }, data: { status: "PUBLISHED", sortOrder: i, consent: true } });
@@ -278,7 +278,7 @@ async function main() {
   await db.category.updateMany({ where: { slug: { startsWith: "pending-client" } }, data: { status: "DRAFT" } });
   await db.blogPost.updateMany({ where: { title: { contains: "DEV TEST" } }, data: { status: "DRAFT" } });
 
-  console.log("Demo content seed complete.");
+  console.log("Content seed complete.");
 }
 
 main().then(() => process.exit(0)).catch((e) => { console.error(e); process.exit(1); });

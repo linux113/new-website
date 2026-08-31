@@ -15,9 +15,9 @@ function pad(n: number): string {
 }
 
 /**
- * Engineering-drawing style index glyph (DS §2 "Index Numbering"):
+ * Engineering-drawing style index glyph "Index Numbering"):
  * "01" or "01 / 06". Mono, tabular, muted; turns accent on parent
- * hover via group-hover (DS §22, Card/Row).
+ * hover via group-hover, Card/Row).
  */
 export function IndexNumber({
   value,

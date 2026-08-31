@@ -1,5 +1,5 @@
 /* ============================================================
-   SRIYAAN METALS — Design Tokens (FORGE/01 v1.0.0)
+   SRIYAAN METALS — Design Tokens
    Single source of truth. Components consume tokens only —
    no raw hex, px paddings, or ad-hoc shadows in JSX.
    See docs/DESIGN-SYSTEM.md §3–§9, §30.
@@ -8,7 +8,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* ---- Color: core palette (DS §3.1) ---- */
+  /* ---- Color: core palette ---- */
   --color-*: initial;
   --color-ink: #0b0d0e;
   --color-ink-soft: #111416;
@@ -21,13 +21,13 @@
   --color-paper-raised: #ffffff;
   --color-paper-sunken: #e9e7e1;
 
-  /* ---- Color: accent (DS §3.2) ---- */
+  /* ---- Color: accent ---- */
   --color-accent: #b89a62;
   --color-accent-hover: #9f824e;
   --color-accent-tint: #f2ead9;
   --color-accent-on-dark: #c9ac72;
 
-  /* ---- Color: functional (DS §3.3) ---- */
+  /* ---- Color: functional ---- */
   --color-success: #1e7f4f;
   --color-success-tint: #e7f3ec;
   --color-warning: #9a6b00;
@@ -43,33 +43,33 @@
   --color-white: #ffffff;
   --color-black: #000000;
 
-  /* ---- Radius (DS §7) — machined, near-square ---- */
+  /* ---- Radius — machined, near-square ---- */
   --radius-*: initial;
   --radius-none: 0px;
   --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-full: 9999px;
 
-  /* ---- Shadows (DS §8) ---- */
+  /* ---- Shadows ---- */
   --shadow-*: initial;
   --shadow-hairline: 0 0 0 1px var(--color-line);
   --shadow-raise: 0 1px 2px rgb(11 15 20 / 0.06), 0 4px 12px rgb(11 15 20 / 0.06);
   --shadow-float: 0 4px 8px rgb(11 15 20 / 0.08), 0 12px 32px rgb(11 15 20 / 0.1);
   --shadow-modal: 0 8px 16px rgb(11 15 20 / 0.1), 0 24px 64px rgb(11 15 20 / 0.16);
 
-  /* ---- Motion (DS §20) ---- */
+  /* ---- Motion ---- */
   --ease-*: initial;
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
 
-  /* ---- Layout (DS §18) — full-width fluid container ---- */
+  /* ---- Layout — full-width fluid container ---- */
   --container-content: 100%; /* no max-width: site fills the viewport */
 
   /* ---- Type scale anchors (fluid values live in utilities below) ---- */
   --text-*: initial;
 }
 
-/* Font families reference next/font CSS variables set on <html> (DS §4–§5) */
+/* Font families reference next/font CSS variables set on <html>–§5) */
 @theme inline {
   --font-*: initial;
   --font-display: var(--font-space-grotesk), var(--font-inter), system-ui, sans-serif;
@@ -90,7 +90,7 @@
   --surface-fg-muted: var(--color-mist);
   --surface-edge: var(--color-line-dark);
 
-  /* Motion durations (DS §20) — used with Tailwind duration-(--duration-*) */
+  /* Motion durations — used with Tailwind duration-(--duration-*) */
   --duration-fast: 150ms;
   --duration-base: 250ms;
   --duration-slow: 500ms;
@@ -109,7 +109,7 @@
 }
 
 /* ============================================================
-   Base layer — accessibility & document foundations (DS §23)
+   Base layer — accessibility & document foundations
    ============================================================ */
 @layer base {
   html {
@@ -143,12 +143,12 @@
 
   @media (min-width: 64rem) {
     body {
-      font-size: 1.0625rem; /* 17px ≥ lg (DS §4) */
+      font-size: 1.0625rem; /* 17px ≥ lg */
       line-height: 1.65;
     }
   }
 
-  /* Visible keyboard focus everywhere (DS §23.2) */
+  /* Visible keyboard focus everywhere */
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
@@ -163,7 +163,7 @@
     color: var(--color-ink);
   }
 
-  /* Reduced motion: kill animation/transition timing globally (DS §20) */
+  /* Reduced motion: kill animation/transition timing globally */
   @media (prefers-reduced-motion: reduce) {
     html {
       scroll-behavior: auto;
@@ -188,7 +188,7 @@
 }
 
 /* ============================================================
-   Typography hierarchy utilities (DS §17)
+   Typography hierarchy utilities
    Named steps — raw sizes never appear in JSX.
    ============================================================ */
 @utility text-display-xl {
@@ -299,12 +299,12 @@
   border-color: var(--surface-edge);
 }
 
-/* Max reading measure (DS §4) */
+/* Max reading measure */
 @utility max-w-measure {
   max-width: 65ch;
 }
 
-/* Image fade-in on load / crossfade (DS §27.5, §15) */
+/* Image fade-in on load / crossfade, §15) */
 @keyframes fade-in {
   from {
     opacity: 0;

@@ -11,7 +11,7 @@ import { toPatternProduct } from "@/lib/mappers";
  * SM–04 / FEATURED PRODUCTS.
  * Sunken band. Renders published featured products from the database;
  * falls back to typed placeholder slots while the catalogue is empty
- * (graceful, DS §31). Cards carry the Enquire pathway (no prices — B2B).
+ * (graceful,. Cards carry the Enquire pathway (no prices — B2B).
  */
 export async function FeaturedProductsSection() {
   const dbProducts = await getFeaturedProducts(6).catch(() => []);

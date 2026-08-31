@@ -15,11 +15,11 @@ interface GalleryStageProps {
 }
 
 /**
- * Gallery main stage (DS §15).
+ * Gallery main stage.
  * 4:3 media surface (Carbon behind — no white flash), crossfade
  * handled by keyed opacity in the parent; click/Enter zooms into the
  * lightbox. Technical drawings (kind: "dwg") render on White for
- * legibility, not Zinc (DS §15).
+ * legibility, not Zinc.
  */
 export function GalleryStage({
   media,

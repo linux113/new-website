@@ -3,7 +3,7 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 
 /**
- * Second-wave DEMO seed for client presentations:
+ * Additional content seed for client presentations:
  *
  *   - More products across all four catalogue categories
  *   - Certification plates (branded SVG artwork, linked as images)
@@ -99,7 +99,7 @@ async function main() {
   /* ---------------------------------------------------------------- */
   /* Blog — "From the desk" posts                                     */
   /* ---------------------------------------------------------------- */
-  const blogCat = await db.blogCategory.upsert({
+  await db.blogCategory.upsert({
     where: { slug: "updates" },
     update: {},
     create: { slug: "updates", name: "Updates", sortOrder: 0 },
@@ -109,7 +109,7 @@ async function main() {
     update: {},
     create: { slug: "guides", name: "Fastener Guides", sortOrder: 1 },
   });
-  const knowledgeCat = await db.blogCategory.upsert({
+  await db.blogCategory.upsert({
     where: { slug: "knowledge" },
     update: {},
     create: { slug: "knowledge", name: "Industry Knowledge", sortOrder: 2 },
@@ -132,7 +132,6 @@ async function main() {
 
   const author = await db.adminUser.findFirst({ where: { role: "SUPER_ADMIN" } });
 
-  const md = (body: string[]) => body.join("\n\n");
   const posts = [
     {
       slug: "how-to-specify-fasteners", title: "How to specify fasteners for structural work",
@@ -247,7 +246,7 @@ async function main() {
     });
   }
 
-  console.log("Second-wave content seeded (products, certifications, blog).");
+  console.log("Additional content seeded (products, certifications, blog).");
 }
 
 main()

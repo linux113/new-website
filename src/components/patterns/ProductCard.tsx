@@ -12,7 +12,7 @@ interface ProductCardProps {
 }
 
 /**
- * Product card (DS §14) — the core commercial unit.
+ * Product card — the core commercial unit.
  * 4:3 media on Zinc Wash (ungraded — product truth), mono meta line
  * (CATEGORY · CODE), display name, one-line spec summary, hairline,
  * Enquire ghost link. No prices (B2B, enquiry-driven).
@@ -82,7 +82,7 @@ export function ProductCard({
 }
 
 /**
- * Skeleton variant (DS §27.1): identical geometry to the loaded card
+ * Skeleton variant: identical geometry to the loaded card
  * — zero CLS. Use inside an aria-busy container.
  */
 function ProductCardSkeleton({ className }: { className?: string }) {

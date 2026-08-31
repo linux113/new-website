@@ -3,9 +3,9 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 /**
- * Typography system (DS §4–§5).
+ * Typography system–§5).
  * Display: Space Grotesk · Text: Inter · Mono: IBM Plex Mono.
- * Self-hosted via next/font/local (DS §4: self-hosted, display swap,
+ * Self-hosted via next/font/local: self-hosted, display swap,
  * latin subset — zero FOIT, zero third-party font requests).
  * Font files: SIL Open Font License, sourced from Fontsource.
  * Exposed as CSS variables consumed by @theme inline in globals.css.

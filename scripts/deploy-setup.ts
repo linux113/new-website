@@ -21,7 +21,7 @@ import { PrismaClient } from "../src/generated/prisma/client";
  */
 
 async function main() {
-  const { ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD, SEED_DEMO, DATABASE_URL } = process.env;
+  const { ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD, DATABASE_URL } = process.env;
 
   if (!DATABASE_URL) {
     console.log("[deploy-setup] DATABASE_URL not set — skipping bootstrap.");
@@ -51,14 +51,15 @@ async function main() {
     console.log("[deploy-setup] ADMIN_* env vars not set — skipping admin bootstrap.");
   }
 
-  if (SEED_DEMO === "1") {
-    console.log("[deploy-setup] SEED_DEMO=1 — seeding demo content + analytics…");
-    execSync("npx tsx scripts/seed-demo-content.ts", { stdio: "inherit" });
-    execSync("npx tsx scripts/seed-demo-extra.ts", { stdio: "inherit" });
-    execSync("npx tsx scripts/seed-demo-more.ts", { stdio: "inherit" });
+  const SEED = process.env.SEED_CONTENT ?? process.env.SEED_DEMO; // SEED_DEMO kept for existing environments
+  if (SEED === "1") {
+    console.log("[deploy-setup] SEED_CONTENT=1 — seeding catalogue content…");
+    execSync("npx tsx scripts/seed-content.ts", { stdio: "inherit" });
+    execSync("npx tsx scripts/seed-site.ts", { stdio: "inherit" });
+    execSync("npx tsx scripts/seed-blog.ts", { stdio: "inherit" });
     // NOTE: demo analytics seeding removed — the admin panel shows
     // only REAL enquiries, contacts and vendor requests. Legacy demo
-    // analytics rows are purged by seed-demo-content.ts.
+    // analytics rows are purged by seed-content.ts.
 
   } else {
     console.log("[deploy-setup] SEED_DEMO not set — skipping demo data.");

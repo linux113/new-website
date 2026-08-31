@@ -13,7 +13,7 @@ interface BreadcrumbsProps {
 }
 
 /**
- * Breadcrumb navigation (DS §12 Secondary nav).
+ * Breadcrumb navigation Secondary nav).
  * Mono 12px, slash-separated, Slate; current page in the surface
  * foreground with aria-current. Semantic nav > ol markup with
  * schema.org BreadcrumbList microdata for SEO.

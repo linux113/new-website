@@ -17,7 +17,7 @@ function formatDate(iso: string): string {
 }
 
 /**
- * Blog card (DS §11 Card/Media): 3:2 media, mono date · category
+ * Blog card Card/Media): 3:2 media, mono date · category
  * meta line, display title, 3-line excerpt, ghost "Read" link.
  * Whole card is the link; missing images degrade to the honest
  * placeholder panel.

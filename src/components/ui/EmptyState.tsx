@@ -7,13 +7,13 @@ interface EmptyStateProps {
   title: string;
   /** One sentence of guidance. */
   description?: string;
-  /** One Secondary button or Ghost link (never Primary — DS §28). */
+  /** One Secondary button or Ghost link (never Primary —. */
   action?: React.ReactNode;
   className?: string;
 }
 
 /**
- * Empty state (DS §28). Honest and useful: centered in the content
+ * Empty state. Honest and useful: centered in the content
  * region (not the viewport), max-width 420px, no illustrations or
  * mascots, no functional colors (empty ≠ error).
  */

@@ -1,12 +1,11 @@
 /**
- * SRIYAAN METALS — UI primitives barrel (FORGE/01).
+ * SRIYAAN METALS — UI primitives barrel.
  *
  * Layer rules (docs/COMPONENT-ARCHITECTURE.md §1):
  * primitives are dumb, token-driven, and content-free. They never
  * hardcode colors/spacing — design tokens only (globals.css @theme).
  *
- * Phase 1–3 exports. Later phases add: Button, Badge, Card, RowItem,
- * form primitives, Spinner, Alert, Toast.
+ * Buttons, badges, cards and form primitives live in their own modules.
  */
 export { Container } from "./Container";
 export { Section } from "./Section";

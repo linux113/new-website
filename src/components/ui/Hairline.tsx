@@ -12,8 +12,8 @@ interface HairlineProps {
 }
 
 /**
- * The 1px rule — the signature structural element of the FORGE/01
- * system (DS §2 "The Hairline System"). Color adapts to the active
+ * The 1px rule — the signature structural element of the
+ * system "The Hairline System"). Color adapts to the active
  * surface via --surface-edge.
  */
 export function Hairline({

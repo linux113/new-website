@@ -8,7 +8,7 @@ interface ButtonLinkProps {
   href: string;
   variant?: Variant;
   size?: Size;
-  /** Trailing arrow glyph that translates on hover (DS §10/§22). */
+  /** Trailing arrow glyph that translates on hover/§22). */
   arrow?: boolean;
   /** External link (renders <a> instead of next/link). */
   external?: boolean;
@@ -39,7 +39,7 @@ const VARIANT: Record<Variant, string> = {
 };
 
 /**
- * Link styled as a button (DS §10). All variants: uppercase 13px
+ * Link styled as a button. All variants: uppercase 13px
  * label, radius-xs, transition duration-base; ghost renders as an
  * inline text link with arrow. One Primary per section max.
  */

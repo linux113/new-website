@@ -1,8 +1,8 @@
 /**
- * SRIYAAN METALS — homepage sections barrel (FORGE/01).
+ * SRIYAAN METALS — homepage sections barrel.
  * Thin server-component compositions of ui/ + motion/ + patterns/.
  * Surface rhythm: D-L-L-S-L-D-L-S-D-L-L-S-L-D (never two darks
- * adjacent, DS §9).
+ * adjacent,.
  */
 export { CapabilityStrip } from "./CapabilityStrip";
 export { FeaturedProductsSection } from "./FeaturedProductsSection";

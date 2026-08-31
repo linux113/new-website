@@ -14,29 +14,29 @@ const RATIO_CLASS: Record<Ratio, string> = {
 
 interface PatternMediaProps {
   media: MediaRef | null;
-  /** Fixed aspect ratio — mandatory, prevents CLS (DS §25.2). */
+  /** Fixed aspect ratio — mandatory, prevents CLS. */
   ratio: Ratio;
-  /** next/image sizes attribute (DS §25.6 — mandatory when src set). */
+  /** next/image sizes attribute — mandatory when src set). */
   sizes: string;
-  /** LCP image only (DS §25.6). */
+  /** LCP image only. */
   priority?: boolean;
   /**
    * Surface behind the image / placeholder. "media" = Carbon
-   * (editorial, DS §9); "sunken" = Zinc Wash (product truth, DS §14).
+   * (editorial,; "sunken" = Zinc Wash (product truth,.
    */
   surface?: "media" | "sunken";
-  /** Apply the Steel Duotone grade (editorial imagery only, DS §25.1). */
+  /** Apply the Steel Duotone grade (editorial imagery only,. */
   graded?: boolean;
-  /** Scale image on group hover (DS §22 — inside clipped frame). */
+  /** Scale image on group hover — inside clipped frame). */
   hoverScale?: boolean;
   className?: string;
 }
 
 /**
- * Shared media block for all patterns (DS §25).
+ * Shared media block for all patterns.
  * Renders next/image inside a fixed-ratio clipped frame; when
  * `media.src` is null, renders the honest placeholder panel with a
- * mono label — never a fake photo (DS §25.7).
+ * mono label — never a fake photo.
  */
 export function PatternMedia({
   media,

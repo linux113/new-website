@@ -1,64 +1,125 @@
-# Deploying to Vercel
+# Deployment
 
-The repo is pre-wired for Vercel: the `vercel-build` script runs
-`prisma generate` → `prisma migrate deploy` → `scripts/deploy-setup.ts`
-(admin user + optional demo data) → `next build`. You only create the
-accounts and set environment variables.
+Two supported paths: **Hostinger VPS** (recommended for full control) or
+**Vercel** (managed). The app is a standard Next.js server — it needs
+Node.js 20+, a PostgreSQL database, and a long-running process.
 
-## 1. Database (Neon — free tier is fine)
+---
 
-1. Go to https://neon.tech → sign up → **New project** (region: Singapore
-   `ap-southeast-1` is closest to Mumbai).
-2. Copy the **connection string** (it looks like
-   `postgresql://USER:PASSWORD@HOST/neondb?sslmode=require`).
+## Option A — Hostinger VPS
 
-## 2. Vercel project
+### 1. Server preparation
 
-1. Go to https://vercel.com → sign up with **GitHub** → **Add New →
-   Project** → import `linux113/new-website`.
-2. **Settings before first deploy** (Project Settings):
-   - **Git → Production Branch**: `arena/01a023ea-new-website`
-     (or merge that branch into `main` first and leave the default).
-   - **Build & Development Settings → Build Command**: `npm run vercel-build`
-3. **Environment Variables** (Production):
+```bash
+# as root on a fresh Ubuntu/Debian VPS
+apt update && apt upgrade -y
+apt install -y nginx postgresql git curl
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash -   # Node.js 20
+apt install -y nodejs
+npm install -g pm2
+```
 
-   | Name | Value |
-   |---|---|
-   | `DATABASE_URL` | the Neon connection string |
-   | `NEXT_PUBLIC_SITE_URL` | `https://<your-project>.vercel.app` (update after first deploy; later your real domain) |
-   | `ADMIN_NAME` | e.g. `Admin` |
-   | `ADMIN_EMAIL` | `admin@sriyaanmetals.com` |
-   | `ADMIN_PASSWORD` | strong password, min 12 chars |
-   | `SEED_DEMO` | `1` (demo content for the client presentation — REMOVE this var and redeploy once real content is entered) |
+### 2. Database
 
-4. Click **Deploy**. First build takes ~2–4 minutes.
+```bash
+sudo -u postgres psql <<'SQL'
+CREATE USER sriyaan WITH PASSWORD 'use-a-strong-password';
+CREATE DATABASE sriyaan_prod OWNER sriyaan;
+SQL
+```
 
-Result: `https://<project>.vercel.app` — public site at `/`, admin at
-`/admin` (login with the ADMIN_EMAIL/ADMIN_PASSWORD you set).
+### 3. Application
 
-## 3. After the first deploy
+```bash
+adduser --disabled-password --gecos "" sriyaan   # or use your user
+su - sriyaan
+git clone https://github.com/linux113/new-website.git app
+cd app
+cp .env.example .env    # then edit (see table below)
+npm ci
+npm run db:generate
+npx prisma migrate deploy
+npm run build
+```
 
-- Set `NEXT_PUBLIC_SITE_URL` to the real URL and redeploy (fixes
-  sitemap/JSON-LD URLs).
-- **Custom domain**: Vercel → Project → Settings → Domains → add
-  `sriyaanmetals.com` and follow the DNS instructions at your
-  registrar.
-- **Media uploads**: production refuses local-disk uploads by design.
-  Create a Cloudflare R2 bucket and set `R2_ACCOUNT_ID`,
-  `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET_NAME`,
-  `R2_PUBLIC_URL`. Until then the site works fully except new uploads
-  in the admin media library.
-- **Email notifications**: set `EMAIL_PROVIDER_API_KEY` (Resend),
-  `EMAIL_FROM`, `EMAIL_REPLY_TO`. Until then enquiries are stored in
-  the admin inbox but no notification emails are sent.
-- Remove `SEED_DEMO` once real products/content are entered, then
-  delete demo rows from the admin panel (all are "(demo)"/"sample"
-  marked; enquiry history uses source `demo-seed`).
+`.env` values:
 
-## Notes
+| Variable | Value |
+|---|---|
+| `DATABASE_URL` | `postgresql://sriyaan:PASSWORD@127.0.0.1:5432/sriyaan_prod` |
+| `NEXT_PUBLIC_SITE_URL` | `https://sriyaanmetals.com` |
+| `ADMIN_NAME` / `ADMIN_EMAIL` / `ADMIN_PASSWORD` | first admin credentials (password min 12 chars) |
+| `SEED_CONTENT` | `1` to seed the catalogue; remove and redeploy to stop |
 
-- Never set `PREVIEW_DEV_BYPASS` or `PREVIEW_CROSS_SITE_COOKIES` in
-  production — those are sandbox-preview workarounds only.
-- Session cookies are HttpOnly + Secure automatically in production.
-- `prisma migrate deploy` is safe to run on every build (applies only
-  pending migrations).
+### 4. Process manager (pm2)
+
+```bash
+pm2 start npm --name sriyaan -- start
+pm2 startup && pm2 save     # start on boot
+```
+
+### 5. Nginx reverse proxy
+
+```nginx
+# /etc/nginx/sites-available/sriyaan
+server {
+    listen 80;
+    server_name sriyaanmetals.com www.sriyaanmetals.com;
+
+    client_max_body_size 10M;   # catalogue/media uploads
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+```bash
+ln -s /etc/nginx/sites-available/sriyaan /etc/nginx/sites-enabled/
+nginx -t && systemctl reload nginx
+```
+
+### 6. HTTPS
+
+```bash
+apt install -y certbot python3-certbot-nginx
+certbot --nginx -d sriyaanmetals.com -d www.sriyaanmetals.com
+```
+
+### 7. Updating
+
+```bash
+cd ~/app
+git pull
+npm ci
+npx prisma migrate deploy
+npm run build
+pm2 restart sriyaan
+```
+
+---
+
+## Option B — Vercel (managed)
+
+1. Create a PostgreSQL database (Neon, Supabase or Hostinger's managed
+   PostgreSQL) and copy the connection string.
+2. Import the GitHub repository at vercel.com.
+3. Set the environment variables from the table above (build command is
+   pre-wired via `npm run vercel-build`, which runs migrations, the
+   deploy bootstrap and the production build).
+4. Deploy, then point your domain's DNS at Vercel.
+
+---
+
+## Post-deploy checklist
+
+- [ ] Public pages load (`/`, `/products`, `/quality`, `/contact`)
+- [ ] `/admin/login` shows the login form (not the dashboard)
+- [ ] Log in with `ADMIN_EMAIL` / `ADMIN_PASSWORD`
+- [ ] Admin → Settings: set social media URLs (they drive the footer icons)
+- [ ] Admin → Enquiries: submit the public contact form and confirm it appears
+- [ ] HTTPS certificate active

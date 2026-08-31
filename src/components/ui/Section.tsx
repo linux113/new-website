@@ -4,16 +4,16 @@ export type SectionSurface = "page" | "sunken" | "dark";
 
 interface SectionProps extends React.ComponentPropsWithoutRef<"section"> {
   /**
-   * Surface style (DS §9). Sets data-surface so semantic variables
+   * Surface style. Sets data-surface so semantic variables
    * (--surface-bg / fg / edge) cascade to all children.
    */
   surface?: SectionSurface;
   /**
-   * Vertical rhythm (DS §6): "default" = py-24 → py-32,
+   * Vertical rhythm: "default" = py-24 → py-32,
    * "hero" = py-24 → py-40, "none" = no padding (custom internals).
    */
   rhythm?: "default" | "hero" | "none";
-  /** Draw the full-bleed top hairline separating sections (DS §9). */
+  /** Draw the full-bleed top hairline separating sections. */
   rule?: boolean;
 }
 
@@ -24,7 +24,7 @@ const surfaceAttr: Record<SectionSurface, string | undefined> = {
 };
 
 /**
- * Full-bleed page section (DS §6, §9).
+ * Full-bleed page section, §9).
  * Enforces the site-wide section rhythm and surface system; content
  * inside should be wrapped in <Container>.
  */

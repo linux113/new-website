@@ -1,5 +1,5 @@
 /**
- * Product gallery module (DS §15). ProductGallery is the public
+ * Product gallery module. ProductGallery is the public
  * composition; stage/thumbs/lightbox exported for bespoke layouts.
  */
 export { ProductGallery } from "./ProductGallery";

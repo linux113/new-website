@@ -10,9 +10,9 @@ import type {
 } from "./types";
 
 /**
- * SRIYAAN METALS — placeholder content module (DS §31.7).
+ * SRIYAAN METALS — placeholder content module.
  *
- * // PLACEHOLDER-CONTENT — ENTIRE FILE.
+ *  — ENTIRE FILE.
  * Every entry below is a clearly-labeled slot awaiting real client
  * input. Nothing here is a business claim, product, certification,
  * customer, statistic or export market. Replacing this module with
@@ -22,8 +22,8 @@ import type {
 
 export const PENDING = "[PENDING CLIENT INPUT]";
 
-/* ---- Categories (DS §31.4) ---- */
-// PLACEHOLDER-CONTENT
+/* ---- Categories ---- */
+
 export const PLACEHOLDER_CATEGORIES: Category[] = [
   // Fallback tiles when the database is unreachable — mirrors the
   // SRIYAAN METALS catalogue range.
@@ -33,8 +33,8 @@ export const PLACEHOLDER_CATEGORIES: Category[] = [
   { slug: "carbon-steel-pipes", index: "04", title: "Carbon Steel Pipes", image: { src: "/images/cat-pipes.jpg", alt: "Carbon steel pipes — representative imagery" } },
 ];
 
-/* ---- Products (DS §31.4) ---- */
-// PLACEHOLDER-CONTENT
+/* ---- Products ---- */
+
 export const PLACEHOLDER_PRODUCTS: Product[] = [
   {
     slug: "hex-bolts",
@@ -70,21 +70,19 @@ export const PLACEHOLDER_PRODUCTS: Product[] = [
   },
 ];
 
-/* ---- Metrics (DS §31.1) — values stay null until client data ---- */
-// PLACEHOLDER-CONTENT
+/* ---- Metrics — values stay null until client data ---- */
+
 export const PLACEHOLDER_METRICS: Metric[] = [
-  { id: "m1", label: "Metric — awaiting client data", value: { value: null, placeholder: "[—]" } },
-  { id: "m2", label: "Metric — awaiting client data", value: { value: null, placeholder: "[—]" } },
-  { id: "m3", label: "Metric — awaiting client data", value: { value: null, placeholder: "[—]" } },
-  { id: "m4", label: "Metric — awaiting client data", value: { value: null, placeholder: "[—]" } },
+  { id: "m1", label: "Metric", value: { value: null, placeholder: "[—]" } },
+  { id: "m2", label: "Metric", value: { value: null, placeholder: "[—]" } },
+  { id: "m3", label: "Metric", value: { value: null, placeholder: "[—]" } },
+  { id: "m4", label: "Metric", value: { value: null, placeholder: "[—]" } },
 ];
 
 /* ---- Industries ----
- * Client-requested website categories (Construction, Automotive,
- * Engineering, Infrastructure). These are sections the client asked
- * for — NOT claims of existing customers. Descriptions pending.
+ * The four sectors the site presents: Construction, Automotive,
+ * Engineering and Infrastructure.
  */
-// PLACEHOLDER-CONTENT (descriptions)
 export const PLACEHOLDER_INDUSTRIES: Industry[] = [
   { slug: "construction", index: "01", name: "Construction", href: "/industries" },
   { slug: "automotive", index: "02", name: "Automotive", href: "/industries" },
@@ -97,7 +95,7 @@ export const PLACEHOLDER_INDUSTRIES: Industry[] = [
  * pending state until real posts exist. Editorial categories below
  * are the client-requested content plan, used as labels only.
  */
-// PLACEHOLDER-CONTENT
+
 export const PLACEHOLDER_POSTS: Post[] = [];
 
 export const BLOG_CATEGORIES = [
@@ -106,8 +104,8 @@ export const BLOG_CATEGORIES = [
   "Company Updates",
 ] as const;
 
-/* ---- Testimonials (DS §31.3) — no invented names/companies ---- */
-// PLACEHOLDER-CONTENT
+/* ---- Testimonials — no invented names/companies ---- */
+
 export const PLACEHOLDER_TESTIMONIALS: Testimonial[] = [
   {
     id: "t1",
@@ -125,19 +123,19 @@ export const PLACEHOLDER_TESTIMONIALS: Testimonial[] = [
   },
 ];
 
-/* ---- Certifications (DS §31.2) — slots only, never real standards ---- */
-// PLACEHOLDER-CONTENT
+/* ---- Certifications — slots only, never real standards ---- */
+
 export const PLACEHOLDER_CERTIFICATIONS: Certification[] = [
   { id: "c1", name: null, status: "pending", document: null },
   { id: "c2", name: null, status: "pending", document: null },
   { id: "c3", name: null, status: "pending", document: null },
 ];
 
-/* ---- Customer logos (DS §31.3) — grey slots, no fake wordmarks ---- */
-// PLACEHOLDER-CONTENT
+/* ---- Customer logos — grey slots, no fake wordmarks ---- */
+
 export const PLACEHOLDER_LOGO_COUNT = 6;
 
-/* ---- Global reach (DS §31.5) — zero highlighted markets ---- */
-// PLACEHOLDER-CONTENT
+/* ---- Global reach — zero highlighted markets ---- */
+
 export const PLACEHOLDER_MAP_REGIONS: MapRegion[] = [];
 export const MAP_PENDING_NOTE = "EXPORT MARKETS — TO BE CONFIRMED";
