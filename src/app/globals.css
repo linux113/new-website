@@ -1364,6 +1364,25 @@ canvas.is-ready { opacity: 1 !important; }
   --surface-edge: #e3e0d9;
 }
 
+/* ---------- data-surface="dark" panels (navbar, mobile sheet, footer) ----------
+   These set light token text via [data-surface="dark"]; flip the tokens so
+   text stays readable when their backgrounds remap to white in light mode.
+   Cinematic panels marked .keep-dark keep their dark token text. */
+[data-theme="light"] [data-surface="dark"]:not(.keep-dark, .keep-dark *) {
+  --surface-bg: #ffffff;
+  --surface-fg: #16191c;
+  --surface-fg-muted: #565e66;
+  --surface-edge: #e3e0d9;
+}
+
+/* ---------- hover text: white -> dark on flipped (light) surfaces ---------- */
+[data-theme="light"] [class*="hover:text-white"]:not(.keep-dark, .keep-dark *):hover {
+  color: #16191c;
+}
+[data-theme="light"] .group:hover [class*="group-hover:text-white"]:not(.keep-dark, .keep-dark *) {
+  color: #16191c;
+}
+
 /* ---------- page / panel backgrounds ---------- */
 [data-theme="light"] [class*="bg-[#050608]"]:not(.keep-dark, .keep-dark *),
 [data-theme="light"] [class*="bg-[#050708]"]:not(.keep-dark, .keep-dark *),

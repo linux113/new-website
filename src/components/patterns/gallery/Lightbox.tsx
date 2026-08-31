@@ -82,7 +82,7 @@ export function Lightbox({ media, index, open, onClose, onNavigate }: LightboxPr
       aria-modal="true"
       aria-label={`Image viewer, ${index + 1} of ${total}`}
       data-surface="dark"
-      className="fixed inset-0 z-50 flex flex-col bg-ink/95"
+      className="keep-dark fixed inset-0 z-50 flex flex-col bg-ink/95"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}

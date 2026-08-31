@@ -95,7 +95,7 @@ export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
       data-surface="dark"
       inert={!open}
       className={cn(
-        "fixed inset-0 z-50 flex h-dvh flex-col bg-ink text-paper lg:hidden",
+        "keep-dark fixed inset-0 z-50 flex h-dvh flex-col bg-ink text-paper lg:hidden",
         "transition-opacity duration-(--duration-base) ease-(--ease-inout) motion-reduce:transition-none",
         open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
       )}

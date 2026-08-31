@@ -78,10 +78,10 @@ export function InsightsClient({ posts, categories }: InsightsClientProps) {
     <>
       {/* ===================== HERO ===================== */}
       <section className="relative overflow-hidden pb-16 pt-6 lg:pb-24">
-        {/* Right hero image */}
+        {/* Right hero image — stays cinematic (dark) in both themes */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 right-0 hidden w-3/5 lg:block"
+          className="keep-dark pointer-events-none absolute inset-y-0 right-0 hidden w-3/5 lg:block"
         >
           <div className="relative h-full w-full">
             <Image
