@@ -35,7 +35,7 @@ export default async function VendorPage() {
             />
             <p className="text-mono-meta mt-10 border-t border-edge pt-8 text-surface-muted">
               PURCHASE DESK —{" "}
-              <a href={company.emails[2].href} className="text-ink hover:text-accent">
+              <a href={company.emails[2].href} className="text-surface-fg hover:text-accent">
                 {company.emails[2].value}
               </a>
             </p>
