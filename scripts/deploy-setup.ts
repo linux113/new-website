@@ -51,6 +51,29 @@ async function main() {
     console.log("[deploy-setup] ADMIN_* env vars not set — skipping admin bootstrap.");
   }
 
+  /* Social links: guarantee Instagram + Facebook exist in production
+     (create-only — never overwrites admin-configured URLs) and drop the
+     retired LinkedIn/X/YouTube settings. Runs on every deploy. */
+  {
+    const db = new PrismaClient({ adapter: new PrismaPg({ connectionString: DATABASE_URL }) });
+    const socials = [
+      { key: "social.instagram", value: "https://www.instagram.com/sriyaanmetals" },
+      { key: "social.facebook", value: "https://www.facebook.com/sriyaanmetals" },
+    ];
+    for (const s of socials) {
+      const existing = await db.websiteSetting.findUnique({ where: { key: s.key } });
+      if (!existing) {
+        await db.websiteSetting.create({ data: { key: s.key, value: s.value, group: "social" } });
+        console.log(`[deploy-setup] Created ${s.key}`);
+      }
+    }
+    const removed = await db.websiteSetting.deleteMany({
+      where: { key: { in: ["social.linkedin", "social.x", "social.youtube"] } },
+    });
+    if (removed.count > 0) console.log(`[deploy-setup] Removed ${removed.count} retired social settings`);
+    await db.$disconnect();
+  }
+
   const SEED = process.env.SEED_CONTENT ?? process.env.SEED_DEMO; // SEED_DEMO kept for existing environments
   if (SEED === "1") {
     console.log("[deploy-setup] SEED_CONTENT=1 — seeding catalogue content…");
