@@ -1520,11 +1520,16 @@ canvas.is-ready { opacity: 1 !important; }
   border-color: rgba(22, 25, 28, 0.14);
 }
 
-/* ---------- navbar: solid light bar in light mode ---------- */
+/* ---------- navbar: solid light bar with black text in light mode ---------- */
 [data-theme="light"] .nav-bar {
   background: rgba(255, 255, 255, 0.92) !important;
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(22, 25, 28, 0.08);
+  /* force dark text for every token consumer inside the bar
+     (links, catalogue button, theme toggle, mega menu) */
+  --surface-fg: #16191c;
+  --surface-fg-muted: #3e454b;
+  --surface-edge: #dcd8d0;
 }
 
 /* ---------- dual logos: CSS-driven swap ---------- */
