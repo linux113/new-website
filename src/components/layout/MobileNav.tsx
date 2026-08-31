@@ -1,13 +1,13 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { ChevronDown, Download } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { useReducedMotion } from "@/components/motion";
 import type { NavItem } from "@/content/types";
 import { CloseIcon } from "./icons";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Download } from "lucide-react";
 
 interface MobileNavProps {
   id: string;
@@ -18,17 +18,28 @@ interface MobileNavProps {
 }
 
 /**
- * Mobile navigation Mobile).
- * Full-screen Carbon sheet: links as oversized display rows with mono
- * indices, staggered entrance (~30ms/item, skipped under reduced
- * motion), CTA pinned at the bottom with safe-area padding. Body
- * scroll locked while open; Esc closes; Tab trapped; focus returns
- * to the hamburger on close (handled by the trigger's aria wiring).
+ * Mobile navigation — full-screen sheet.
+ *
+ * Items WITH sub-items (Products, Company) render as expandable
+ * sections: tapping the row expands its links inline (the mobile
+ * equivalent of the desktop dropdowns), so every page stays reachable.
+ * Simple items link directly. Below the links: catalogue downloads,
+ * theme toggle and the pinned CTA. Body scroll is locked while open;
+ * Esc closes; Tab is trapped; focus starts on the close button.
  */
 export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
   const reduced = useReducedMotion();
   const sheetRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
+
+  // Reset expansion when the sheet closes (deferred — avoids a
+  // synchronous setState inside the effect).
+  useEffect(() => {
+    if (open) return;
+    const t = setTimeout(() => setExpanded(null), 0);
+    return () => clearTimeout(t);
+  }, [open]);
 
   // Scroll lock while open.
   useEffect(() => {
@@ -84,13 +95,13 @@ export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
       data-surface="dark"
       inert={!open}
       className={cn(
-        "fixed inset-0 z-50 flex flex-col bg-ink text-paper lg:hidden",
+        "fixed inset-0 z-50 flex h-dvh flex-col bg-ink text-paper lg:hidden",
         "transition-opacity duration-(--duration-base) ease-(--ease-inout) motion-reduce:transition-none",
         open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
       )}
     >
       {/* Sheet header */}
-      <div className="flex h-20 items-center justify-between border-b border-line-dark px-5 md:px-8">
+      <div className="flex h-20 shrink-0 items-center justify-between border-b border-line-dark px-5 md:px-8">
         <span className="text-heading-sm font-display font-semibold tracking-tight">
           Menu
         </span>
@@ -105,40 +116,111 @@ export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
         </button>
       </div>
 
-      {/* Links — oversized display rows with mono indices */}
-      <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-5 py-8 md:px-8">
+      {/* Links */}
+      <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-5 py-6 md:px-8">
         <ul>
-          {nav.map((item, i) => (
-            <li
-              key={item.label}
-              className={cn(
-                "border-b border-line-dark",
-                !reduced &&
-                  "transition-[opacity,translate] duration-(--duration-base) ease-(--ease-out-quart)",
-                !reduced &&
-                  (open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"),
-              )}
-              style={
-                !reduced && open ? { transitionDelay: `${i * 30}ms` } : undefined
-              }
-            >
-              <Link
-                href={item.href}
-                onClick={onClose}
-                className="group flex items-baseline gap-5 py-4"
+          {nav.map((item, i) => {
+            const hasChildren = !!item.children?.length;
+            const isOpen = expanded === item.label;
+
+            return (
+              <li
+                key={item.label}
+                className={cn(
+                  "border-b border-line-dark",
+                  !reduced &&
+                    "transition-[opacity,translate] duration-(--duration-base) ease-(--ease-out-quart)",
+                  !reduced &&
+                    (open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"),
+                )}
+                style={
+                  !reduced && open ? { transitionDelay: `${i * 30}ms` } : undefined
+                }
               >
-                <span className="text-mono-meta text-mist tabular-nums">
-                  {(i + 1).toString().padStart(2, "0")}
-                </span>
-                <span className="text-display-md">{item.label}</span>
-              </Link>
-            </li>
-          ))}
+                {hasChildren ? (
+                  <>
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-controls={`mobile-section-${item.label.toLowerCase().replace(/[^a-z]+/g, "-")}`}
+                      onClick={() => setExpanded(isOpen ? null : item.label)}
+                      className="group flex w-full items-baseline gap-5 py-4 text-left"
+                    >
+                      <span className="text-mono-meta text-mist tabular-nums">
+                        {(i + 1).toString().padStart(2, "0")}
+                      </span>
+                      <span className="flex-1 text-display-md">{item.label}</span>
+                      <ChevronDown
+                        size={20}
+                        strokeWidth={1.8}
+                        aria-hidden
+                        className={cn(
+                          "self-center text-mist transition-transform duration-(--duration-base) motion-reduce:transition-none",
+                          isOpen && "rotate-180 text-accent",
+                        )}
+                      />
+                    </button>
+
+                    {/* Expandable sub-links */}
+                    <div
+                      id={`mobile-section-${item.label.toLowerCase().replace(/[^a-z]+/g, "-")}`}
+                      className={cn(
+                        "grid transition-[grid-template-rows,opacity] duration-(--duration-base) ease-(--ease-out-quart) motion-reduce:transition-none",
+                        isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+                      )}
+                    >
+                      <div className="overflow-hidden">
+                        <ul className="pb-3 pl-12">
+                          {item.children!.map((child) => (
+                            <li key={child.label}>
+                              <Link
+                                href={child.href}
+                                onClick={onClose}
+                                className="group flex items-center gap-3 border-l border-line-dark py-2.5 pl-4 text-body-lg text-mist transition-colors hover:border-accent hover:text-paper"
+                              >
+                                <span className="text-mono-micro text-mist/70 tabular-nums transition-colors group-hover:text-accent">
+                                  {child.index}
+                                </span>
+                                {child.label}
+                              </Link>
+                            </li>
+                          ))}
+                          <li>
+                            <Link
+                              href={item.href}
+                              onClick={onClose}
+                              className="group flex items-center gap-3 border-l border-line-dark py-2.5 pl-4 text-body-lg text-mist transition-colors hover:border-accent hover:text-paper"
+                            >
+                              <span className="text-mono-micro text-mist/70 transition-colors group-hover:text-accent">
+                                →
+                              </span>
+                              View all
+                            </Link>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <Link
+                    href={item.href}
+                    onClick={onClose}
+                    className="group flex items-baseline gap-5 py-4"
+                  >
+                    <span className="text-mono-meta text-mist tabular-nums">
+                      {(i + 1).toString().padStart(2, "0")}
+                    </span>
+                    <span className="text-display-md">{item.label}</span>
+                  </Link>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </nav>
 
       {/* Catalogue + theme — safe-area padded */}
-      <div className="flex flex-col gap-3 border-t border-edge px-6 pt-5">
+      <div className="flex shrink-0 flex-col gap-3 border-t border-edge px-6 pt-5">
         <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-surface-fg-muted">
           Download Catalogue
         </p>
@@ -167,7 +249,7 @@ export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
       </div>
 
       {/* Pinned CTA — safe-area padded */}
-      <div className="border-t border-line-dark px-5 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-8">
+      <div className="shrink-0 border-t border-line-dark px-5 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-8">
         <Link
           href={cta.href}
           onClick={onClose}
