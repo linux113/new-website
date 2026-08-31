@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "./env.mjs";
 import { execSync } from "node:child_process";
 import bcrypt from "bcryptjs";
 import { PrismaPg } from "@prisma/adapter-pg";

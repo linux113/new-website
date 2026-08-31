@@ -66,7 +66,7 @@ export function AboutClient({ company }: AboutClientProps) {
 
           <h1
             id="about-heading"
-            className="ab-line mt-6 font-display text-[clamp(2.1rem,4vw,3.6rem)] font-semibold leading-[1.02] tracking-[-0.025em] text-[#F5F7F8]"
+            className="ab-line mt-6 font-display text-[clamp(2.5rem,5.2vw,4.5rem)] font-semibold leading-[1.02] tracking-[-0.025em] text-[#F5F7F8]"
             style={{ animationDelay: "160ms" }}
           >
             A Mumbai

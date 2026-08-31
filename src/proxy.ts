@@ -1,16 +1,19 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * Edge middleware — defense-in-depth for /admin.
+ * Edge proxy — defense-in-depth for /admin.
+ *
+ * (Next.js 16: the former `middleware.ts` convention is deprecated in
+ * favour of `proxy.ts` — this file is the migrated version.)
  *
  * Fast cookie-presence check only (no DB at the edge): requests to
  * /admin/* without a session cookie are redirected to login before
  * any page code runs. REAL authorization happens server-side in
  * every page (requireAdminPage) and every mutation
- * (requireAdminAction) — middleware is an optimization, never the
+ * (requireAdminAction) — the proxy is an optimization, never the
  * only gate.
  */
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {

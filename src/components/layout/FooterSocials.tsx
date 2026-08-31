@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Premium social icons (LinkedIn, X, YouTube) with a subtle 3D
+ * Premium social icons (Instagram, Facebook) with a subtle 3D
  * perspective tilt toward the cursor, lift, scale and gold glow.
  * Pointer tracking is rAF-throttled; motion is disabled under
  * prefers-reduced-motion and on touch (coarse pointers).
@@ -11,26 +11,23 @@ import { useEffect, useRef, useState } from "react";
 
 /** Icon artwork per platform. */
 const ICONS: Record<string, React.ReactNode> = {
-  LinkedIn: (
+  Instagram: (
     <>
-      <rect x="3" y="3" width="18" height="18" rx="2" />
-      <path d="M8 10v7M8 7.5v.01M12 17v-4a2 2 0 0 1 4 0v4" />
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <path d="M17.2 6.8v.01" />
     </>
   ),
-  X: <path d="M4 4l16 16M20 4 4 20" />,
-  YouTube: (
-    <>
-      <rect x="2" y="5" width="20" height="14" rx="3" />
-      <path d="m10 9 5 3-5 3V9Z" />
-    </>
+  Facebook: (
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
   ),
 };
 
 /**
  * Social links come from the admin panel (WebsiteSetting social.*).
  * `links` carries the admin-configured URLs — the icons render ONLY
- * for platforms with a saved URL, so the YouTube icon opens the
- * configured channel, never a bare youtube.com. No hardcoded hrefs.
+ * for platforms with a saved URL, so each icon opens the configured
+ * profile, never a bare platform homepage. No hardcoded hrefs.
  */
 export function FooterSocials({
   links,
@@ -51,7 +48,7 @@ export function FooterSocials({
   return (
     <ul className="flex items-center gap-3" aria-label="Social media">
       {links.map((s) => {
-        const icon = ICONS[s.label === "X (Twitter)" ? "X" : s.label];
+        const icon = ICONS[s.label];
         if (!icon) return null;
         return (
           <li key={s.label}>

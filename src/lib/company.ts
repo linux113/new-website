@@ -63,9 +63,8 @@ export const getCompanyInfo = cache(async (): Promise<CompanyInfo> => {
     }
   };
   const social = [
-    { label: "LinkedIn", href: safeHttpUrl(settings["social.linkedin"]) },
-    { label: "X (Twitter)", href: safeHttpUrl(settings["social.x"]) },
-    { label: "YouTube", href: safeHttpUrl(settings["social.youtube"]) },
+    { label: "Instagram", href: safeHttpUrl(settings["social.instagram"]) },
+    { label: "Facebook", href: safeHttpUrl(settings["social.facebook"]) },
   ].filter((s): s is { label: string; href: string } => Boolean(s.href));
 
   return {

@@ -13,7 +13,7 @@ export function ContactHero() {
   return (
     <section
       aria-labelledby="contact-hero-title"
-      className="relative isolate overflow-hidden bg-[#080A0B] pt-28 pb-14 md:pt-34 lg:pb-16"
+      className="keep-dark relative isolate overflow-hidden bg-[#080A0B] pt-28 pb-14 md:pt-34 lg:pb-16"
     >
       {/* Background image + treatments */}
       <div className="absolute inset-0 -z-10" aria-hidden="true">
@@ -59,7 +59,7 @@ export function ContactHero() {
           className="animate-contact-fade-up font-mono text-xs uppercase tracking-[0.35em] text-[#A9B2BA]"
           style={{ animationDelay: "120ms", animationFillMode: "both" }}
         >
-          06 / Contact
+          Get in touch
         </p>
 
         {/* Headline — masked line reveal */}
@@ -69,7 +69,7 @@ export function ContactHero() {
         >
           <span className="block overflow-hidden">
             <span
-              className="block animate-contact-reveal-line text-[clamp(2.2rem,5vw,4rem)]"
+              className="block animate-contact-reveal-line text-[clamp(2.6rem,6vw,5rem)]"
               style={{ animationDelay: "220ms", animationFillMode: "both" }}
             >
               Let&apos;s
@@ -77,7 +77,7 @@ export function ContactHero() {
           </span>
           <span className="block overflow-hidden">
             <span
-              className="block animate-contact-reveal-line text-[clamp(2.2rem,5vw,4rem)] text-[#B89A62]"
+              className="block animate-contact-reveal-line text-[clamp(2.6rem,6vw,5rem)] text-[#B89A62]"
               style={{ animationDelay: "340ms", animationFillMode: "both" }}
             >
               Talk
@@ -85,7 +85,7 @@ export function ContactHero() {
           </span>
           <span className="block overflow-hidden">
             <span
-              className="block animate-contact-reveal-line text-[clamp(2.2rem,5vw,4rem)]"
+              className="block animate-contact-reveal-line text-[clamp(2.6rem,6vw,5rem)]"
               style={{ animationDelay: "460ms", animationFillMode: "both" }}
             >
               Business.

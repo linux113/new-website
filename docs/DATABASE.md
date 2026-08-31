@@ -32,21 +32,30 @@ npm run db:migrate:apply      # apply migrations (sandbox path), or:
 npm run db:seed               # optional, DEVELOPMENT ONLY
 ```
 
-### Sandbox note (`scripts/migrate.mjs`)
+### Sandbox note (`scripts/migrate.mjs` + offline generate)
 
-This sandbox cannot reach `binaries.prisma.sh`, so `prisma migrate dev`
-cannot download the native schema engine. `scripts/migrate.mjs` drives the
-official `@prisma/schema-engine-wasm` with the pg adapter instead and
-produces **standard Prisma migration folders** — fully compatible with
-`prisma migrate deploy` in CI/production.
+This sandbox cannot reach `binaries.prisma.sh`, so the Prisma CLI cannot
+download its native engines. Two scripts work around it:
+
+- `scripts/migrate.mjs` drives the official `@prisma/schema-engine-wasm`
+  with the pg adapter and produces **standard Prisma migration folders** —
+  fully compatible with `prisma migrate deploy` in CI/production.
+- `scripts/generate-offline.mjs` (behind `npm run db:generate`) first tries
+  a normal `prisma generate`; if the engine download fails, it retries with
+  a stub `PRISMA_SCHEMA_ENGINE_BINARY`. That is safe because the Prisma 7
+  `prisma-client` generator builds the client entirely in-process (WASM
+  `getDMMF`) and never executes the native binary. In unrestricted
+  environments the real engine is used transparently.
 
 ```bash
+npm run db:generate               # offline-safe client generation
 npm run db:migrate:create -- <name>   # diff schema → new migration folder
 npm run db:migrate:apply              # apply pending migrations
 npm run db:migrate:status             # list migrations + DB version
 ```
 
-In normal environments prefer plain `npx prisma migrate dev`.
+In normal environments you can also use plain `npx prisma generate`
+(`npm run db:generate:native`) and `npx prisma migrate dev`.
 
 ## 3. Enums
 
@@ -152,6 +161,21 @@ src/lib/
 5. Extend validation + repository functions.
 6. `npx tsc --noEmit && npm run lint && npm run build`.
 
-Local sandbox PostgreSQL 17.5 runs as the "PostgreSQL (dev database)"
-process (embedded runtime under `/home/user/tools/pgruntime`, outside the
-repo). Production uses any standard PostgreSQL via `DATABASE_URL`.
+### Local development database (`scripts/start-local-pg.mjs`)
+
+For sandbox/CI-less development the repo ships an embedded PostgreSQL
+launcher (uses the `embedded-postgres` dev dependency):
+
+```bash
+node scripts/start-local-pg.mjs   # keep it running in its own terminal
+```
+
+It initialises a data dir at `.pgdata/` (gitignored), listens on
+`127.0.0.1:55432`, creates the `sriyaan_dev` database, and writes
+`DATABASE_URL` + `NEXT_PUBLIC_SITE_URL` to `.env.local` (gitignored).
+All standalone DB scripts (`scripts/migrate.mjs`, `prisma/seed.ts`,
+`scripts/*.ts`, `prisma.config.ts`) load `.env.local` in addition to
+`.env` via the shared `scripts/env.mjs` loader — the same precedence
+Next.js itself uses (process env → `.env.local` → `.env`).
+
+Production uses any standard PostgreSQL via `DATABASE_URL`.

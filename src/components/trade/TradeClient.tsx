@@ -18,6 +18,7 @@ import {
 import { Container } from "@/components/ui";
 import { useReducedMotion } from "@/components/motion";
 import { cn } from "@/lib/cn";
+import { extractSvgInner } from "@/lib/svg";
 
 /**
  * SM-10 / TRADE — premium B2B import/export experience.
@@ -97,12 +98,7 @@ function curvedPath(a: { x: number; y: number }, b: { x: number; y: number }) {
   )}, ${cx2.toFixed(1)} ${cy2.toFixed(1)}, ${b.x.toFixed(1)} ${b.y.toFixed(1)}`;
 }
 
-function extractSvgInner(svg: string): string {
-  const open = svg.indexOf(">");
-  const close = svg.lastIndexOf("</svg>");
-  if (open === -1 || close === -1) return "";
-  return svg.slice(open + 1, close);
-}
+
 
 /* ----------------------------- hooks ------------------------------ */
 

@@ -78,10 +78,10 @@ export function InsightsClient({ posts, categories }: InsightsClientProps) {
     <>
       {/* ===================== HERO ===================== */}
       <section className="relative overflow-hidden pb-16 pt-6 lg:pb-24">
-        {/* Right hero image */}
+        {/* Right hero image — stays cinematic (dark) in both themes */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-y-0 right-0 hidden w-3/5 lg:block"
+          className="keep-dark pointer-events-none absolute inset-y-0 right-0 hidden w-3/5 lg:block"
         >
           <div className="relative h-full w-full">
             <Image
@@ -134,13 +134,13 @@ export function InsightsClient({ posts, categories }: InsightsClientProps) {
               className="mt-6 font-display font-semibold leading-[0.98] tracking-[-0.03em] text-[#F5F7F8]"
             >
               <span
-                className="in-line block text-[clamp(2.2rem,5vw,4rem)]"
+                className="in-line block text-[clamp(2.6rem,6vw,5rem)]"
                 style={{ animationDelay: "160ms" }}
               >
                 From{" "}
               </span>
               <span
-                className="in-line in-gold relative mt-1 block text-[clamp(2.2rem,5vw,4rem)]"
+                className="in-line in-gold relative mt-1 block text-[clamp(2.6rem,6vw,5rem)]"
                 style={{ animationDelay: "280ms" }}
               >
                 the desk

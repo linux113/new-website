@@ -1,4 +1,4 @@
-import "dotenv/config";
+import "./env.mjs";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 
@@ -135,9 +135,8 @@ async function main() {
   );
   await upsertSetting("contact.gst", "GSTIN: 27CRKPS0693G1ZB", "contact");
 
-  await upsertSetting("social.linkedin", "https://www.linkedin.com/company/sriyaan-metals", "social");
-  await upsertSetting("social.x", "https://x.com/sriyaanmetals", "social");
-  await upsertSetting("social.youtube", "https://www.youtube.com/@sriyaan-metals", "social");
+  await upsertSetting("social.instagram", "https://www.instagram.com/sriyaanmetals", "social");
+  await upsertSetting("social.facebook", "https://www.facebook.com/sriyaanmetals", "social");
 
   await upsertSetting(
     "content.hero.headline",
@@ -183,9 +182,8 @@ async function main() {
   /* Social links table (footer)                                        */
   /* ------------------------------------------------------------------ */
   const socialRows = [
-    { platform: "linkedin", label: "LinkedIn", url: "https://www.linkedin.com/company/sriyaan-metals" },
-    { platform: "x", label: "X (Twitter)", url: "https://x.com/sriyaanmetals" },
-    { platform: "youtube", label: "YouTube", url: "https://www.youtube.com/@sriyaan-metals" },
+    { platform: "instagram", label: "Instagram", url: "https://www.instagram.com/sriyaanmetals" },
+    { platform: "facebook", label: "Facebook", url: "https://www.facebook.com/sriyaanmetals" },
   ];
   for (const [i, s] of socialRows.entries()) {
     await db.socialLink.upsert({

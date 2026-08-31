@@ -148,13 +148,13 @@ export default async function QualityPage() {
               className="mt-6 font-display font-semibold leading-[1.02] tracking-[-0.025em] text-[#F5F7F8]"
             >
               <span
-                className="ql-line block text-[clamp(2.1rem,4.2vw,3.6rem)]"
+                className="ql-line block text-[clamp(2.5rem,5.2vw,4.5rem)]"
                 style={{ animationDelay: "140ms" }}
               >
                 Verified,
               </span>
               <span
-                className="ql-line ql-gold relative mt-1 block text-[clamp(2.1rem,4.2vw,3.6rem)]"
+                className="ql-line ql-gold relative mt-1 block text-[clamp(2.5rem,5.2vw,4.5rem)]"
                 style={{ animationDelay: "260ms" }}
               >
                 then shipped

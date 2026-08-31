@@ -13,7 +13,7 @@
  *   node scripts/migrate.mjs apply           # apply pending migrations
  *   node scripts/migrate.mjs status          # list migration dirs
  */
-import "dotenv/config";
+import "./env.mjs";
 import { readdirSync, readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { PrismaPg } from "@prisma/adapter-pg";
