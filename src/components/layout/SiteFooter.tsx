@@ -290,7 +290,7 @@ export async function SiteFooter() {
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
               <div className="flex items-center gap-4">
-                <FooterSocials />
+                <FooterSocials links={company.social} />
                 <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#727D86]">
                   Follow Us
                 </span>

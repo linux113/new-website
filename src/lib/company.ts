@@ -51,11 +51,22 @@ export const getCompanyInfo = cache(async (): Promise<CompanyInfo> => {
   const whatsapp2 = get("contact.whatsapp2", CONTACT.whatsapp[1].value);
   const address = get("contact.address", CONTACT.addressLines.join("\n"));
 
+  // Only absolute http(s) URLs pass — blocks javascript:/data: injection
+  // through the settings panel and drops empty values.
+  const safeHttpUrl = (raw: string | undefined): string | null => {
+    if (!raw) return null;
+    try {
+      const u = new URL(raw.trim());
+      return u.protocol === "https:" || u.protocol === "http:" ? u.toString() : null;
+    } catch {
+      return null;
+    }
+  };
   const social = [
-    { label: "LinkedIn", href: get("social.linkedin", "#") },
-    { label: "X (Twitter)", href: get("social.x", "#") },
-    { label: "YouTube", href: get("social.youtube", "#") },
-  ].filter((s) => s.href && s.href !== "");
+    { label: "LinkedIn", href: safeHttpUrl(settings["social.linkedin"]) },
+    { label: "X (Twitter)", href: safeHttpUrl(settings["social.x"]) },
+    { label: "YouTube", href: safeHttpUrl(settings["social.youtube"]) },
+  ].filter((s): s is { label: string; href: string } => Boolean(s.href));
 
   return {
     name: SITE_NAME,

@@ -278,3 +278,45 @@ export async function submitVendorAction(
 
   return { ok: true };
 }
+
+/* ---- Newsletter subscription ---- */
+const newsletterSchema = z.object({
+  email: z.string().trim().toLowerCase().email().max(254),
+});
+
+export async function subscribeNewsletterAction(
+  _prev: PublicFormState,
+  formData: FormData,
+): Promise<PublicFormState> {
+  const ip = await clientIp();
+  if (throttled(ip)) return { error: RATE_LIMIT_MESSAGE };
+  if (clean(formData.get("website"))) return { ok: true }; // honeypot
+
+  const parsed = newsletterSchema.safeParse({ email: formData.get("email") });
+  if (!parsed.success) {
+    return { error: "Enter a valid email address." };
+  }
+
+  try {
+    // Idempotent-ish: skip if this email already subscribed.
+    const existing = await db.contactMessage.findFirst({
+      where: { email: parsed.data.email, source: "newsletter" },
+      select: { id: true },
+    });
+    if (!existing) {
+      await db.contactMessage.create({
+        data: {
+          name: parsed.data.email.split("@")[0].slice(0, 80),
+          email: parsed.data.email,
+          subject: "Newsletter subscription",
+          message: "Subscribed from the Insights newsletter form.",
+          source: "newsletter",
+        },
+      });
+    }
+    return { ok: true };
+  } catch (error) {
+    console.error("[newsletter] persist failed:", error);
+    return { error: "Could not subscribe right now. Please try again." };
+  }
+}

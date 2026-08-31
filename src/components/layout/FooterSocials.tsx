@@ -9,35 +9,34 @@ import { useEffect, useRef, useState } from "react";
  * prefers-reduced-motion and on touch (coarse pointers).
  */
 
-const SOCIALS = [
-  {
-    label: "LinkedIn",
-    href: "https://www.linkedin.com",
-    path: (
-      <>
-        <rect x="3" y="3" width="18" height="18" rx="2" />
-        <path d="M8 10v7M8 7.5v.01M12 17v-4a2 2 0 0 1 4 0v4" />
-      </>
-    ),
-  },
-  {
-    label: "X",
-    href: "https://www.x.com",
-    path: <path d="M4 4l16 16M20 4 4 20" />,
-  },
-  {
-    label: "YouTube",
-    href: "https://www.youtube.com",
-    path: (
-      <>
-        <rect x="2" y="5" width="20" height="14" rx="3" />
-        <path d="m10 9 5 3-5 3V9Z" />
-      </>
-    ),
-  },
-];
+/** Icon artwork per platform. */
+const ICONS: Record<string, React.ReactNode> = {
+  LinkedIn: (
+    <>
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <path d="M8 10v7M8 7.5v.01M12 17v-4a2 2 0 0 1 4 0v4" />
+    </>
+  ),
+  X: <path d="M4 4l16 16M20 4 4 20" />,
+  YouTube: (
+    <>
+      <rect x="2" y="5" width="20" height="14" rx="3" />
+      <path d="m10 9 5 3-5 3V9Z" />
+    </>
+  ),
+};
 
-export function FooterSocials() {
+/**
+ * Social links come from the admin panel (WebsiteSetting social.*).
+ * `links` carries the admin-configured URLs — the icons render ONLY
+ * for platforms with a saved URL, so the YouTube icon opens the
+ * configured channel, never a bare youtube.com. No hardcoded hrefs.
+ */
+export function FooterSocials({
+  links,
+}: {
+  links: { label: string; href: string }[];
+}) {
   const [disabled, setDisabled] = useState(false);
   useEffect(() => {
     const id = requestAnimationFrame(() =>
@@ -51,17 +50,21 @@ export function FooterSocials() {
 
   return (
     <ul className="flex items-center gap-3" aria-label="Social media">
-      {SOCIALS.map((s) => (
-        <li key={s.label}>
-          <SocialButton
-            label={s.label}
-            href={s.href}
-            disabled={disabled}
-          >
-            {s.path}
-          </SocialButton>
-        </li>
-      ))}
+      {links.map((s) => {
+        const icon = ICONS[s.label === "X (Twitter)" ? "X" : s.label];
+        if (!icon) return null;
+        return (
+          <li key={s.label}>
+            <SocialButton
+              label={s.label}
+              href={s.href}
+              disabled={disabled}
+            >
+              {icon}
+            </SocialButton>
+          </li>
+        );
+      })}
     </ul>
   );
 }

@@ -5,6 +5,22 @@ const r2Host = process.env.R2_PUBLIC_URL
   : null;
 
 const nextConfig: NextConfig = {
+  // Strict security headers (preview-safe: frame-ancestors left open
+  // for the sandbox preview iframe; everything else locked down).
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), payment=()" },
+          { key: "X-DNS-Prefetch-Control", value: "on" },
+          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+        ],
+      },
+    ];
+  },
   // Allow the sandboxed live-preview host to reach the dev server.
   allowedDevOrigins: ["*.e2b.app"],
   experimental: {

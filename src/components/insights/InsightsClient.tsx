@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useState } from "react";
+import { subscribeNewsletterAction, type PublicFormState } from "@/lib/public-actions";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -54,7 +55,7 @@ export function InsightsClient({ posts, categories }: InsightsClientProps) {
   const [filter, setFilter] = useState<string>("all");
   const [query, setQuery] = useState("");
   const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
+  const [nlState, nlAction] = useActionState(subscribeNewsletterAction, {} as PublicFormState);
 
   const filtered = posts.filter((p) => {
     const matchCat =
@@ -367,15 +368,10 @@ export function InsightsClient({ posts, categories }: InsightsClientProps) {
           </div>
 
           <div className="lg:col-span-6">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (email.trim()) setSubscribed(true);
-              }}
-              className="flex flex-col gap-3 sm:flex-row"
-            >
+            <form action={nlAction} className="flex flex-col gap-3 sm:flex-row">
               <input
                 type="email"
+                name="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -395,8 +391,16 @@ export function InsightsClient({ posts, categories }: InsightsClientProps) {
                   aria-hidden
                 />
               </button>
+              <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+              />
             </form>
-            {subscribed ? (
+            {nlState.ok ? (
               <p
                 role="status"
                 className="mt-3 font-mono text-xs tracking-[0.08em] text-[#F0C66D]"
