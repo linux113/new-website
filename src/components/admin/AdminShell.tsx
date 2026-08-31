@@ -154,6 +154,12 @@ export function AdminShell({ user, newLeadCount = 0, notifications = [], childre
   const router = useRouter();
   const reduced = useReducedMotion();
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // Admin is always dark — override any public theme choice.
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }, []);
+
   const [notifOpen, setNotifOpen] = useState(false);
   const [actionsOpen, setActionsOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -230,7 +236,7 @@ export function AdminShell({ user, newLeadCount = 0, notifications = [], childre
     <nav aria-label="Admin" className="flex h-full flex-col overflow-y-auto px-3 py-5">
       <Link href="/admin/dashboard" className="mb-6 flex items-center gap-3 px-2">
         <span className="flex size-9 shrink-0 items-center justify-center rounded-xs border border-line bg-ink-soft">
-          <Image src="/brand/logo-mark.png" alt="" width={22} height={22} className="size-[22px]" />
+          <Image src="/brand/logo-emblem-white-gold.png" alt="" width={22} height={22} className="size-[22px] object-contain" />
         </span>
         <span className="min-w-0 leading-tight">
           <span className="block truncate font-display text-[0.9375rem] font-semibold tracking-tight text-ink">

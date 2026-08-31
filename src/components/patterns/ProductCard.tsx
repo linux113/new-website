@@ -46,11 +46,7 @@ export function ProductCard({
       />
 
       <div className="flex flex-1 flex-col gap-2 p-6 lg:p-8">
-        <p className="text-mono-micro text-mist">
-          {product.category}
-          <span aria-hidden="true"> · </span>
-          {product.code}
-        </p>
+        <p className="text-mono-micro text-mist">{product.category}</p>
 
         <h3 className="text-heading-sm font-display font-medium text-paper">
           <Link

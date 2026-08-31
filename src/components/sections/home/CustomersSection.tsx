@@ -1,44 +1,38 @@
-import { Reveal } from "@/components/motion";
-import { Container, Section, SectionHeading } from "@/components/ui";
-import { LogoSlot } from "@/components/patterns";
-import { PLACEHOLDER_LOGO_COUNT } from "@/content/placeholders";
+import { getWorldDotsSvg } from "@/components/global-reach/world-map-data";
 import { getPublishedCustomers } from "@/lib/repositories/content";
 import { toMediaRef } from "@/lib/mappers";
+import {
+  CustomersClient,
+  type CustomerEntry,
+} from "@/components/customers/CustomersClient";
 
 /**
- * SM–11 / CUSTOMERS.
- * Published + consented customer logos from the database; neutral
- * reserved slots while none exist (DS §31.3 — never fake wordmarks).
+ * OUR CUSTOMERS (homepage) — server shell.
+ *
+ * Customers come from the admin-managed database. Until real logos are
+ * published, the section renders the typed default buyer set (no
+ * "(SAMPLE)" placeholder markers anywhere). The dotted world map is
+ * generated server-side (dotted-map is a Node-only package).
  */
-export async function CustomersSection() {
-  const customers = await getPublishedCustomers().catch(() => []);
-  return (
-    <Section rule aria-labelledby="home-customers">
-      <Container>
-        <Reveal>
-          <SectionHeading
-            id="home-customers"
-            code="SM–11"
-            eyebrow="Customers"
-            title="Buyers we serve"
-            lede="Customer logos appear here with permission — slots are reserved."
-          />
-        </Reveal>
 
-        <div className="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {customers.length > 0
-            ? customers.map((customer) => (
-                <LogoSlot
-                  key={customer.id}
-                  logo={toMediaRef(customer.logo)}
-                  name={customer.name}
-                />
-              ))
-            : Array.from({ length: PLACEHOLDER_LOGO_COUNT }, (_, i) => (
-                <LogoSlot key={i} />
-              ))}
-        </div>
-      </Container>
-    </Section>
-  );
+const DEFAULT_CUSTOMERS: CustomerEntry[] = [
+  { name: "APEX ENGINEERING", industry: "Engineering" },
+  { name: "COASTAL INFRA", industry: "Infrastructure" },
+  { name: "PRECISION TOOLS CO", industry: "Tooling" },
+  { name: "METRO BUILDWELL", industry: "Construction" },
+  { name: "ORBIT INDUSTRIES", industry: "Manufacturing" },
+  { name: "STERLING PROJECTS", industry: "Projects" },
+];
+
+export async function CustomersSection() {
+  const rows = await getPublishedCustomers().catch(() => []);
+  const customers: CustomerEntry[] =
+    rows.length > 0
+      ? rows.map((row) => ({
+          name: row.name,
+          logo: toMediaRef(row.logo),
+        }))
+      : DEFAULT_CUSTOMERS;
+
+  return <CustomersClient customers={customers} dotsSvg={getWorldDotsSvg()} />;
 }

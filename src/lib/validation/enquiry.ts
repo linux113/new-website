@@ -35,6 +35,8 @@ export const contactMessageInputSchema = z
     whatsapp: phoneSchema.optional(),
     subject: z.string().trim().max(200).optional(),
     message: z.string().trim().min(1).max(5000),
+    /** Optional product/requirement line from the premium contact form. */
+    requirement: z.string().trim().max(2000).optional(),
     website: z.literal("").optional(), // honeypot
   })
   .strict();

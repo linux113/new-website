@@ -65,9 +65,20 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
+      data-theme="light"
+      suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${inter.variable} ${plexMono.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {/* Apply the saved theme (default: light) before first paint */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var t=localStorage.getItem('sm-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();",
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

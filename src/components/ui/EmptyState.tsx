@@ -1,7 +1,7 @@
 import { cn } from "@/lib/cn";
 
 interface EmptyStateProps {
-  /** Mono meta line, e.g. "NO RESULTS — SM/EMPTY". */
+  /** Mono meta line, e.g. "NO RESULTS". */
   meta?: string;
   /** Short factual heading. */
   title: string;
@@ -18,7 +18,7 @@ interface EmptyStateProps {
  * mascots, no functional colors (empty ≠ error).
  */
 export function EmptyState({
-  meta = "NO RESULTS — SM/EMPTY",
+  meta = "NO RESULTS",
   title,
   description,
   action,

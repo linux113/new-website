@@ -18,6 +18,10 @@ import { DashboardPreview } from "./DashboardPreview";
  * disabled under prefers-reduced-motion. No dependencies added.
  */
 export function LoginExperience() {
+  // Admin is always dark — override any public theme choice.
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }, []);
   const stageRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -91,7 +95,7 @@ export function LoginExperience() {
           <div className="relative rounded-2xl border border-white/[0.07] bg-[rgba(10,14,20,0.72)] p-7 shadow-[0_32px_90px_rgba(0,0,0,0.6)] backdrop-blur-2xl sm:p-9">
             {/* Logo centered */}
             <div className="login-reveal flex flex-col items-center gap-3" style={{ animationDelay: "80ms" }}>
-              <Image src="/brand/logo-mark.png" alt="SRIYAAN METALS" width={44} height={44} className="size-11" />
+              <Image src="/brand/logo-white-gold.png" alt="SRIYAAN METALS" width={167} height={44} className="h-11 w-auto" />
               <span className="font-mono text-[0.6rem] tracking-[0.22em] text-[#5b6b78]">
                 SRIYAAN METALS — WORKSPACE
               </span>

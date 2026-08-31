@@ -54,7 +54,7 @@ export function enquiryAcknowledgement(data: { name: string; productName?: strin
       "",
       "If your requirement is urgent, you can reach us directly:",
       "Phone / WhatsApp: +91 96195 61657",
-      "Email: sales@sriyaanmetals.co",
+      "Email: sales@sriyaanmetals.com",
       "",
       "Regards,",
       "SRIYAAN METALS",

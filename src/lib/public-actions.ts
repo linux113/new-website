@@ -167,15 +167,22 @@ export async function submitContactAction(
     phone: clean(formData.get("phone")),
     subject: clean(formData.get("subject")),
     message: clean(formData.get("message")),
+    requirement: clean(formData.get("requirement")),
   });
   if (!parsed.success) {
     return { error: "Please fix the errors below.", fieldErrors: zodFieldErrors(parsed.error) };
   }
 
   try {
-    const data = { ...parsed.data };
-    delete data.website;
-    await db.contactMessage.create({ data });
+    const { requirement, website: _honeypot, ...rest } = parsed.data;
+    void _honeypot; // honeypot is never persisted
+    // The ContactMessage table has no requirement column; fold the
+    // optional product/requirement line into the stored message so it
+    // is preserved without a schema migration.
+    const message = requirement
+      ? `${rest.message}\n\n---\nProduct / Requirement: ${requirement}`
+      : rest.message;
+    await db.contactMessage.create({ data: { ...rest, message } });
   } catch (error) {
     console.error("[contact] persist failed:", error instanceof Error ? error.message : error);
     return { error: GENERIC_ERROR };

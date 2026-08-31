@@ -1,9 +1,8 @@
 import { Reveal } from "@/components/motion";
 import { Container, Section, SectionHeading } from "@/components/ui";
 import { Carousel, TestimonialCard } from "@/components/patterns";
-import { PLACEHOLDER_TESTIMONIALS } from "@/content/placeholders";
 import { getPublishedTestimonials } from "@/lib/repositories/content";
-import { toMediaRef } from "@/lib/mappers";
+import { toMediaRef, stripDemoMarkers } from "@/lib/mappers";
 
 /**
  * SM–12 / TESTIMONIALS.
@@ -12,17 +11,17 @@ import { toMediaRef } from "@/lib/mappers";
  */
 export async function TestimonialsSection() {
   const dbTestimonials = await getPublishedTestimonials().catch(() => []);
-  const live = dbTestimonials.length > 0;
-  const testimonials = live
-    ? dbTestimonials.map((t) => ({
-        id: t.id,
-        quote: { value: t.quote, placeholder: "" },
-        name: t.personName,
-        role: t.personRole ?? t.customer?.name ?? "",
-        avatar: toMediaRef(t.avatar),
-      }))
-    : PLACEHOLDER_TESTIMONIALS;
-  if (testimonials.length === 0) return null;
+  // Never render placeholder quotes on the live site — the section
+  // appears only once verified customer feedback is published.
+  if (dbTestimonials.length === 0) return null;
+
+  const testimonials = dbTestimonials.map((t) => ({
+    id: t.id,
+    quote: { value: t.quote, placeholder: "" },
+    name: stripDemoMarkers(t.personName),
+    role: stripDemoMarkers(t.personRole ?? t.customer?.name ?? ""),
+    avatar: toMediaRef(t.avatar),
+  }));
 
   return (
     <Section surface="sunken" rule aria-labelledby="home-testimonials">
@@ -30,14 +29,9 @@ export async function TestimonialsSection() {
         <Reveal>
           <SectionHeading
             id="home-testimonials"
-            code="SM–12"
             eyebrow="Testimonials"
             title="What buyers say"
-            lede={
-              live
-                ? undefined
-                : "Published once verified customer feedback is supplied — the slots below are placeholders, not quotes."
-            }
+            lede="Verified feedback from buyers we supply."
           />
         </Reveal>
 

@@ -1,70 +1,87 @@
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/layout";
-import { WorldMap } from "@/components/patterns";
-import { Container, Section, SectionHeading } from "@/components/ui";
-import { MAP_PENDING_NOTE } from "@/content/placeholders";
+import { Container } from "@/components/ui";
 import { SITE_URL } from "@/content/site";
 import { getPublishedGlobalCountries } from "@/lib/repositories/content";
+import { GlobalReachClient } from "@/components/global-reach/GlobalReachClient";
+import { getWorldDotsSvg } from "@/components/global-reach/world-map-data";
 
 export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Global Reach",
   description:
-    "SRIYAAN METALS import and export operations run from Mumbai. Confirmed markets are plotted here once verified.",
+    "SRIYAAN METALS import and export operations run from Mumbai to confirmed markets across the Middle East, Europe, Southeast Asia, Africa and the Americas.",
   alternates: { canonical: `${SITE_URL}/global-reach` },
 };
 
 export default async function GlobalReachPage() {
   const countries = await getPublishedGlobalCountries().catch(() => []);
-  const regions = countries.map((country) => ({
-    code: country.code,
-    label: country.label,
-  }));
+  const confirmedCodes = countries.map((c) => c.code.toLowerCase());
+  const dotsSvg = getWorldDotsSvg();
 
   return (
-    <Section rhythm="default" className="pt-32 lg:pt-44" aria-labelledby="global-heading">
-      <Container>
-        <Breadcrumbs
-          className="mb-10"
-          items={[{ label: "Home", href: "/" }, { label: "Global Reach" }]}
+    <main
+      className="relative min-h-screen overflow-hidden bg-[#050708] pb-24 pt-28 text-[#F5F7F8] lg:pb-32 lg:pt-36"
+      aria-labelledby="global-heading"
+    >
+      {/* Background atmosphere */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        {/* Fine technical grid */}
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right, #ffffff 1px, transparent 1px), linear-gradient(to bottom, #ffffff 1px, transparent 1px)",
+            backgroundSize: "88px 88px",
+            maskImage:
+              "radial-gradient(ellipse 80% 60% at 50% 30%, black 20%, transparent 80%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 80% 60% at 50% 30%, black 20%, transparent 80%)",
+          }}
         />
+        {/* Warm gold wash behind the map area (right side) */}
+        <div
+          className="absolute -right-40 top-24 h-[42rem] w-[42rem] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(214,168,74,0.10) 0%, rgba(214,168,74,0.03) 40%, transparent 70%)",
+          }}
+        />
+        {/* Deep vignette */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 100% 80% at 50% 0%, transparent 40%, rgba(5,7,8,0.8) 100%)",
+          }}
+        />
+      </div>
 
-        <div className="grid grid-cols-4 gap-8 md:grid-cols-12">
-          <div className="col-span-4 md:col-span-5">
-            <SectionHeading
-              id="global-heading"
-              code="SM–GR"
-              eyebrow="Global reach"
-              title="Sourcing and supplying across borders"
-              lede="Import and export operations run from Mumbai. Markets appear on this map only after they have been confirmed and published."
-              align="start"
-              as="h1"
-            />
-            {regions.length === 0 ? (
-              <p className="mt-8 text-mono-meta text-surface-muted">{MAP_PENDING_NOTE}</p>
-            ) : (
-              <ul className="mt-10 flex flex-col border-t border-edge">
-                {regions.map((region, i) => (
-                  <li
-                    key={region.code}
-                    className="flex items-baseline justify-between gap-4 border-b border-edge py-4"
-                  >
-                    <span className="text-heading-sm text-surface-fg">{region.label}</span>
-                    <span className="text-mono-micro text-surface-muted tabular-nums">
-                      {region.code.toUpperCase()} · {(i + 1).toString().padStart(2, "0")}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+      <Container>
+        <nav
+          aria-label="Breadcrumb"
+          className="gr-breadcrumb"
+        >
+          <Breadcrumbs
+            className="mb-10"
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Global Reach" },
+            ]}
+          />
+        </nav>
 
-          <div className="col-span-4 md:col-span-7">
-            <WorldMap regions={regions} pendingNote={MAP_PENDING_NOTE} />
-          </div>
-        </div>
+        <GlobalReachClient confirmedCodes={confirmedCodes} dotsSvg={dotsSvg} />
       </Container>
-    </Section>
+
+      <style>{`
+        @keyframes gr-bc-in {
+          from { opacity: 0; transform: translateY(-8px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .gr-breadcrumb { animation: gr-bc-in 0.7s cubic-bezier(0.22,1,0.36,1) both; }
+      `}</style>
+    </main>
   );
 }

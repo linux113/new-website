@@ -24,19 +24,25 @@ export const MAIN_NAV: NavItem[] = [
     label: "Products",
     href: "/products",
     children: [
-      // PLACEHOLDER-CONTENT: generic neutral category slots, no invented
-      // product lines. Replaced wholesale when the client catalogue lands.
-      { index: "01", label: "Category A — placeholder", href: "/products", meta: "[RANGE — TBD]" },
-      { index: "02", label: "Category B — placeholder", href: "/products", meta: "[RANGE — TBD]" },
-      { index: "03", label: "Category C — placeholder", href: "/products", meta: "[RANGE — TBD]" },
-      { index: "04", label: "Category D — placeholder", href: "/products", meta: "[RANGE — TBD]" },
+      { index: "01", label: "Bolts, Studs & Screws", href: "/products", meta: "Hex bolts, studs & threaded rods" },
+      { index: "02", label: "Nuts & Washers", href: "/products", meta: "Hex, slotted, coupling & plain" },
+      { index: "03", label: "Anchors & Foundation Bolts", href: "/products", meta: "Anchor & J-type foundation bolts" },
+      { index: "04", label: "Rivets & Inserts", href: "/products", meta: "Rivet nuts & threaded inserts" },
+      { index: "05", label: "Pipe Fittings & Flanges", href: "/products", meta: "BW / SW / threaded, forged flanges" },
+      { index: "06", label: "Carbon Steel Pipes", href: "/products", meta: "Dimensions per ASTM B36.10" },
     ],
   },
   { label: "Industries", href: "/industries" },
-  { label: "About", href: "/about" },
-  { label: "Quality", href: "/quality" },
-  { label: "Manufacturing", href: "/manufacturing" },
-  { label: "Global Reach", href: "/global-reach" },
+  {
+    label: "Company",
+    href: "/about",
+    children: [
+      { index: "01", label: "About", href: "/about", meta: "A Mumbai trading desk" },
+      { index: "02", label: "Quality", href: "/quality", meta: "Verified, then shipped" },
+      { index: "03", label: "Manufacturing", href: "/manufacturing", meta: "From intake to dispatch" },
+      { index: "04", label: "Global Reach", href: "/global-reach", meta: "Import & export lanes" },
+    ],
+  },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
@@ -53,6 +59,7 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
       { label: "Quality", href: "/quality" },
       { label: "Global Reach", href: "/global-reach" },
       { label: "Blog", href: "/blog" },
+      { label: "Contact", href: "/contact" },
     ],
   },
   {
@@ -64,14 +71,6 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
       { label: "Category C — placeholder", href: "/products" },
       { label: "Category D — placeholder", href: "/products" },
       { label: "All products", href: "/products" },
-    ],
-  },
-  {
-    heading: "Engage",
-    links: [
-      { label: "Industries", href: "/industries" },
-      { label: "Get a Quote", href: "/contact" },
-      { label: "Contact", href: "/contact" },
     ],
   },
 ];
@@ -87,10 +86,10 @@ export const CONTACT: ContactInfo = {
     { label: "WhatsApp", value: "+91 98190 33982", href: "https://wa.me/919819033982" },
   ],
   emails: [
-    { label: "General", value: "info@sriyaanmetals.co", href: "mailto:info@sriyaanmetals.co" },
-    { label: "Sales", value: "sales@sriyaanmetals.co", href: "mailto:sales@sriyaanmetals.co" },
-    { label: "Purchase", value: "purchase@sriyaanmetals.co", href: "mailto:purchase@sriyaanmetals.co" },
-    { label: "Accounts", value: "accounts@sriyaanmetals.co", href: "mailto:accounts@sriyaanmetals.co" },
+    { label: "General", value: "info@sriyaanmetals.com", href: "mailto:info@sriyaanmetals.com" },
+    { label: "Sales", value: "sales@sriyaanmetals.com", href: "mailto:sales@sriyaanmetals.com" },
+    { label: "Purchase", value: "purchase@sriyaanmetals.com", href: "mailto:purchase@sriyaanmetals.com" },
+    { label: "Accounts", value: "accounts@sriyaanmetals.com", href: "mailto:accounts@sriyaanmetals.com" },
   ],
   addressLines: [
     "Floor-2, 204, Plot No.96/98,",

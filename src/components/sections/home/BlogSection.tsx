@@ -1,6 +1,7 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/motion";
 import {
-  ButtonLink,
   Container,
   EmptyState,
   Section,
@@ -27,7 +28,6 @@ export async function BlogSection() {
         <Reveal>
           <SectionHeading
             id="home-blog"
-            code="SM–13"
             eyebrow="Insights"
             title="From the desk"
             lede="Technical guides and company updates will publish here."
@@ -46,7 +46,7 @@ export async function BlogSection() {
           <Reveal delay={100}>
             <div className="mt-16 border-y border-edge">
               <EmptyState
-                meta="INSIGHTS — SM/PENDING"
+                meta="INSIGHTS"
                 title="Articles are in preparation"
                 description="Planned editorial series:"
                 action={
@@ -68,9 +68,13 @@ export async function BlogSection() {
 
         {hasPosts ? (
           <div className="mt-12">
-            <ButtonLink href="/blog" variant="ghost" arrow>
+            <Link
+              href="/blog"
+              className="group inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[#E5C074] transition-colors hover:text-[#F0C66D]"
+            >
               All articles
-            </ButtonLink>
+              <ArrowRight size={14} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
           </div>
         ) : null}
       </Container>

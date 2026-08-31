@@ -2,7 +2,7 @@ import { cn } from "@/lib/cn";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 
 interface SectionHeadingProps {
-  /** Section code for the eyebrow, e.g. "SM–04". */
+  /** Deprecated section code (e.g. "SM–04"). No longer rendered. */
   code?: string;
   /** Eyebrow label, e.g. "CAPABILITIES". */
   eyebrow?: string;

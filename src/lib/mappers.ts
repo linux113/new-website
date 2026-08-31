@@ -21,6 +21,11 @@ interface DbProductListRow {
   images: { media: DbMedia; altText: string | null }[];
 }
 
+/** Remove internal "(demo)"/"(sample)" markers from seeded content. */
+export function stripDemoMarkers(value: string): string {
+  return value.replace(/\s*\((demo|sample)\)\s*/gi, " ").replace(/\s{2,}/g, " ").trim();
+}
+
 export function toMediaRef(
   media: DbMedia | null | undefined,
   altOverride?: string | null,
@@ -28,16 +33,19 @@ export function toMediaRef(
   if (!media?.publicUrl) return null;
   return {
     src: media.publicUrl,
-    alt: altOverride ?? media.altText ?? "",
+    alt: stripDemoMarkers(altOverride ?? media.altText ?? ""),
   };
 }
 
 export function toPatternProduct(row: DbProductListRow): PatternProduct {
   const firstImage = row.images[0];
+  // Strip internal "(demo)" suffixes from seeded content so the public
+  // site never shows placeholder markers.
+  const stripDemo = (value: string) => value.replace(/\s*\(demo\)\s*$/i, "").trim();
   return {
     slug: row.slug,
-    name: row.name,
-    category: row.category.name,
+    name: stripDemo(row.name),
+    category: stripDemo(row.category.name),
     code: row.productCode ?? "—",
     specSummary: row.shortDescription
       ? { value: row.shortDescription, placeholder: "" }
@@ -60,9 +68,9 @@ interface DbPostRow {
 export function toPatternPost(row: DbPostRow): Post {
   return {
     slug: row.slug,
-    title: row.title,
+    title: stripDemoMarkers(row.title),
     date: row.publishedAt?.toISOString() ?? null,
-    category: row.category?.name ?? "Insights",
+    category: stripDemoMarkers(row.category?.name ?? "Insights"),
     excerpt: row.excerpt ?? "",
     image: toMediaRef(row.featuredImage),
     href: `/blog/${row.slug}`,

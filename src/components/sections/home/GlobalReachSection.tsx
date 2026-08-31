@@ -1,50 +1,62 @@
 import { Reveal } from "@/components/motion";
-import { Container, Section, SectionHeading } from "@/components/ui";
-import { WorldMap } from "@/components/patterns";
-import { MAP_PENDING_NOTE } from "@/content/placeholders";
+import { Container } from "@/components/ui";
+import { GlobalReachClient } from "@/components/global-reach/GlobalReachClient";
 import { getPublishedGlobalCountries } from "@/lib/repositories/content";
+import { getWorldDotsSvg } from "@/components/global-reach/world-map-data";
 
 /**
- * SM–09 / GLOBAL REACH.
- * Dark section. Markets render only when the admin publishes
- * verified GlobalCountry rows; otherwise the neutral graticule
- * state with zero highlighted countries (DS §31.5).
+ * SM–09 / GLOBAL REACH (homepage).
+ * Reuses the premium animated map from the /global-reach page with
+ * the five regions. Markets also reflect published
+ * GlobalCountry rows from the database.
  */
 export async function GlobalReachSection() {
   const countries = await getPublishedGlobalCountries().catch(() => []);
-  const regions = countries.map((country) => ({
-    code: country.code,
-    label: country.label,
-  }));
-  return (
-    <Section surface="dark" rule aria-labelledby="home-global">
-      <Container>
-        <div className="grid grid-cols-4 gap-6 md:grid-cols-12 md:gap-8">
-          {/* Copy — cols 1–4 */}
-          <div className="col-span-4 md:col-span-4">
-            <Reveal>
-              <SectionHeading
-                id="home-global"
-                code="SM–09"
-                eyebrow="Global reach"
-                title="Sourcing and supplying across borders"
-                lede="Import and export operations run from Mumbai. Confirmed market data will be plotted here once verified."
-                align="start"
-              />
-            </Reveal>
-            {regions.length === 0 ? (
-              <p className="mt-8 text-mono-meta text-surface-muted">
-                {MAP_PENDING_NOTE}
-              </p>
-            ) : null}
-          </div>
+  const confirmedCodes = countries.map((c) => c.code.toLowerCase());
+  const dotsSvg = getWorldDotsSvg();
 
-          {/* Map — cols 5–12 */}
-          <Reveal delay={100} className="col-span-4 md:col-span-8">
-            <WorldMap regions={regions} pendingNote={MAP_PENDING_NOTE} />
-          </Reveal>
-        </div>
+  return (
+    <section
+      className="relative overflow-hidden border-t border-white/10 bg-[#05080B] py-20 text-[#F5F7F8] lg:py-28"
+      aria-labelledby="home-global"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right,#fff 1px,transparent 1px),linear-gradient(to bottom,#fff 1px,transparent 1px)",
+          backgroundSize: "88px 88px",
+          maskImage:
+            "radial-gradient(ellipse 80% 60% at 50% 0%,#000 20%,transparent 80%)",
+        }}
+      />
+      <Container>
+        <Reveal>
+          <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-[#D8A84E]">
+              Global Reach
+          </p>
+          <h2
+            id="home-global"
+            className="mt-4 max-w-2xl font-display text-[clamp(1.9rem,3.4vw,3.2rem)] font-semibold leading-[1.05] tracking-tight text-[#F5F7F8]"
+          >
+            Sourcing and supplying across borders
+          </h2>
+          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-[#A9B2BA]">
+            Import and export operations run from Mumbai to confirmed
+            markets across the Middle East, Europe, Southeast Asia,
+            Africa and the Americas.
+          </p>
+        </Reveal>
+
+        <Reveal delay={120} className="mt-10">
+          <GlobalReachClient
+            confirmedCodes={confirmedCodes}
+            dotsSvg={dotsSvg}
+            embedded
+          />
+        </Reveal>
       </Container>
-    </Section>
+    </section>
   );
 }

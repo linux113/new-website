@@ -24,9 +24,13 @@ export function LoginForm() {
   useEffect(() => {
     if (!state.error) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    setShake(true);
+    // Defer the state update so it is not synchronous in the effect body.
+    const start = setTimeout(() => setShake(true), 0);
     const timer = setTimeout(() => setShake(false), 500);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(start);
+      clearTimeout(timer);
+    };
   }, [state]);
 
   // Magnetic CTA (desktop pointers, reduced-motion off).
@@ -141,7 +145,7 @@ export function LoginForm() {
           Remember me
         </label>
         <a
-          href="mailto:info@sriyaanmetals.co?subject=Admin%20password%20reset%20request"
+          href="mailto:info@sriyaanmetals.com?subject=Admin%20password%20reset%20request"
           className="text-[0.82rem] text-[#8b98a5] underline-offset-4 transition-colors duration-200 hover:text-[#22d3ee] hover:underline"
         >
           Forgot password?

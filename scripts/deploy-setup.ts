@@ -54,7 +54,12 @@ async function main() {
   if (SEED_DEMO === "1") {
     console.log("[deploy-setup] SEED_DEMO=1 — seeding demo content + analytics…");
     execSync("npx tsx scripts/seed-demo-content.ts", { stdio: "inherit" });
-    execSync("npx tsx scripts/seed-demo-analytics.ts", { stdio: "inherit" });
+    execSync("npx tsx scripts/seed-demo-extra.ts", { stdio: "inherit" });
+    execSync("npx tsx scripts/seed-demo-more.ts", { stdio: "inherit" });
+    // NOTE: demo analytics seeding removed — the admin panel shows
+    // only REAL enquiries, contacts and vendor requests. Legacy demo
+    // analytics rows are purged by seed-demo-content.ts.
+
   } else {
     console.log("[deploy-setup] SEED_DEMO not set — skipping demo data.");
   }

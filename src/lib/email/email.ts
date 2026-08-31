@@ -81,9 +81,9 @@ export async function sendEmail(message: EmailMessage): Promise<EmailResult> {
 export type NotificationKind = "enquiry" | "contact" | "vendor";
 
 const DEFAULT_RECIPIENTS: Record<NotificationKind, string> = {
-  enquiry: "sales@sriyaanmetals.co",
-  contact: "info@sriyaanmetals.co",
-  vendor: "purchase@sriyaanmetals.co",
+  enquiry: "sales@sriyaanmetals.com",
+  contact: "info@sriyaanmetals.com",
+  vendor: "purchase@sriyaanmetals.com",
 };
 
 export async function getNotificationRecipient(

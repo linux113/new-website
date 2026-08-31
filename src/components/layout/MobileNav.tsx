@@ -6,6 +6,8 @@ import { cn } from "@/lib/cn";
 import { useReducedMotion } from "@/components/motion";
 import type { NavItem } from "@/content/types";
 import { CloseIcon } from "./icons";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Download } from "lucide-react";
 
 interface MobileNavProps {
   id: string;
@@ -134,6 +136,35 @@ export function MobileNav({ id, open, nav, cta, onClose }: MobileNavProps) {
           ))}
         </ul>
       </nav>
+
+      {/* Catalogue + theme — safe-area padded */}
+      <div className="flex flex-col gap-3 border-t border-edge px-6 pt-5">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-surface-fg-muted">
+          Download Catalogue
+        </p>
+        <div className="flex flex-col gap-2">
+          {[
+            { label: "Sriyaan Metals — Full Catalogue", href: "/catalogue/sriyaan-metals-catalog.pdf" },
+            { label: "Carbon Steel Pipes", href: "/catalogue/carbon-steel-pipes.pdf" },
+          ].map((c) => (
+            <a
+              key={c.href}
+              href={c.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={onClose}
+              className="flex items-center gap-3 rounded-xs border border-edge px-4 py-3 text-body-sm font-medium text-surface-fg"
+            >
+              <Download size={15} strokeWidth={1.8} aria-hidden className="text-accent" />
+              {c.label}
+            </a>
+          ))}
+        </div>
+        <div className="mt-1 flex items-center justify-between">
+          <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-surface-fg-muted">Theme</span>
+          <ThemeToggle />
+        </div>
+      </div>
 
       {/* Pinned CTA — safe-area padded (DS §24.9) */}
       <div className="border-t border-line-dark px-5 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-8">

@@ -1,7 +1,10 @@
 import { cn } from "@/lib/cn";
 
 interface EyebrowProps {
-  /** Section code, e.g. "SM–04" (DS §2 "Index Numbering"). */
+  /**
+   * Deprecated section code (e.g. "SM–04"). No longer rendered —
+   * kept as an accepted prop so existing call sites keep working.
+   */
   code?: string;
   /** Eyebrow label, e.g. "CAPABILITIES". */
   children: React.ReactNode;
@@ -9,20 +12,11 @@ interface EyebrowProps {
 }
 
 /**
- * Mono meta-layer eyebrow (DS §17): `SM–04 / CAPABILITIES`.
- * 12px IBM Plex Mono, uppercase, tracked. The code renders in accent;
- * the label in the surface's muted foreground.
+ * Mono meta-layer eyebrow (DS §17): `CAPABILITIES`.
+ * 12px IBM Plex Mono, uppercase, tracked, in the surface's muted
+ * foreground. The legacy "SM–NN / " code prefix has been removed
+ * from the design — only the label renders.
  */
-export function Eyebrow({ code, children, className }: EyebrowProps) {
-  return (
-    <p className={cn("text-mono-meta text-surface-muted", className)}>
-      {code ? (
-        <>
-          <span className="text-accent">{code}</span>
-          <span aria-hidden="true"> / </span>
-        </>
-      ) : null}
-      {children}
-    </p>
-  );
+export function Eyebrow({ children, className }: EyebrowProps) {
+  return <p className={cn("text-mono-meta text-surface-muted", className)}>{children}</p>;
 }

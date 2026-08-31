@@ -88,7 +88,7 @@ export default async function ProductsPage({
         <div className="mt-12">
           {dbError ? (
             <div className="border-y border-edge py-16 text-center">
-              <p className="text-mono-meta text-surface-muted">ERROR — SM/DB</p>
+              <p className="text-mono-meta text-surface-muted">ERROR — DATABASE</p>
               <p className="mt-3 text-display-md">The catalogue is temporarily unavailable.</p>
               <p className="mt-2 text-body-sm text-surface-muted">
                 Please try again shortly, or reach us directly by phone or WhatsApp.

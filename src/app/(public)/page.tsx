@@ -6,38 +6,35 @@ import {
   FeaturedProductsSection,
   GlobalReachSection,
   ImportExportSection,
-  IndustriesSection,
   ManufacturingSection,
-  ProductCategoriesSection,
-  QualitySection,
-  QuoteCTASection,
   TestimonialsSection,
   WhyChooseUsSection,
 } from "@/components/sections/home";
+import { Reveal } from "@/components/motion";
 import { KineticSection } from "@/components/sections/home/KineticSection";
-import { VideoHero } from "@/components/sections/home/VideoHero";
+import { HomeHero } from "@/components/home/HomeHero";
+import { HomeProducts } from "@/components/home/HomeProducts";
+import { HomeIndustries } from "@/components/home/HomeIndustries";
+import { HomeAbout } from "@/components/home/HomeAbout";
+import { HomeQuality } from "@/components/home/HomeQuality";
+import { HomeFinalCTA } from "@/components/home/HomeFinalCTA";
 import { CONTACT, SITE_NAME, SITE_URL } from "@/content/site";
 import { getCompanyInfo } from "@/lib/company";
 
 const DESCRIPTION =
-  "SRIYAAN METALS — Mumbai-based metals trading, import and export. Send your specification for a considered quote.";
+  "SRIYAAN METALS — Mumbai-based metals trading, import & export. A B2B industrial metal supplier offering metal sourcing, specification matching and reliable procurement.";
 
-/** Homepage metadata — admin SEO settings override verified defaults. */
 export async function generateMetadata(): Promise<Metadata> {
   const company = await getCompanyInfo();
-  const title =
-    company.seo["seo.home.title"] ||
-    company.seo["seo.default.title"] ||
-    "SRIYAAN METALS — Metals Trading, Import & Export, Mumbai";
+  const title = company.seo["seo.home.title"] || SITE_NAME;
   const description =
-    company.seo["seo.home.description"] ||
-    company.seo["seo.default.description"] ||
-    DESCRIPTION;
+    company.seo["seo.home.description"] || DESCRIPTION;
   const robots = company.seo["seo.robots"] || undefined;
 
   return {
     title,
     description,
+    metadataBase: new URL(SITE_URL),
     alternates: { canonical: SITE_URL },
     ...(robots ? { robots } : {}),
     openGraph: {
@@ -47,15 +44,12 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: SITE_NAME,
       type: "website",
       locale: "en_IN",
+      images: [{ url: "/images/home/hero-metal.jpg", width: 1600, height: 900 }],
     },
     twitter: { card: "summary_large_image", title, description },
   };
 }
 
-/**
- * Organization schema — VERIFIED client-supplied facts only
- * (name, url, address, phones, hours). No invented claims.
- */
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -66,51 +60,87 @@ const organizationSchema = {
   address: {
     "@type": "PostalAddress",
     streetAddress:
-      "Floor-2, 204, Plot No.96/98, Platinum Arcade, JSS Road, Central Plaza Cinema Charni Road, Opera House",
+      "Floor-2, 204, Plot No.96/98, Platinum Arcade, JSS Road, Opera House",
     addressLocality: "Mumbai",
     postalCode: "400004",
     addressRegion: "Maharashtra",
     addressCountry: "IN",
   },
-} as const;
+};
 
-const websiteSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: SITE_NAME,
-  url: SITE_URL,
-} as const;
-
-/**
- * SRIYAAN METALS — homepage (Phase 4).
- * Thin composition only; every section is a server component in
- * components/sections/home. Surface rhythm alternates dark/light/
- * sunken per DS §9 — never two darks adjacent.
- */
-export default function HomePage() {
+export default async function HomePage() {
+  const company = await getCompanyInfo();
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([organizationSchema, websiteSchema]),
+          __html: JSON.stringify([organizationSchema]),
         }}
       />
-      <VideoHero />
+
+      {/* Hero with auto-playing metal frame sequence */}
+      <HomeHero
+        company={{ hours: company.hours, gst: company.gst, phones: company.phones }}
+      />
+
+      {/* Sourced. Checked. Delivered. */}
       <KineticSection />
+
+      {/* Products — premium B2B rows */}
+      <Reveal className="block">
+        <HomeProducts />
+      </Reveal>
+
       <CapabilityStrip />
-      <ProductCategoriesSection />
-      <FeaturedProductsSection />
-      <WhyChooseUsSection />
-      <ManufacturingSection />
-      <QualitySection />
-      <IndustriesSection />
-      <GlobalReachSection />
+
+      <Reveal className="block">
+        <FeaturedProductsSection />
+      </Reveal>
+      <Reveal className="block">
+        <WhyChooseUsSection />
+      </Reveal>
+
+      {/* Manufacturing — From intake to dispatch */}
+      <Reveal className="block">
+        <ManufacturingSection />
+      </Reveal>
+
+      {/* Quality — Verified, then shipped */}
+      <Reveal className="block">
+        <HomeQuality />
+      </Reveal>
+
+      {/* Industries — Where the material goes */}
+      <Reveal className="block">
+        <HomeIndustries />
+      </Reveal>
+
+      {/* Global Reach — Sourcing and supplying across borders */}
+      <Reveal className="block">
+        <GlobalReachSection />
+      </Reveal>
+
+      {/* About — A Mumbai trading desk */}
+      <Reveal className="block">
+        <HomeAbout />
+      </Reveal>
+
+      {/* Trade — SM-10 / Two directions, one standard */}
       <ImportExportSection />
-      <CustomersSection />
-      <TestimonialsSection />
-      <BlogSection />
-      <QuoteCTASection />
+
+      <Reveal className="block">
+        <CustomersSection />
+      </Reveal>
+      <Reveal className="block">
+        <TestimonialsSection />
+      </Reveal>
+      <Reveal className="block">
+        <BlogSection />
+      </Reveal>
+
+      {/* Final CTA */}
+      <HomeFinalCTA />
     </>
   );
 }

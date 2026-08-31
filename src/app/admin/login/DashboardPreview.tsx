@@ -29,8 +29,9 @@ function useCountUp(target: number, start: boolean, duration = 1400) {
   useEffect(() => {
     if (!start) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setValue(target);
-      return;
+      // Defer to avoid synchronous setState in the effect body.
+      const id = requestAnimationFrame(() => setValue(target));
+      return () => cancelAnimationFrame(id);
     }
     let raf = 0;
     const t0 = performance.now();

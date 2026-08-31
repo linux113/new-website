@@ -50,3 +50,7 @@ next-env.d.ts
 /sec-*.png
 /audit-*.png
 /.shots/
+
+# local embedded PostgreSQL data (dev sandbox)
+.pgdata/
+.env.local

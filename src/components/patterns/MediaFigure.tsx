@@ -50,7 +50,7 @@ export function MediaFigure({
         graded={graded}
       />
       {label || caption ? (
-        <figcaption className="text-mono-micro text-surface-muted">
+        <figcaption className="font-mono text-xs tracking-[0.05em] text-surface-muted">
           {label}
           {label && caption ? <span aria-hidden="true"> — </span> : null}
           {caption}

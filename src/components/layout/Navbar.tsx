@@ -9,8 +9,11 @@ import { Container } from "@/components/ui";
 import { useReducedMotion } from "@/components/motion";
 import type { NavItem } from "@/content/types";
 import { MegaMenu } from "./MegaMenu";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { CatalogueButton } from "@/components/CatalogueButton";
 import { MobileNav } from "./MobileNav";
 import { ChevronDownIcon, MenuIcon } from "./icons";
+import { ArrowRight } from "lucide-react";
 
 interface NavbarProps {
   siteName: string;
@@ -18,7 +21,6 @@ interface NavbarProps {
   cta: { label: string; href: string };
 }
 
-const HIDE_AFTER = 400; // px — DS §12 hide/reveal threshold
 const SCROLLED_AFTER = 8;
 
 /**
@@ -38,13 +40,15 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
 
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
-  const [megaOpen, setMegaOpen] = useState(false);
+  const [megaOpenId, setMegaOpenId] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const headerRef = useRef<HTMLElement>(null);
-  const megaTriggerRef = useRef<HTMLButtonElement>(null);
+  const megaTriggers = useRef(new Map<string, HTMLButtonElement>());
   const lastY = useRef(0);
   const raf = useRef(0);
+
+  const megaOpen = megaOpenId !== null;
 
   const anyOverlayOpen = megaOpen || mobileOpen;
 
@@ -55,10 +59,9 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
       setScrolled(y > SCROLLED_AFTER);
 
       if (!reduced && !anyOverlayOpen) {
-        const goingDown = y > lastY.current + 4;
-        const goingUp = y < lastY.current - 4;
-        if (goingDown && y > HIDE_AFTER) setHidden(true);
-        else if (goingUp || y <= HIDE_AFTER) setHidden(false);
+        // Always keep the header visible — the page is long and the
+        // nav + primary CTA must stay reachable (audit: sticky header).
+        setHidden(false);
       } else {
         setHidden(false);
       }
@@ -82,14 +85,18 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
   const [prevPathname, setPrevPathname] = useState(pathname);
   if (prevPathname !== pathname) {
     setPrevPathname(pathname);
-    setMegaOpen(false);
+    setMegaOpenId(null);
     setMobileOpen(false);
   }
 
-  const closeMega = useCallback((refocus = false) => {
-    setMegaOpen(false);
-    if (refocus) megaTriggerRef.current?.focus();
-  }, []);
+  const closeMega = useCallback(
+    (refocus = false) => {
+      const id = megaOpenId;
+      setMegaOpenId(null);
+      if (refocus && id) megaTriggers.current.get(id)?.focus();
+    },
+    [megaOpenId],
+  );
 
   // Click outside / focus outside closes the mega menu.
   useEffect(() => {
@@ -108,14 +115,15 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
     };
   }, [megaOpen, closeMega]);
 
-  const productsItem = nav.find((item) => item.children?.length);
-
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
-  // Transparent overlay is only readable over the homepage's dark
-  // hero; every other route gets the solid navbar from the start.
-  const solid = scrolled || pathname !== "/";
+  // Transparent overlay is only readable over a dark hero. The home
+  // and contact heroes are dark/photographic, so those routes start
+  // transparent; every other route gets the solid navbar from the
+  // start.
+  const transparentTop = pathname === "/" || pathname === "/contact";
+  const solid = scrolled || !transparentTop;
 
   return (
     <header
@@ -129,7 +137,7 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
     >
       <div
         className={cn(
-          "border-b transition-colors duration-(--duration-base) ease-(--ease-inout) motion-reduce:transition-none",
+          "nav-bar border-b transition-colors duration-(--duration-base) ease-(--ease-inout) motion-reduce:transition-none",
           solid
             ? "border-line-dark bg-ink/85 backdrop-blur-md"
             : "border-paper/10 bg-transparent",
@@ -150,36 +158,47 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
               aria-label={`${siteName} — home`}
             >
               <Image
-                src="/brand/logo-mark.png"
-                alt=""
-                width={36}
-                height={36}
+                src="/brand/logo-white-gold.png"
+                alt="SRIYAAN METALS"
+                width={167}
+                height={44}
                 priority
-                className="size-9 shrink-0"
+                className="logo-dark h-11 w-auto shrink-0"
               />
-              <span className="text-heading-sm font-display font-semibold tracking-tight text-surface-fg">
-                {siteName}
-              </span>
+              <Image
+                src="/brand/logo-original.png"
+                alt="SRIYAAN METALS"
+                width={167}
+                height={44}
+                priority
+                className="logo-light h-11 w-auto shrink-0"
+              />
             </Link>
 
             {/* Desktop links */}
-            <ul className="hidden items-center gap-1 lg:flex">
+            <ul className="hidden items-center gap-2 lg:flex">
               {nav.map((item) => {
                 const active = isActive(item.href);
                 if (item.children?.length) {
+                  const menuId = `mega-${item.label.toLowerCase().replace(/[^a-z]+/g, "-")}`;
+                  const isOpen = megaOpenId === menuId;
+                  const isProducts = item.label === "Products";
                   return (
-                    <li key={item.label}>
+                    <li key={item.label} className="relative">
                       <button
-                        ref={megaTriggerRef}
+                        ref={(el) => {
+                          if (el) megaTriggers.current.set(menuId, el);
+                          else megaTriggers.current.delete(menuId);
+                        }}
                         type="button"
-                        aria-expanded={megaOpen}
-                        aria-controls="mega-menu-products"
-                        onClick={() => setMegaOpen((v) => !v)}
+                        aria-expanded={isOpen}
+                        aria-controls={menuId}
+                        onClick={() => setMegaOpenId((cur) => (cur === menuId ? null : menuId))}
                         className={cn(
                           "flex items-center gap-1 px-3 py-2",
                           "text-body-sm font-medium text-surface-fg",
                           "relative after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 after:bg-accent after:opacity-0 after:transition-opacity after:duration-(--duration-fast)",
-                          (active || megaOpen) && "after:opacity-100",
+                          (active || isOpen) && "after:opacity-100",
                         )}
                       >
                         {item.label}
@@ -187,10 +206,28 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
                           size={16}
                           className={cn(
                             "transition-transform duration-(--duration-fast) motion-reduce:transition-none",
-                            megaOpen && "rotate-180",
+                            isOpen && "rotate-180",
                           )}
                         />
                       </button>
+                      {/* Panel lives inside the trigger <li> so its left
+                          edge aligns with the nav item */}
+                      <MegaMenu
+                        id={menuId}
+                        open={isOpen}
+                        categories={item.children}
+                        allHref={item.href}
+                        onClose={closeMega}
+                        heading={item.label}
+                        sub={
+                          isProducts
+                            ? "Explore our metal product categories"
+                            : "The SRIYAAN METALS desk"
+                        }
+                        ctaLabel={isProducts ? "All Products" : "About SRIYAAN"}
+                        showIcons={isProducts}
+                        className={isProducts ? "w-[22rem]" : "w-80"}
+                      />
                     </li>
                   );
                 }
@@ -213,17 +250,20 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
               })}
             </ul>
 
-            {/* CTA + mobile trigger */}
-            <div className="flex items-center gap-3">
+            {/* CTA + catalogue + theme + mobile trigger */}
+            <div className="flex items-center gap-2 sm:gap-3">
+              <CatalogueButton />
+              <ThemeToggle />
               <Link
                 href={cta.href}
                 className={cn(
-                  "hidden sm:inline-flex h-11 items-center rounded-xs bg-accent px-6",
+                  "hidden sm:inline-flex h-11 items-center gap-2 rounded-xs bg-accent px-6",
                   "text-label text-paper-raised",
                   "transition-colors duration-(--duration-base) hover:bg-accent-hover",
                 )}
               >
-                {cta.label} <span aria-hidden>↗</span>
+                {cta.label}
+                <ArrowRight size={15} strokeWidth={2} aria-hidden />
               </Link>
               <button
                 type="button"
@@ -239,17 +279,6 @@ export function Navbar({ siteName, nav, cta }: NavbarProps) {
           </nav>
         </Container>
       </div>
-
-      {/* Mega menu panel — rendered inside the header for focus flow */}
-      {productsItem?.children ? (
-        <MegaMenu
-          id="mega-menu-products"
-          open={megaOpen}
-          categories={productsItem.children}
-          allHref={productsItem.href}
-          onClose={closeMega}
-        />
-      ) : null}
 
       {/* Mobile sheet */}
       <MobileNav

@@ -25,40 +25,48 @@ export const PENDING = "[PENDING CLIENT INPUT]";
 /* ---- Categories (DS §31.4) ---- */
 // PLACEHOLDER-CONTENT
 export const PLACEHOLDER_CATEGORIES: Category[] = [
-  // Representative material imagery (generic metals photography) —
-  // titles remain placeholders until the client catalogue lands.
-  { slug: "category-a", index: "01", title: "Category A — placeholder", image: { src: "/images/cat-coils.jpg", alt: "Steel coils — representative imagery" } },
-  { slug: "category-b", index: "02", title: "Category B — placeholder", image: { src: "/images/cat-sheets.jpg", alt: "Sheet metal stock — representative imagery" } },
-  { slug: "category-c", index: "03", title: "Category C — placeholder", image: { src: "/images/cat-bars.jpg", alt: "Steel bars — representative imagery" } },
-  { slug: "category-d", index: "04", title: "Category D — placeholder", image: { src: "/images/cat-pipes.jpg", alt: "Steel pipes — representative imagery" } },
+  // Fallback tiles when the database is unreachable — mirrors the
+  // SRIYAAN METALS catalogue range.
+  { slug: "bolts-studs-screws", index: "01", title: "Bolts, Studs & Screws", image: { src: "/images/cat-bars.jpg", alt: "Steel fasteners — representative imagery" } },
+  { slug: "nuts-washers", index: "02", title: "Nuts & Washers", image: { src: "/images/cat-bars.jpg", alt: "Nuts and washers — representative imagery" } },
+  { slug: "pipe-fittings-flanges", index: "03", title: "Pipe Fittings & Flanges", image: { src: "/images/cat-pipes.jpg", alt: "Pipe fittings — representative imagery" } },
+  { slug: "carbon-steel-pipes", index: "04", title: "Carbon Steel Pipes", image: { src: "/images/cat-pipes.jpg", alt: "Carbon steel pipes — representative imagery" } },
 ];
 
 /* ---- Products (DS §31.4) ---- */
 // PLACEHOLDER-CONTENT
 export const PLACEHOLDER_PRODUCTS: Product[] = [
   {
-    slug: "product-placeholder-1",
-    name: "Product name — placeholder",
-    category: "Category A — placeholder",
-    code: "SM-[XXX]",
-    specSummary: { value: null, placeholder: "[Grade / size range — TBD]" },
-    media: [],
+    slug: "hex-bolts",
+    name: "Hex Bolts & Hex Screws",
+    category: "Bolts, Studs & Screws",
+    code: "SM-BLT-001",
+    specSummary: { value: "M6 – M42 · SS 304/316, alloy steel, brass, copper", placeholder: "" },
+    media: [{ src: "/images/cat-bars.jpg", alt: "Hex bolts — representative imagery" }],
   },
   {
-    slug: "product-placeholder-2",
-    name: "Product name — placeholder",
-    category: "Category B — placeholder",
-    code: "SM-[XXX]",
-    specSummary: { value: null, placeholder: "[Grade / size range — TBD]" },
-    media: [],
+    slug: "nuts",
+    name: "Hex, Slotted & Coupling Nuts",
+    category: "Nuts & Washers",
+    code: "SM-NUT-001",
+    specSummary: { value: "Hex, slotted, break, coupling & thin nuts", placeholder: "" },
+    media: [{ src: "/images/cat-bars.jpg", alt: "Nuts — representative imagery" }],
   },
   {
-    slug: "product-placeholder-3",
-    name: "Product name — placeholder",
-    category: "Category C — placeholder",
-    code: "SM-[XXX]",
-    specSummary: { value: null, placeholder: "[Grade / size range — TBD]" },
-    media: [],
+    slug: "butt-weld-pipe-fittings",
+    name: "Butt-Weld Pipe Fittings",
+    category: "Pipe Fittings & Flanges",
+    code: "SM-FIT-001",
+    specSummary: { value: "ASTM / ASME / DIN / JIS · EN 10204 3.1 & 3.2", placeholder: "" },
+    media: [{ src: "/images/cat-pipes.jpg", alt: "Pipe fittings — representative imagery" }],
+  },
+  {
+    slug: "carbon-steel-pipes",
+    name: "Carbon Steel Pipes",
+    category: "Carbon Steel Pipes",
+    code: "SM-PIP-001",
+    specSummary: { value: "Dimensions per ASTM ANSI B36.10 / B36.19", placeholder: "" },
+    media: [{ src: "/images/cat-pipes.jpg", alt: "Carbon steel pipes — representative imagery" }],
   },
 ];
 

@@ -1,124 +1,81 @@
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/layout";
-import { Container, Hairline, Section, SectionHeading } from "@/components/ui";
-import { getCompanyInfo } from "@/lib/company";
+import { Container } from "@/components/ui";
 import { SITE_URL } from "@/content/site";
+import { getCompanyInfo } from "@/lib/company";
+import { AboutClient } from "@/components/about/AboutClient";
 
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About — Mumbai Metals Trading, Import & Export | SRIYAAN METALS",
   description:
-    "SRIYAAN METALS — metals trading, import and export from Opera House, Mumbai. Address, GSTIN, hours and direct contact.",
+    "SRIYAAN METALS is a metals trading, import and export company in Opera House, Mumbai. A B2B industrial metal supplier offering metal sourcing, inspection and procurement — with verified address, GSTIN and contact details.",
   alternates: { canonical: `${SITE_URL}/about` },
+  openGraph: {
+    title: "About SRIYAAN METALS — Mumbai Metals Trading Desk",
+    description:
+      "Verified business information, GSTIN and direct contact for Mumbai-based metals trading, import, export and sourcing.",
+    url: `${SITE_URL}/about`,
+    type: "website",
+  },
 };
 
 export default async function AboutPage() {
   const company = await getCompanyInfo();
 
   return (
-    <Section rhythm="default" className="pt-32 lg:pt-44" aria-labelledby="about-heading">
-      <Container>
-        <Breadcrumbs
-          className="mb-10"
-          items={[{ label: "Home", href: "/" }, { label: "About" }]}
+    <main
+      className="relative min-h-screen overflow-hidden bg-[#05080B] pb-20 pt-28 text-[#F5F7F8] lg:pt-36"
+      aria-labelledby="about-heading"
+    >
+      {/* Background atmosphere */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div
+          className="absolute inset-0 opacity-[0.05]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right,#fff 1px,transparent 1px),linear-gradient(to bottom,#fff 1px,transparent 1px)",
+            backgroundSize: "88px 88px",
+            maskImage:
+              "radial-gradient(ellipse 80% 60% at 50% 0%,#000 20%,transparent 80%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 80% 60% at 50% 0%,#000 20%,transparent 80%)",
+          }}
         />
+        <div
+          className="absolute -right-40 top-0 h-[42rem] w-[42rem] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle, rgba(216,168,78,0.10) 0%, rgba(142,161,174,0.05) 40%, transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg,#05080B 0%, rgba(8,12,16,0.6) 40%, #05080B 100%)",
+          }}
+        />
+      </div>
 
-        <div className="grid grid-cols-4 gap-8 md:grid-cols-12">
-          <div className="col-span-4 md:col-span-6">
-            <SectionHeading
-              id="about-heading"
-              code="SM–AB"
-              eyebrow="About"
-              title="A Mumbai trading desk"
-              lede="SRIYAAN METALS is a metals trading, import and export business operating from Opera House, Mumbai. We source, check and deliver material against the buyer's specification."
-              align="start"
-              as="h1"
-            />
-            <p className="text-body text-surface-muted max-w-measure mt-8">
-              This page lists verified facts only — registered address, GSTIN,
-              working hours and the numbers we answer. No invented history,
-              headcount or market claims.
-            </p>
-          </div>
+      <Container>
+        <nav aria-label="Breadcrumb" className="ab-bc mb-10">
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "About" },
+            ]}
+          />
+        </nav>
 
-          <div className="col-span-4 md:col-span-5 md:col-start-8">
-            <p className="text-mono-meta text-surface-muted">Fact file</p>
-            <dl className="mt-6 flex flex-col">
-              <div className="border-t border-edge py-5">
-                <dt className="text-mono-micro text-surface-muted">Address</dt>
-                <dd className="text-body mt-2 text-surface-fg">
-                  <address className="not-italic">
-                    {company.addressLines.map((line) => (
-                      <span key={line} className="block">
-                        {line}
-                      </span>
-                    ))}
-                  </address>
-                </dd>
-              </div>
-              <div className="border-t border-edge py-5">
-                <dt className="text-mono-micro text-surface-muted">GSTIN</dt>
-                <dd className="text-body mt-2 font-mono tabular-nums text-surface-fg">
-                  {company.gst.replace(/^GSTIN:\s*/i, "")}
-                </dd>
-              </div>
-              <div className="border-t border-edge py-5">
-                <dt className="text-mono-micro text-surface-muted">Hours</dt>
-                <dd className="text-body mt-2 text-surface-fg">
-                  {company.hours} IST · Monday–Saturday
-                </dd>
-              </div>
-              <div className="border-t border-edge py-5">
-                <dt className="text-mono-micro text-surface-muted">Phones</dt>
-                <dd className="mt-2 flex flex-col gap-2">
-                  {company.phones.map((phone, i) => (
-                    <span key={phone.href} className="flex flex-wrap items-baseline gap-3">
-                      <a
-                        href={phone.href}
-                        className="text-body text-surface-fg transition-colors duration-(--duration-fast) hover:text-accent"
-                      >
-                        {phone.value}
-                      </a>
-                      {company.whatsapp[i] ? (
-                        <a
-                          href={company.whatsapp[i].href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-mono-micro text-surface-muted underline-offset-2 hover:text-accent hover:underline"
-                        >
-                          WhatsApp →
-                        </a>
-                      ) : null}
-                    </span>
-                  ))}
-                </dd>
-              </div>
-              <div className="border-y border-edge py-5">
-                <dt className="text-mono-micro text-surface-muted">Email</dt>
-                <dd className="mt-2 flex flex-col gap-2">
-                  {company.emails.map((email) => (
-                    <a
-                      key={email.href}
-                      href={email.href}
-                      className="text-body text-surface-fg transition-colors duration-(--duration-fast) hover:text-accent"
-                    >
-                      <span className="text-mono-micro mr-3 text-surface-muted">
-                        {email.label}
-                      </span>
-                      {email.value}
-                    </a>
-                  ))}
-                </dd>
-              </div>
-            </dl>
-            <Hairline className="mt-8" />
-            <p className="text-mono-micro mt-6 text-surface-muted">
-              Registered name {company.name} · {company.gst}
-            </p>
-          </div>
-        </div>
+        <AboutClient company={company} />
       </Container>
-    </Section>
+
+      <style>{`
+        @keyframes ab-bc { from{opacity:0;transform:translateY(-6px);} to{opacity:1;transform:none;} }
+        .ab-bc { animation: ab-bc .6s cubic-bezier(0.22,1,0.36,1) both; }
+      `}</style>
+    </main>
   );
 }

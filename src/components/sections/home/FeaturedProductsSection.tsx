@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/motion";
 import { ButtonLink, Container, Section, SectionHeading } from "@/components/ui";
 import { ProductGrid } from "@/components/patterns";
@@ -22,7 +24,6 @@ export async function FeaturedProductsSection() {
         <Reveal>
           <SectionHeading
             id="home-featured"
-            code="SM–04"
             eyebrow="Featured"
             title="Selected products"
             lede={
@@ -46,9 +47,13 @@ export async function FeaturedProductsSection() {
         </Reveal>
 
         <div className="mt-12">
-          <ButtonLink href="/products" variant="ghost" arrow>
+          <Link
+            href="/products"
+            className="group inline-flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-[#E5C074] transition-colors hover:text-[#F0C66D]"
+          >
             View all products
-          </ButtonLink>
+            <ArrowRight size={14} aria-hidden className="transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </div>
       </Container>
     </Section>

@@ -27,7 +27,7 @@ accounts and set environment variables.
    | `DATABASE_URL` | the Neon connection string |
    | `NEXT_PUBLIC_SITE_URL` | `https://<your-project>.vercel.app` (update after first deploy; later your real domain) |
    | `ADMIN_NAME` | e.g. `Admin` |
-   | `ADMIN_EMAIL` | `admin@sriyaanmetals.co` |
+   | `ADMIN_EMAIL` | `admin@sriyaanmetals.com` |
    | `ADMIN_PASSWORD` | strong password, min 12 chars |
    | `SEED_DEMO` | `1` (demo content for the client presentation — REMOVE this var and redeploy once real content is entered) |
 

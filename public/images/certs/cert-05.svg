@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#faf6ea"/>
+      <stop offset="1" stop-color="#f1e9d4"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#paper)"/>
+
+  <!-- double border -->
+  <rect x="26" y="26" width="748" height="548" fill="none" stroke="#a8843d" stroke-width="3"/>
+  <rect x="40" y="40" width="720" height="520" fill="none" stroke="#a8843d" stroke-opacity="0.45" stroke-width="1"/>
+
+  <!-- corner ticks -->
+  <g stroke="#a8843d" stroke-width="3" stroke-linecap="round">
+    <path d="M26 90 v-64 h64"/><path d="M774 90 v-64 h-64"/>
+    <path d="M26 510 v64 h64"/><path d="M774 510 v64 h-64"/>
+  </g>
+
+  <!-- company -->
+  <text x="400" y="112" text-anchor="middle" fill="#2a2419" font-family="Georgia, serif" font-weight="bold" font-size="26" letter-spacing="8">SRIYAAN METALS</text>
+  <text x="400" y="140" text-anchor="middle" fill="#8a7a58" font-family="Helvetica, Arial, sans-serif" font-size="13" letter-spacing="5">MUMBAI · INDIA</text>
+
+  <!-- seal -->
+  <g transform="translate(400,255)">
+    <circle r="62" fill="none" stroke="#a8843d" stroke-width="3"/>
+    <circle r="50" fill="none" stroke="#a8843d" stroke-opacity="0.35" stroke-width="1.5"/>
+    <path d="M-24 2 L-6 20 L28 -18" fill="none" stroke="#a8843d" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <!-- badge -->
+  <rect x="250" y="352" width="300" height="40" fill="none" stroke="#a8843d" stroke-width="1.5"/>
+  <text x="400" y="379" text-anchor="middle" fill="#a8843d" font-family="'Courier New', monospace" font-weight="bold" font-size="19" letter-spacing="4">TPI</text>
+
+  <!-- title -->
+  <text x="400" y="448" text-anchor="middle" fill="#2a2419" font-family="Georgia, serif" font-weight="bold" font-size="30" letter-spacing="3">THIRD-PARTY INSPECTION</text>
+
+  <!-- sub -->
+  <text x="400" y="488" text-anchor="middle" fill="#8a7a58" font-family="Helvetica, Arial, sans-serif" font-size="15" letter-spacing="3">PRE-DISPATCH INSPECTION</text>
+
+  <!-- footer rule + line -->
+  <rect x="290" y="516" width="220" height="1.5" fill="#a8843d" fill-opacity="0.6"/>
+  <text x="400" y="543" text-anchor="middle" fill="#8a7a58" font-family="'Courier New', monospace" font-size="12" letter-spacing="3">VERIFIED SUPPLIER DOCUMENT</text>
+</svg>

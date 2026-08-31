@@ -9,8 +9,8 @@ type ContainerProps<T extends React.ElementType> = {
 
 /**
  * The single page container (DS §18).
- * Max-width 1360px (--container-content), standard responsive gutters:
- * 20px mobile / 32px ≥ md / 48px ≥ xl. No ad-hoc max-widths elsewhere.
+ * Full-width (fills the viewport) with responsive gutters:
+ * 20px mobile / 32px ≥ md / 48px ≥ xl / 64px ≥ 2xl.
  */
 export function Container<T extends React.ElementType = "div">({
   as,
@@ -23,7 +23,7 @@ export function Container<T extends React.ElementType = "div">({
   return (
     <Tag
       className={cn(
-        "mx-auto w-full max-w-(--container-content) px-5 md:px-8 xl:px-12",
+        "mx-auto w-full max-w-none px-5 md:px-8 xl:px-12 2xl:px-16",
         className,
       )}
       {...rest}
