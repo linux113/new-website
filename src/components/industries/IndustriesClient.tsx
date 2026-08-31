@@ -95,15 +95,7 @@ export function IndustriesClient() {
               className="object-cover"
             />
           </div>
-          {/* Dark blend */}
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-gradient-to-t from-[#05080B] via-[#05080B]/30 to-transparent"
-          />
-          <div
-            aria-hidden
-            className="absolute inset-0 bg-gradient-to-r from-[#05080B]/80 via-transparent to-transparent"
-          />
+          {/* No shade overlays — the photograph shows in full */}
           {/* Dotted world network */}
           <WorldNetwork />
         </div>
@@ -146,10 +138,6 @@ export function IndustriesClient() {
                       sizes="(min-width:1024px) 18vw, 100vw"
                       className="object-cover transition-transform duration-[700ms] ease-out group-hover:scale-105"
                     />
-                    <div
-                      aria-hidden
-                      className="absolute inset-0 bg-gradient-to-r from-transparent to-[#0A1015]/60 sm:to-[#0A1015]/80"
-                    />
                   </div>
 
                   {/* Body */}
@@ -171,7 +159,7 @@ export function IndustriesClient() {
                           {industry.index} / {industry.total}
                         </span>
                       </div>
-                      <h3 className="font-display text-xl font-semibold tracking-tight text-[#F5F7F8] transition-colors duration-300 group-hover:text-white sm:text-2xl">
+                      <h3 className="font-display text-[1.35rem] font-semibold tracking-tight text-[#F5F7F8] transition-colors duration-300 group-hover:text-white sm:text-[1.6rem]">
                         {industry.name}
                       </h3>
                       <p className="mt-1.5 max-w-2xl text-[13.5px] leading-relaxed text-[#A9B2BA] transition-colors duration-300 group-hover:text-[#C9D0D5]">

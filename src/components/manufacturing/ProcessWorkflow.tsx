@@ -67,7 +67,7 @@ export function ProcessWorkflow({ steps }: Props) {
               />
 
               <span className="min-w-0 flex-1">
-                <span className="block font-display text-base font-medium tracking-tight text-[#F5F7F8]">
+                <span className="block font-display text-[1.15rem] font-medium tracking-tight text-[#F5F7F8]">
                   {step.title}
                 </span>
                 <span className="mt-0.5 block text-[12.5px] leading-snug text-[#A9B2BA]">

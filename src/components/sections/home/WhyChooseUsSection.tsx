@@ -88,7 +88,7 @@ function PrincipleCard({
         </span>
       </div>
 
-      <h3 className="mt-8 font-display text-xl font-semibold tracking-tight text-[#F5F7F8] sm:text-[1.35rem]">
+      <h3 className="mt-8 font-display text-[1.5rem] font-semibold tracking-tight text-[#F5F7F8] sm:text-[1.75rem]">
         {principle.title}
       </h3>
       <p className="mt-3 max-w-md text-sm leading-7 text-[#A9B2BA]">

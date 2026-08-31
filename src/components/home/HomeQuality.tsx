@@ -47,7 +47,7 @@ export function HomeQuality() {
                   <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-[#C8A45D]/25 bg-[#C8A45D]/10 text-[#C8A45D] transition-all duration-300 group-hover:shadow-[0_0_22px_-8px_rgba(200,164,93,0.9)]">
                     <Icon size={20} strokeWidth={1.6} />
                   </span>
-                  <h3 className="mt-4 font-display text-base font-semibold text-[#F5F7F8]">
+                  <h3 className="mt-4 font-display text-[1.25rem] font-semibold leading-snug text-[#F5F7F8] sm:text-[1.4rem]">
                     {item.title}
                   </h3>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-[#A9B2BA]">

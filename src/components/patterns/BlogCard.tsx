@@ -53,7 +53,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
           {post.category}
         </p>
 
-        <h3 className="text-heading-sm font-display font-medium text-paper">
+        <h3 className="font-display text-[1.35rem] font-medium leading-snug text-paper sm:text-[1.5rem]">
           <Link
             href={post.href}
             className="after:absolute after:inset-0 focus-visible:outline-none"

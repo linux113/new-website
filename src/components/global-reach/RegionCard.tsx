@@ -71,7 +71,7 @@ export function RegionCard({
 
         <div className="min-w-0 flex-1">
           <div className="flex items-baseline gap-2">
-            <p className="truncate font-display text-base font-medium tracking-tight text-[#F5F7F8] sm:text-lg">
+            <p className="truncate font-display text-[1.15rem] font-medium tracking-tight text-[#F5F7F8] sm:text-[1.35rem]">
               {region.name}
             </p>
             <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#A9B2BA]">

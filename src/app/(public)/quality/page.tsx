@@ -196,7 +196,7 @@ export default async function QualityPage() {
                         </span>
                         <span className="min-w-0 flex-1">
                           <span className="flex items-baseline gap-3">
-                            <h3 className="font-display text-lg font-semibold tracking-tight text-[#F5F7F8] transition-colors group-hover:text-white">
+                            <h3 className="font-display text-[1.35rem] font-semibold tracking-tight text-[#F5F7F8] transition-colors group-hover:text-white sm:text-[1.5rem]">
                               {p.title}
                             </h3>
                             <span className="font-mono text-[15px] font-semibold tabular-nums tracking-[0.12em] text-[#D8A84E]">
@@ -257,7 +257,7 @@ export default async function QualityPage() {
                     <Icon size={20} strokeWidth={1.5} aria-hidden />
                   </span>
                   <div>
-                    <p className="font-display text-[15px] font-semibold text-[#F5F7F8]">
+                    <p className="font-display text-[1.15rem] font-semibold text-[#F5F7F8]">
                       {t.title}
                     </p>
                     <p className="mt-0.5 text-[12.5px] text-[#727D86]">

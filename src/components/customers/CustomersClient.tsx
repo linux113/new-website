@@ -139,14 +139,6 @@ function CustomerCard({
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"
       />
-      {/* light sweep */}
-      {!reduced && (
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 -left-3/5 w-2/5 -skew-x-12 bg-gradient-to-r from-transparent via-white/[0.06] to-transparent transition-transform duration-700 ease-out group-hover:translate-x-[320%] motion-reduce:transition-none"
-        />
-      )}
-
       <div className="relative flex flex-1 flex-col items-center justify-center gap-3 py-4 text-center">
         {customer.logo?.src ? (
           <span className="relative block h-10 w-24 transition-[filter,transform] duration-300 group-hover:scale-[1.04] group-hover:brightness-125 motion-reduce:transition-none">
@@ -165,7 +157,7 @@ function CustomerCard({
           </span>
         )}
         <div>
-          <p className="font-display text-[13.5px] font-semibold tracking-wide text-[#F5F7F8] transition-colors duration-300 group-hover:text-white">
+          <p className="font-display text-[15px] font-semibold tracking-wide text-[#F5F7F8] transition-colors duration-300 group-hover:text-white sm:text-[1.05rem]">
             {customer.name}
           </p>
           {customer.industry ? (

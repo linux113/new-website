@@ -92,14 +92,9 @@ export function InsightsClient({ posts, categories }: InsightsClientProps) {
               sizes="60vw"
               className="object-cover object-center in-hero-img"
             />
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "linear-gradient(90deg,#05080B 0%,rgba(5,8,11,0.85) 18%,rgba(5,8,11,0.4) 55%,rgba(5,8,11,0.0) 80%)",
-              }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#05080B] via-transparent to-transparent" />
+            {/* Light even scrim instead of the opaque left-hand wipe —
+                the hero photograph is visible edge to edge. */}
+            <div className="absolute inset-0 bg-[#05080B]/25" />
           </div>
         </div>
 
@@ -282,7 +277,6 @@ export function InsightsClient({ posts, categories }: InsightsClientProps) {
                   ) : (
                     <div className="h-full w-full bg-gradient-to-br from-[#111b24] to-[#05080B]" />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A1015] via-transparent to-transparent" />
                   {/* Category badge */}
                   <span
                     className={cn(
@@ -301,7 +295,7 @@ export function InsightsClient({ posts, categories }: InsightsClientProps) {
                   <p className="font-mono text-xs tracking-[0.1em] text-[#727D86]">
                     {post.dateLabel}
                   </p>
-                  <h3 className="mt-2.5 font-display text-[1.05rem] font-semibold leading-snug tracking-tight text-[#F5F7F8] transition-colors duration-300 group-hover:text-white">
+                  <h3 className="mt-2.5 font-display text-[1.35rem] font-semibold leading-snug tracking-tight text-[#F5F7F8] transition-colors duration-300 group-hover:text-white sm:text-[1.5rem]">
                     {post.title}
                   </h3>
                   <p className="mt-2 line-clamp-2 flex-1 text-[13.5px] leading-relaxed text-[#A9B2BA]">
