@@ -269,7 +269,7 @@ export function AboutClient({ company }: AboutClientProps) {
                           </span>
                           <a
                             href={e.href}
-                            className="text-[14px] text-[#F0C66D] transition-colors hover:text-[#FBE7A8]"
+                            className="min-w-0 break-all text-[14px] text-[#F0C66D] transition-colors hover:text-[#FBE7A8]"
                           >
                             {e.value}
                           </a>

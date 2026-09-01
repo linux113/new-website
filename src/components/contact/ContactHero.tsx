@@ -109,22 +109,23 @@ export function ContactHero() {
           <span className="block h-px w-full bg-gradient-to-r from-[#B89A62] via-white/20 to-transparent" />
         </div>
 
-        {/* Metadata row */}
-        <dl className="mt-6 flex flex-wrap items-center gap-x-10 gap-y-3 font-mono text-xs tracking-[0.18em] text-[#727D86]">
+        {/* Metadata row — stacked on mobile so long values never wrap
+            against their label; inline with dividers from sm up. */}
+        <dl className="mt-6 flex flex-col gap-2.5 font-mono text-xs tracking-[0.18em] text-[#727D86] sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-10 sm:gap-y-3">
           <div className="flex items-center gap-3">
             <dt>Mumbai / India</dt>
             <span aria-hidden="true" className="h-3 w-px bg-white/15" />
             <dd>19.0760° N, 72.8777° E</dd>
           </div>
           <div className="flex items-center gap-3">
-            <span aria-hidden="true" className="h-3 w-px bg-white/15" />
+            <span aria-hidden="true" className="hidden h-3 w-px bg-white/15 sm:block" />
             <dt>Hours</dt>
-            <dd>10:00 — 19:00 IST</dd>
+            <dd className="whitespace-nowrap">10:00 — 19:00 IST</dd>
           </div>
           <div className="flex items-center gap-3">
-            <span aria-hidden="true" className="h-3 w-px bg-white/15" />
+            <span aria-hidden="true" className="hidden h-3 w-px bg-white/15 sm:block" />
             <dt>Response</dt>
-            <dd>Within one business day</dd>
+            <dd className="whitespace-nowrap">Within one business day</dd>
           </div>
         </dl>
       </Container>

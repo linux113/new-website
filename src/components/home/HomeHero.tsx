@@ -21,7 +21,8 @@ interface HeroCompany {
  */
 export function HomeHero({ company }: { company: HeroCompany }) {
   const gst = company.gst.replace(/^GSTIN:\s*/i, "") || "27CRKPS0693G1ZB";
-  const phoneCount = company.phones?.length || 2;
+  // Show the real primary number instead of a meaningless "2 LINES" count.
+  const primaryPhone = company.phones?.[0]?.value || "+91 96195 61657";
 
   return (
     <section
@@ -35,18 +36,25 @@ export function HomeHero({ company }: { company: HeroCompany }) {
       <div className="relative z-10 flex min-h-screen items-end pb-14 pt-36 lg:pb-20 lg:pt-48">
         <div className="w-full">
           <div className="w-full max-w-none px-5 md:px-8 xl:px-12 2xl:px-16">
-            <div className="max-w-3xl xl:ml-0">
+            <div className="max-w-3xl md:max-w-none xl:ml-0">
 
               <h1
                 id="home-hero-title"
-                className="hh-line mt-6 font-display text-[clamp(2.75rem,6.2vw,5.75rem)] font-semibold leading-[1.02] tracking-[-0.025em] text-[#F5F7F8]"
+                className="hh-line mt-6 font-display text-[clamp(1.15rem,5.3vw,1.7rem)] font-semibold leading-[1.05] tracking-[-0.025em] text-[#F5F7F8] sm:text-[clamp(2rem,5.7vw,5.75rem)]"
+                style={{
+                  textShadow:
+                    "0 2px 30px rgba(5,8,11,0.65), 0 1px 8px rgba(5,8,11,0.55)",
+                }}
               >
-                Precision metals,
-                <br />
-                supplied without
-                <br />
-                <span className="hh-gold bg-gradient-to-r from-[#F0C66D] via-[#C8A45D] to-[#A8843D] bg-clip-text text-transparent">
-                  compromise.
+                {/* Two deliberate lines on every viewport — the mobile
+                    clamp scales down so "supplied without compromise."
+                    holds one line instead of wrapping back to three. */}
+                <span className="block">Precision metals,</span>
+                <span className="block">
+                  supplied without{" "}
+                  <span className="hh-gold bg-gradient-to-r from-[#F0C66D] via-[#C8A45D] to-[#A8843D] bg-clip-text text-transparent">
+                    compromise.
+                  </span>
                 </span>
               </h1>
 
@@ -56,8 +64,11 @@ export function HomeHero({ company }: { company: HeroCompany }) {
               />
 
               <p
-                className="hh-fade mt-6 max-w-xl text-[16px] leading-relaxed text-[#B6BEC6] sm:text-lg"
-                style={{ animationDelay: "360ms" }}
+                className="hh-fade mt-6 max-w-xl text-[16px] leading-relaxed text-[#D3DAE0] sm:text-lg"
+                style={{
+                  animationDelay: "360ms",
+                  textShadow: "0 1px 14px rgba(5,8,11,0.85), 0 1px 4px rgba(5,8,11,0.6)",
+                }}
               >
                 Engineered supply for industrial buyers — exact
                 specification, dependable delivery, direct communication.
@@ -80,7 +91,7 @@ export function HomeHero({ company }: { company: HeroCompany }) {
                 </Link>
                 <Link
                   href="/products"
-                  className="group inline-flex h-13 items-center justify-center gap-2 rounded-lg border border-white/25 bg-white/[0.02] px-8 font-mono text-[12px] font-semibold tracking-[0.08em] text-[#F5F7F8] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C8A45D]/70 hover:bg-white/[0.05] hover:text-[#F0C66D] hover:shadow-[0_0_30px_-12px_rgba(200,164,93,0.8)]"
+                  className="group inline-flex h-13 items-center justify-center gap-2 rounded-lg border border-white/30 bg-[#05080B]/60 px-8 font-mono text-[12px] font-semibold tracking-[0.08em] text-[#F5F7F8] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C8A45D]/70 hover:bg-[#05080B]/75 hover:text-[#F0C66D] hover:shadow-[0_0_30px_-12px_rgba(200,164,93,0.8)]"
                 >
                   Explore products
                 </Link>
@@ -99,7 +110,7 @@ export function HomeHero({ company }: { company: HeroCompany }) {
               />
               <InfoCell
                 icon={<Phone size={18} strokeWidth={1.6} />}
-                value={`${phoneCount} LINES`}
+                value={primaryPhone}
                 label="Direct phone & WhatsApp"
               />
               <InfoCell
