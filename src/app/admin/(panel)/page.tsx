@@ -1,11 +1,10 @@
 import { redirect } from "next/navigation";
-import { getSessionUser } from "@/lib/auth/session";
+import { requireAdminPage } from "@/lib/auth/guard";
 
 export const dynamic = "force-dynamic";
 
 /** /admin → login or dashboard. */
 export default async function AdminIndexPage() {
-  const user = await getSessionUser();
-  if (!user) redirect("/admin/login");
+  await requireAdminPage("EDITOR");
   redirect("/admin/dashboard");
 }

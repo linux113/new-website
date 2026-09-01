@@ -17,13 +17,25 @@ export interface LoginState {
   error?: string;
 }
 
+async function resolveClientIp(): Promise<string> {
+  const h = await headers();
+  return (
+    h.get("cf-connecting-ip")?.trim() ||
+    h.get("x-real-ip")?.trim() ||
+    h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    "127.0.0.1"
+  );
+}
+
 /**
  * Login server action.
- * - Zod validation
- * - Rate limiting per IP+email (5 / 15 min)
+ * - Strict Zod validation
+ * - Multi-tier rate limiting (Account, IP, and IP:Email)
  * - bcrypt comparison against a dummy hash even for unknown emails
- *   (constant-work — no user-enumeration timing signal)
- * - Generic error message (no "wrong password" vs "no such user")
+ *   (constant-work — eliminates user-enumeration timing signals)
+ * - Generic error message (no distinction between invalid password vs missing user)
+ * - Destroys previous session before creating fresh session
+ * - Direct redirect to /admin/dashboard on success
  */
 export async function loginAction(
   _prev: LoginState,
@@ -38,11 +50,10 @@ export async function loginAction(
   }
   const { email, password } = parsed.data;
 
-  const h = await headers();
-  const ip = h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
-  const rateKey = `${ip}:${email}`;
+  const ip = await resolveClientIp();
+  const rateCtx = { ip, email };
 
-  const limit = checkRateLimit(rateKey);
+  const limit = checkRateLimit(rateCtx);
   if (!limit.allowed) {
     return {
       error: `Too many attempts. Try again in ${limit.retryAfterMin} minute${limit.retryAfterMin === 1 ? "" : "s"}.`,
@@ -56,25 +67,28 @@ export async function loginAction(
   const ok = await bcrypt.compare(password, user?.passwordHash ?? DUMMY_HASH);
 
   if (!user || !ok || user.status !== "ACTIVE") {
-    recordFailedAttempt(rateKey);
+    recordFailedAttempt(rateCtx);
     return { error: "Invalid email or password." };
   }
 
-  clearAttempts(rateKey);
+  clearAttempts(rateCtx);
+
   await db.adminUser.update({
     where: { id: user.id },
     data: { lastLoginAt: new Date() },
   });
+
   await destroySession();
+
   // "Remember me" extends the session from 12 hours to 30 days AND makes
-  // the cookie persistent (survives browser restarts). Without it the
-  // cookie dies with the browser session — next visit requires a login.
+  // the cookie persistent (survives browser restarts).
   const remember = formData.get("remember") === "on";
   await createSession(
     user.id,
     remember ? 1000 * 60 * 60 * 24 * 30 : undefined,
     remember,
   );
+
   redirect("/admin/dashboard");
 }
 

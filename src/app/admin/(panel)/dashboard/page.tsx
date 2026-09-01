@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdminPage } from "@/lib/auth/guard";
 import { db } from "@/lib/db";
 import { getAnalyticsSnapshot } from "@/lib/analytics/stats";
 import { MonthlyBarChart, ProductBars, StatusDonut, type MonthPoint } from "@/components/admin/dashboard/charts";
@@ -42,6 +43,7 @@ function getWindow() {
 }
 
 export default async function AdminDashboardPage() {
+  await requireAdminPage("EDITOR");
   const { now, since } = getWindow();
 
   const [
