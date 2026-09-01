@@ -15,6 +15,10 @@ import type { AdminRole } from "@/generated/prisma/enums";
  * - Server-side expiry + revocation (logout deletes the row).
  * - Cookie: HttpOnly, SameSite=Lax (CSRF mitigation for top-level
  *   POSTs), Secure in production, scoped to path "/".
+ * - Default sessions are BROWSER-SESSION cookies (no Max-Age) —
+ *   closing the browser/app ends the login, so /admin/dashboard can
+ *   never be re-opened days later without authenticating again.
+ *   Only an explicit "Remember me" opt-in sends Max-Age (30 days).
  */
 
 const COOKIE_NAME = "sm_admin_session";
@@ -51,6 +55,7 @@ function hashToken(token: string): string {
 export async function createSession(
   userId: string,
   ttlMs: number = SESSION_TTL_MS,
+  persistent: boolean = false,
 ): Promise<void> {
   const token = randomBytes(32).toString("base64url");
   const h = await headers();
@@ -68,7 +73,10 @@ export async function createSession(
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, token, {
     ...cookieOptions(),
-    maxAge: ttlMs / 1000,
+    // Only a persistent ("remember me") session gets Max-Age and
+    // survives a browser restart. Default sessions are browser-session
+    // cookies — server-side expiry (ttlMs) is always the hard bound.
+    ...(persistent ? { maxAge: Math.floor(ttlMs / 1000) } : {}),
   });
 }
 
