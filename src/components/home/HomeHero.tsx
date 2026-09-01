@@ -35,22 +35,25 @@ export function HomeHero({ company }: { company: HeroCompany }) {
       <div className="relative z-10 flex min-h-screen items-end pb-14 pt-36 lg:pb-20 lg:pt-48">
         <div className="w-full">
           <div className="w-full max-w-none px-5 md:px-8 xl:px-12 2xl:px-16">
-            <div className="max-w-3xl xl:ml-0">
+            <div className="max-w-3xl md:max-w-none xl:ml-0">
 
               <h1
                 id="home-hero-title"
-                className="hh-line mt-6 font-display text-[clamp(2.75rem,6.2vw,5.75rem)] font-semibold leading-[1.02] tracking-[-0.025em] text-[#F5F7F8]"
+                className="hh-line mt-6 font-display text-[clamp(1.15rem,5.3vw,1.7rem)] font-semibold leading-[1.05] tracking-[-0.025em] text-[#F5F7F8] sm:text-[clamp(2rem,5.7vw,5.75rem)]"
                 style={{
                   textShadow:
                     "0 2px 30px rgba(5,8,11,0.65), 0 1px 8px rgba(5,8,11,0.55)",
                 }}
               >
-                Precision metals,
-                <br />
-                supplied without
-                <br />
-                <span className="hh-gold bg-gradient-to-r from-[#F0C66D] via-[#C8A45D] to-[#A8843D] bg-clip-text text-transparent">
-                  compromise.
+                {/* Two deliberate lines on every viewport — the mobile
+                    clamp scales down so "supplied without compromise."
+                    holds one line instead of wrapping back to three. */}
+                <span className="block">Precision metals,</span>
+                <span className="block">
+                  supplied without{" "}
+                  <span className="hh-gold bg-gradient-to-r from-[#F0C66D] via-[#C8A45D] to-[#A8843D] bg-clip-text text-transparent">
+                    compromise.
+                  </span>
                 </span>
               </h1>
 
