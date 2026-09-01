@@ -73,15 +73,15 @@ export function LoginForm() {
       {state.error ? (
         <p
           role="alert"
-          className="rounded-lg border border-[#5c2622] bg-[#2a1513] px-3.5 py-2.5 text-[0.82rem] text-[#f2b8b5]"
+          className="rounded-lg border border-[#5c2622] bg-[#2a1513] px-3.5 py-2.5 text-[0.9375rem] text-[#f2b8b5]"
         >
           {state.error}
         </p>
       ) : null}
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="login-email" className="font-mono text-[0.66rem] tracking-[0.16em] text-[#8b98a5]">
-          EMAIL
+        <label htmlFor="login-email" className="text-[0.9375rem] font-medium tracking-[0.02em] text-[#d5dee6]">
+          Email
         </label>
         <div className="login-field relative rounded-xl">
           <input
@@ -97,8 +97,8 @@ export function LoginForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="login-password" className="font-mono text-[0.66rem] tracking-[0.16em] text-[#8b98a5]">
-          PASSWORD
+        <label htmlFor="login-password" className="text-[0.9375rem] font-medium tracking-[0.02em] text-[#d5dee6]">
+          Password
         </label>
         <div className="login-field relative rounded-xl">
           <input
@@ -136,7 +136,7 @@ export function LoginForm() {
       </div>
 
       <div className="flex items-center justify-between">
-        <label className="flex cursor-pointer items-center gap-2.5 text-[0.82rem] text-[#8b98a5]">
+        <label className="flex cursor-pointer items-center gap-2.5 text-[0.9375rem] text-[#c5d0da]">
           <input
             type="checkbox"
             name="remember"
@@ -146,7 +146,7 @@ export function LoginForm() {
         </label>
         <a
           href="mailto:info@sriyaanmetals.com?subject=Admin%20password%20reset%20request"
-          className="text-[0.82rem] text-[#8b98a5] underline-offset-4 transition-colors duration-200 hover:text-[#22d3ee] hover:underline"
+          className="text-[0.9375rem] text-[#c5d0da] underline-offset-4 transition-colors duration-200 hover:text-[#22d3ee] hover:underline"
         >
           Forgot password?
         </a>
@@ -156,7 +156,7 @@ export function LoginForm() {
         ref={buttonRef}
         type="submit"
         disabled={pending}
-        className="login-cta group relative mt-1 h-13 overflow-hidden rounded-xl bg-gradient-to-r from-[#0ea5b7] to-[#22d3ee] text-[0.8rem] font-semibold tracking-[0.14em] text-[#04141a] uppercase shadow-[0_0_24px_rgba(34,211,238,0.18)] transition-[box-shadow,filter,transform] duration-300 hover:shadow-[0_0_44px_rgba(34,211,238,0.4)] hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#22d3ee] disabled:cursor-not-allowed disabled:opacity-70 motion-reduce:transition-none"
+        className="login-cta group relative mt-1 h-13 overflow-hidden rounded-xl bg-gradient-to-r from-[#0ea5b7] to-[#22d3ee] text-[0.9375rem] font-semibold tracking-[0.08em] text-[#04141a] uppercase shadow-[0_0_24px_rgba(34,211,238,0.18)] transition-[box-shadow,filter,transform] duration-300 hover:shadow-[0_0_44px_rgba(34,211,238,0.4)] hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#22d3ee] disabled:cursor-not-allowed disabled:opacity-70 motion-reduce:transition-none"
       >
         {pending ? (
           <span className="flex items-center justify-center gap-2.5">

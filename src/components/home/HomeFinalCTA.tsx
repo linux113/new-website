@@ -3,7 +3,17 @@ import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui";
 import { Reveal } from "@/components/motion";
 
-export function HomeFinalCTA() {
+export function HomeFinalCTA({
+  headline,
+  subline,
+}: {
+  headline?: string;
+  subline?: string;
+}) {
+  const title = headline?.trim() || "Have a material requirement?";
+  const copy =
+    subline?.trim() ||
+    "Share your specification, quantity or application and speak with our team for a considered response — not an automated reply.";
   return (
     <section
       aria-labelledby="final-cta-title"
@@ -19,19 +29,17 @@ export function HomeFinalCTA() {
       />
       <Container className="relative text-center">
         <Reveal>
-          <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-[#C8A45D]">
+          <p className="font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#C8A45D]">
             Get in touch
           </p>
           <h2
             id="final-cta-title"
             className="mx-auto mt-5 max-w-3xl font-display text-[clamp(2rem,4.2vw,3.6rem)] font-semibold leading-[1.05] tracking-tight text-[#F5F7F8]"
           >
-            Have a material requirement?
+            {title}
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-[#A9B2BA] sm:text-base">
-            Share your specification, quantity or application and speak
-            with our team for a considered response — not an automated
-            reply.
+            {copy}
           </p>
           <Link
             href="/enquiry"

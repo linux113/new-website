@@ -2,12 +2,12 @@ import { requireAdminPage } from "@/lib/auth/guard";
 import { db } from "@/lib/db";
 import { AdminShell, type ShellNotification } from "@/components/admin/AdminShell";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 /**
- * Authenticated admin shell. requireAdminPage() enforces the session
- * server-side for EVERY route in this group — the edge proxy
- * (src/proxy.ts) is only the fast pre-filter. Also loads the live
- * "new lead" signal that powers the shell's notification bell and
- * sidebar badge.
+ * Authenticated admin shell. requireAdminPage() runs on every route
+ * in this group. Also loads the new-lead count for the bell and badge.
  */
 export default async function AdminPanelLayout({
   children,

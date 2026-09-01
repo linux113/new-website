@@ -139,7 +139,7 @@ export default async function QualityPage() {
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
           {/* LEFT */}
           <section className="lg:col-span-5">
-            <p className="ql-fade font-mono text-[11px] uppercase tracking-[0.3em]">
+            <p className="ql-fade font-mono text-[1rem] font-semibold uppercase tracking-[0.16em]">
               <span className="text-[#D8A84E]">Quality</span>
             </p>
 
@@ -229,7 +229,7 @@ export default async function QualityPage() {
             <div className="flex items-center gap-4">
               <h2
                 id="certs-heading"
-                className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#F5F7F8]"
+                className="font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#F5F7F8]"
               >
                 Certifications
               </h2>

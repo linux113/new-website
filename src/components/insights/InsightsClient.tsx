@@ -280,7 +280,7 @@ export function InsightsClient({ posts, categories }: InsightsClientProps) {
                   {/* Category badge */}
                   <span
                     className={cn(
-                      "keep-dark absolute left-3 top-3 z-10 rounded-md border px-2.5 py-1 font-mono text-[9.5px] uppercase tracking-[0.18em] backdrop-blur-sm transition-shadow duration-300 group-hover:shadow-[0_0_16px_-4px_rgba(216,168,78,0.8)]",
+                      "keep-dark absolute left-3 top-3 z-10 rounded-md border px-2.5 py-1 font-mono text-[0.8125rem] font-semibold uppercase tracking-[0.14em] backdrop-blur-sm transition-shadow duration-300 group-hover:shadow-[0_0_16px_-4px_rgba(216,168,78,0.8)]",
                       post.categorySlug === "guides"
                         ? "border-[#D8A84E]/50 bg-[#D8A84E]/15 text-[#F0C66D]"
                         : "border-white/15 bg-black/45 text-[#C9D0D5]",

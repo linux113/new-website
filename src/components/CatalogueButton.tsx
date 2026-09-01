@@ -57,7 +57,7 @@ export function CatalogueButton() {
           aria-hidden
           className="mb-1 block h-px bg-gradient-to-r from-transparent via-[#D8A84E] to-transparent"
         />
-        <p className="px-3 pb-1 pt-2 font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F7F8]">
+        <p className="px-3 pb-1 pt-2 font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#F5F7F8]">
           Download Catalogue
         </p>
         {CATALOGUES.map((c) => (

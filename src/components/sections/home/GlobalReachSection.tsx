@@ -33,7 +33,7 @@ export async function GlobalReachSection() {
       />
       <Container>
         <Reveal>
-          <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-[#D8A84E]">
+          <p className="font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#D8A84E]">
               Global Reach
           </p>
           <h2

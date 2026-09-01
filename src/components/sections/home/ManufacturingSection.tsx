@@ -69,7 +69,7 @@ export function ManufacturingSection() {
         <Reveal>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-12 md:gap-0">
             <div className="md:col-span-7">
-              <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-[#C8A45D]">
+              <p className="font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#C8A45D]">
                 Infrastructure
               </p>
               <h2

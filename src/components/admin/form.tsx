@@ -76,7 +76,7 @@ interface FieldShellProps {
 export function AdminFormField({ name, label, error, help, children }: FieldShellProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={`f-${name}`} className="text-mono-meta text-slate">
+      <label htmlFor={`f-${name}`} className="text-[0.9375rem] font-medium text-ink">
         {label}
       </label>
       {children}
@@ -186,7 +186,7 @@ export function AdminCheckbox({
   defaultChecked?: boolean;
 }) {
   return (
-    <label className="flex items-center gap-2 text-body-sm text-ink">
+    <label className="flex items-center gap-2 text-[0.9375rem] text-ink">
       <input
         type="checkbox"
         name={name}

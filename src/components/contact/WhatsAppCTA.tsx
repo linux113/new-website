@@ -29,7 +29,7 @@ export function WhatsAppCTA() {
         <Reveal>
           <div className="grid grid-cols-1 items-center gap-10 border border-white/10 p-8 md:grid-cols-12 md:p-12 lg:p-16">
             <div className="md:col-span-7">
-              <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-[#B89A62]">
+              <p className="flex items-center gap-3 font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#B89A62]">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/60" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400/80" />
@@ -57,7 +57,7 @@ export function WhatsAppCTA() {
                 rel="noopener noreferrer"
                 className="group block w-full border border-[#B89A62]/40 bg-[#101314] p-8 transition-all duration-300 hover:border-[#B89A62] hover:shadow-[0_0_0_1px_rgba(184,154,98,0.25)] md:w-auto"
               >
-                <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-[#727D86]">
+                <p className="font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#727D86]">
                   WhatsApp
                 </p>
                 <p className="mt-3 font-display text-3xl font-medium tracking-tight text-[#F5F7F8] md:text-4xl">

@@ -7,12 +7,7 @@ import { PLACEHOLDER_PRODUCTS } from "@/content/placeholders";
 import { getFeaturedProducts } from "@/lib/repositories/products";
 import { toPatternProduct } from "@/lib/mappers";
 
-/**
- * SM–04 / FEATURED PRODUCTS.
- * Sunken band. Renders published featured products from the database;
- * falls back to typed placeholder slots while the catalogue is empty
- * (graceful,. Cards carry the Enquire pathway (no prices — B2B).
- */
+/** Homepage featured products — published + featured from the catalogue. */
 export async function FeaturedProductsSection() {
   const dbProducts = await getFeaturedProducts(6).catch(() => []);
   const products =

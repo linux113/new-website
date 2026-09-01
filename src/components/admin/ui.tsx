@@ -74,7 +74,7 @@ export function AdminCard({
   return (
     <section className={cn("adm-card overflow-hidden", className)}>
       {title ? (
-        <h2 className="border-b border-line px-4 py-3 text-mono-meta text-slate">
+        <h2 className="border-b border-line px-4 py-3 text-[0.9375rem] font-medium tracking-[0.04em] text-slate">
           {title}
         </h2>
       ) : null}

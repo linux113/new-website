@@ -20,7 +20,7 @@ export async function saveSettingsAction(
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
-  await requireAdminAction("ADMIN"); // settings are higher-privilege
+  await requireAdminAction(group === "content" ? "EDITOR" : "ADMIN");
 
   const entries: { key: string; value: string }[] = [];
   for (const [key, raw] of formData.entries()) {
@@ -49,7 +49,9 @@ export async function saveSettingsAction(
   revalidatePath("/admin/settings");
   revalidatePath("/admin/content");
   revalidatePath("/admin/seo");
-  revalidatePath("/", "layout"); // contact info flows through the whole layout
+  revalidatePath("/", "layout");
+  revalidatePath("/contact");
+  revalidatePath("/about");
   return { success: true };
 }
 

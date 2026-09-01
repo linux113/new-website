@@ -1,6 +1,11 @@
 import { redirect } from "next/navigation";
+import { getSessionUser } from "@/lib/auth/session";
 
-/** /admin → /admin/dashboard */
-export default function AdminIndexPage() {
+export const dynamic = "force-dynamic";
+
+/** /admin → login or dashboard. */
+export default async function AdminIndexPage() {
+  const user = await getSessionUser();
+  if (!user) redirect("/admin/login");
   redirect("/admin/dashboard");
 }
