@@ -34,7 +34,7 @@ export function WhatsAppCTA() {
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400/60" />
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400/80" />
                 </span>
-                <span className="text-[#727D86]">06 —</span> Direct
+                Direct
               </p>
               <h2
                 id="whatsapp-title"

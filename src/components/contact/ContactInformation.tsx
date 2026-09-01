@@ -44,7 +44,7 @@ export async function ContactInformation() {
           <div className="md:col-span-4 lg:col-span-4">
             <Reveal>
               <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#B89A62]">
-                <span className="text-[#727D86]">01 —</span> Contact
+                Contact
               </p>
               <h2
                 id="contact-info-title"
@@ -82,7 +82,7 @@ export async function ContactInformation() {
                     <span className="col-span-1 font-mono text-xs uppercase tracking-[0.2em] text-[#727D86] md:col-span-3">
                       {row.label}
                     </span>
-                    <span className="col-span-3 text-lg font-medium tracking-tight text-[#F5F7F8] transition-colors duration-200 group-hover:text-white md:col-span-8">
+                    <span className="col-span-3 min-w-0 break-words text-[15px] font-medium leading-snug tracking-tight text-[#F5F7F8] transition-colors duration-200 group-hover:text-white md:col-span-8 md:text-lg">
                       {row.value}
                     </span>
                     <span
