@@ -21,7 +21,8 @@ interface HeroCompany {
  */
 export function HomeHero({ company }: { company: HeroCompany }) {
   const gst = company.gst.replace(/^GSTIN:\s*/i, "") || "27CRKPS0693G1ZB";
-  const phoneCount = company.phones?.length || 2;
+  // Show the real primary number instead of a meaningless "2 LINES" count.
+  const primaryPhone = company.phones?.[0]?.value || "+91 96195 61657";
 
   return (
     <section
@@ -109,7 +110,7 @@ export function HomeHero({ company }: { company: HeroCompany }) {
               />
               <InfoCell
                 icon={<Phone size={18} strokeWidth={1.6} />}
-                value={`${phoneCount} LINES`}
+                value={primaryPhone}
                 label="Direct phone & WhatsApp"
               />
               <InfoCell
