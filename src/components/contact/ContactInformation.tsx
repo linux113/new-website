@@ -72,22 +72,22 @@ export async function ContactInformation() {
                     {...(row.href.startsWith("http")
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                    className="group relative grid grid-cols-4 items-center gap-4 border-b border-white/10 py-6 transition-colors duration-200 hover:bg-white/[0.02] focus-visible:bg-white/[0.02] md:grid-cols-12"
+                    className="group relative flex flex-col gap-1.5 border-b border-white/10 py-5 pr-7 transition-colors duration-200 hover:bg-white/[0.02] focus-visible:bg-white/[0.02] md:grid md:grid-cols-12 md:items-center md:gap-4 md:py-6 md:pr-0"
                   >
                     {/* Accent line grows on hover */}
                     <span
                       aria-hidden="true"
                       className="absolute left-0 top-0 h-px w-0 bg-[#B89A62] transition-all duration-300 ease-out group-hover:w-16 group-focus-visible:w-16"
                     />
-                    <span className="col-span-1 font-mono text-xs uppercase tracking-[0.2em] text-[#727D86] md:col-span-3">
+                    <span className="whitespace-nowrap font-mono text-xs uppercase tracking-[0.2em] text-[#727D86] md:col-span-3">
                       {row.label}
                     </span>
-                    <span className="col-span-3 min-w-0 break-words text-[15px] font-medium leading-snug tracking-tight text-[#F5F7F8] transition-colors duration-200 group-hover:text-white md:col-span-8 md:text-lg">
+                    <span className="min-w-0 break-words text-[15px] font-medium leading-snug tracking-tight text-[#F5F7F8] transition-colors duration-200 group-hover:text-white md:col-span-8 md:text-lg">
                       {row.value}
                     </span>
                     <span
                       aria-hidden="true"
-                      className="col-span-4 justify-self-start font-mono text-[#B89A62] opacity-0 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:opacity-100 group-focus-visible:translate-x-1 group-focus-visible:opacity-100 md:col-span-1 md:justify-self-end"
+                      className="absolute right-0 top-1/2 -translate-y-1/2 font-mono text-[#B89A62] opacity-0 transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:opacity-100 group-focus-visible:translate-x-1 group-focus-visible:opacity-100 md:static md:col-span-1 md:translate-y-0 md:justify-self-end"
                     >
                       ↗
                     </span>

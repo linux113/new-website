@@ -40,6 +40,10 @@ export function HomeHero({ company }: { company: HeroCompany }) {
               <h1
                 id="home-hero-title"
                 className="hh-line mt-6 font-display text-[clamp(2.75rem,6.2vw,5.75rem)] font-semibold leading-[1.02] tracking-[-0.025em] text-[#F5F7F8]"
+                style={{
+                  textShadow:
+                    "0 2px 30px rgba(5,8,11,0.65), 0 1px 8px rgba(5,8,11,0.55)",
+                }}
               >
                 Precision metals,
                 <br />
@@ -56,8 +60,11 @@ export function HomeHero({ company }: { company: HeroCompany }) {
               />
 
               <p
-                className="hh-fade mt-6 max-w-xl text-[16px] leading-relaxed text-[#B6BEC6] sm:text-lg"
-                style={{ animationDelay: "360ms" }}
+                className="hh-fade mt-6 max-w-xl text-[16px] leading-relaxed text-[#D3DAE0] sm:text-lg"
+                style={{
+                  animationDelay: "360ms",
+                  textShadow: "0 1px 14px rgba(5,8,11,0.85), 0 1px 4px rgba(5,8,11,0.6)",
+                }}
               >
                 Engineered supply for industrial buyers — exact
                 specification, dependable delivery, direct communication.
@@ -80,7 +87,7 @@ export function HomeHero({ company }: { company: HeroCompany }) {
                 </Link>
                 <Link
                   href="/products"
-                  className="group inline-flex h-13 items-center justify-center gap-2 rounded-lg border border-white/25 bg-white/[0.02] px-8 font-mono text-[12px] font-semibold tracking-[0.08em] text-[#F5F7F8] backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C8A45D]/70 hover:bg-white/[0.05] hover:text-[#F0C66D] hover:shadow-[0_0_30px_-12px_rgba(200,164,93,0.8)]"
+                  className="group inline-flex h-13 items-center justify-center gap-2 rounded-lg border border-white/30 bg-[#05080B]/60 px-8 font-mono text-[12px] font-semibold tracking-[0.08em] text-[#F5F7F8] backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-[#C8A45D]/70 hover:bg-[#05080B]/75 hover:text-[#F0C66D] hover:shadow-[0_0_30px_-12px_rgba(200,164,93,0.8)]"
                 >
                   Explore products
                 </Link>

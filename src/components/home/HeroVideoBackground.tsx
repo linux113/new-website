@@ -47,14 +47,16 @@ export function HeroVideoBackground() {
         className="absolute inset-0 h-full w-full scale-[1.02] object-cover"
       />
 
-      {/* Even vertical scrim only — the footage stays visible across the
-          full frame. No side/horizontal shading: it used to darken one
-          half of the video. */}
+      {/* Even vertical scrim — no side/horizontal shading (that used to
+          darken one half of the video). Becomes progressively heavier
+          toward the bottom two-thirds where the headline, copy, CTAs and
+          info bar sit, so text stays legible on bright footage frames
+          while the footage remains clearly visible. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(5,8,11,0.16) 0%, rgba(5,8,11,0.10) 38%, rgba(5,8,11,0.38) 74%, rgba(5,8,11,0.78) 100%)",
+            "linear-gradient(180deg, rgba(5,8,11,0.40) 0%, rgba(5,8,11,0.34) 32%, rgba(5,8,11,0.52) 58%, rgba(5,8,11,0.70) 78%, rgba(5,8,11,0.88) 100%)",
         }}
       />
     </div>
