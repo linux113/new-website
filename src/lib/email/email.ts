@@ -31,11 +31,19 @@ function isConfigured(): boolean {
   return Boolean(process.env.EMAIL_PROVIDER_API_KEY && process.env.EMAIL_FROM);
 }
 
+function sanitizeHeader(val: string): string {
+  return val.replace(/[\r\n]/g, " ").trim();
+}
+
 export async function sendEmail(message: EmailMessage): Promise<EmailResult> {
+  const safeTo = sanitizeHeader(message.to);
+  const safeSubject = sanitizeHeader(message.subject);
+  const safeReplyTo = message.replyTo ? sanitizeHeader(message.replyTo) : undefined;
+
   if (!isConfigured()) {
     // DEVELOPMENT-SAFE LOGGING — not a fake success.
     console.info(
-      `[email:not-configured] would send → ${message.to} | ${message.subject}`,
+      `[email:not-configured] would send → ${safeTo} | ${safeSubject}`,
     );
     return { delivered: false, detail: "Email provider not configured" };
   }
@@ -49,12 +57,12 @@ export async function sendEmail(message: EmailMessage): Promise<EmailResult> {
       },
       body: JSON.stringify({
         from: process.env.EMAIL_FROM,
-        to: [message.to],
-        subject: message.subject,
+        to: [safeTo],
+        subject: safeSubject,
         text: message.text,
         ...(message.html ? { html: message.html } : {}),
-        ...(message.replyTo || process.env.EMAIL_REPLY_TO
-          ? { reply_to: message.replyTo ?? process.env.EMAIL_REPLY_TO }
+        ...(safeReplyTo || process.env.EMAIL_REPLY_TO
+          ? { reply_to: safeReplyTo ?? process.env.EMAIL_REPLY_TO }
           : {}),
       }),
     });
@@ -95,7 +103,7 @@ export async function getNotificationRecipient(
       where: { key: `notify.${kind}` },
     });
     const value = setting ? String(setting.value) : "";
-    if (value && value.includes("@")) return value;
+    if (value && value.includes("@")) return sanitizeHeader(value);
   } catch {
     /* fall through to default */
   }

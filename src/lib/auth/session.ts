@@ -10,12 +10,12 @@ import { appCookieOptions } from "@/lib/http/cookie-policy";
  * Admin session management (server-only).
  *
  * Design:
- * - Opaque 256-bit random token in an HttpOnly cookie.
+ * - Opaque 256-bit cryptographically secure random token in an HttpOnly cookie.
  * - Only the SHA-256 hash of the token is stored in PostgreSQL —
  *   a database leak cannot be replayed as a session.
- * - Server-side expiry + revocation (logout deletes the row).
- * - Cookie: HttpOnly, SameSite=Lax (CSRF mitigation for top-level
- *   POSTs), Secure in production, scoped to path "/".
+ * - Server-side expiry + instant revocation (logout deletes the row).
+ * - Cookie: HttpOnly, SameSite (Lax in prod, None+Secure in sandbox preview),
+ *   Secure in production/preview, scoped to path "/".
  * - Default sessions are browser-session cookies (no Max-Age).
  *   "Remember me" sets Max-Age to 30 days.
  */
@@ -40,14 +40,20 @@ export async function createSession(
 ): Promise<void> {
   const token = randomBytes(32).toString("base64url");
   const h = await headers();
+  const ip =
+    h.get("cf-connecting-ip")?.trim() ||
+    h.get("x-real-ip")?.trim() ||
+    h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    null;
+  const userAgent = h.get("user-agent")?.slice(0, 250) ?? null;
 
   await db.adminSession.create({
     data: {
       tokenHash: hashToken(token),
       userId,
       expiresAt: new Date(Date.now() + ttlMs),
-      ip: h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null,
-      userAgent: h.get("user-agent")?.slice(0, 250) ?? null,
+      ip,
+      userAgent,
     },
   });
 
@@ -63,7 +69,7 @@ export async function destroySession(): Promise<void> {
   const token = readToken(cookieStore.get(ADMIN_SESSION_COOKIE)?.value);
   if (token) {
     await db.adminSession
-      .delete({ where: { tokenHash: hashToken(token) } })
+      .deleteMany({ where: { tokenHash: hashToken(token) } })
       .catch(() => undefined);
   }
   cookieStore.set(ADMIN_SESSION_COOKIE, "", {
@@ -96,10 +102,17 @@ export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
 
   if (!session) return null;
   if (session.expiresAt < new Date()) {
-    await db.adminSession.delete({ where: { id: session.id } }).catch(() => undefined);
+    await db.adminSession.deleteMany({ where: { id: session.id } }).catch(() => undefined);
     return null;
   }
   if (session.user.status !== "ACTIVE") return null;
+
+  // Opportunistic background pruning of expired sessions (1 in 20 requests)
+  if (Math.random() < 0.05) {
+    db.adminSession
+      .deleteMany({ where: { expiresAt: { lt: new Date() } } })
+      .catch(() => undefined);
+  }
 
   return {
     id: session.user.id,

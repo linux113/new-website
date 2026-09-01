@@ -1,16 +1,18 @@
 /**
  * Cookie flags for admin session and analytics.
- * PREVIEW_CROSS_SITE_COOKIES=1 is for the sandbox iframe only.
+ * Supports standard production, localhost dev, and sandbox preview (cross-site iframe) environments.
  */
 
-const CROSS_SITE = process.env.PREVIEW_CROSS_SITE_COOKIES === "1";
-
 export function appCookieOptions() {
+  const isE2B = process.env.E2B_SANDBOX === "true";
+  const isCrossSite = process.env.PREVIEW_CROSS_SITE_COOKIES === "1" || isE2B;
+  const isProd = process.env.NODE_ENV === "production";
+
   return {
     httpOnly: true as const,
-    sameSite: CROSS_SITE ? ("none" as const) : ("lax" as const),
-    secure: CROSS_SITE || process.env.NODE_ENV === "production",
-    partitioned: CROSS_SITE,
+    sameSite: isCrossSite ? ("none" as const) : ("lax" as const),
+    secure: isCrossSite || isProd,
+    partitioned: isCrossSite,
     path: "/" as const,
   };
 }

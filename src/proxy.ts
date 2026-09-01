@@ -17,11 +17,26 @@ function noStore(res: NextResponse): NextResponse {
   res.headers.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
   res.headers.set("Pragma", "no-cache");
   res.headers.set("X-Robots-Tag", "noindex, nofollow");
+  res.headers.set("X-Content-Type-Options", "nosniff");
+  res.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   return res;
 }
 
+function isSandbox(): boolean {
+  return process.env.PREVIEW_CROSS_SITE_COOKIES === "1" || process.env.E2B_SANDBOX === "true";
+}
+
 function clearSessionCookie(res: NextResponse): void {
-  res.cookies.set(COOKIE, "", { path: "/", maxAge: 0 });
+  const crossSite = isSandbox();
+  const isProd = process.env.NODE_ENV === "production";
+  res.cookies.set(COOKIE, "", {
+    path: "/",
+    maxAge: 0,
+    httpOnly: true,
+    sameSite: crossSite ? "none" : "lax",
+    secure: crossSite || isProd,
+    partitioned: crossSite,
+  });
 }
 
 export function proxy(request: NextRequest) {
