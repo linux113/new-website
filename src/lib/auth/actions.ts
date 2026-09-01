@@ -65,6 +65,7 @@ export async function loginAction(
     where: { id: user.id },
     data: { lastLoginAt: new Date() },
   });
+  await destroySession();
   // "Remember me" extends the session from 12 hours to 30 days AND makes
   // the cookie persistent (survives browser restarts). Without it the
   // cookie dies with the browser session — next visit requires a login.

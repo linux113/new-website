@@ -32,7 +32,7 @@ export function IndustriesClient() {
         {/* LEFT */}
         <div className="lg:col-span-5 xl:col-span-5">
           <p
-            className="in-fade font-mono text-[11px] uppercase tracking-[0.3em] text-[#D8A84E]"
+            className="in-fade font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#D8A84E]"
             style={{ animationDelay: "60ms" }}
           >
             Our Industries

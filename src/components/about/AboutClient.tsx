@@ -240,7 +240,7 @@ export function AboutClient({ company }: AboutClientProps) {
                               href={company.whatsapp[i].href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.14em] text-[#D8A84E] transition-colors hover:text-[#F0C66D]"
+                              className="inline-flex items-center gap-1 font-mono text-[1rem] font-semibold uppercase tracking-[0.14em] text-[#D8A84E] transition-colors hover:text-[#F0C66D]"
                             >
                               <MessageCircle size={11} /> WhatsApp
                               <ArrowUpRight size={10} />

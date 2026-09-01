@@ -223,7 +223,7 @@ export function CustomersClient({ customers, dotsSvg }: Props) {
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-6">
               <p
-                className="cu-el font-mono text-xs uppercase tracking-[0.3em] text-[#C8A45D]"
+                className="cu-el font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#C8A45D]"
                 style={{ transitionDelay: "0ms" }}
               >
                 Our Customers

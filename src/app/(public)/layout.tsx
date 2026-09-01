@@ -1,6 +1,7 @@
 import { SiteFooter, SiteHeader, SkipLink } from "@/components/layout";
 import { FloatingActions } from "@/components/layout/FloatingActions";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { VisitTracker } from "@/components/analytics/VisitTracker";
 
 /**
  * Public site chrome: skip link, fixed navbar, page content, footer,
@@ -20,6 +21,7 @@ export default function PublicLayout({
       <main id="main-content">{children}</main>
       <SiteFooter />
       <FloatingActions />
+      <VisitTracker />
     </>
   );
 }

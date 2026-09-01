@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
+  Activity,
   Award,
   Bell,
   ChevronRight,
@@ -57,7 +58,10 @@ interface AdminShellProps {
 const NAV_GROUPS: { heading: string; items: { label: string; href: string; icon: typeof Package }[] }[] = [
   {
     heading: "Overview",
-    items: [{ label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard }],
+    items: [
+      { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+      { label: "Traffic", href: "/admin/analytics", icon: Activity },
+    ],
   },
   {
     heading: "Catalogue",
@@ -110,6 +114,7 @@ const SEARCHABLE = ["/admin/products", "/admin/blogs", "/admin/enquiries", "/adm
 const CRUMB_LABELS: Record<string, string> = {
   admin: "Admin",
   dashboard: "Overview",
+  analytics: "Traffic",
   products: "Products",
   categories: "Categories",
   blogs: "Blog",

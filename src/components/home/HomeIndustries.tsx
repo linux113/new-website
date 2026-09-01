@@ -18,7 +18,7 @@ export function HomeIndustries() {
     >
       <Container>
         <Reveal>
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#C8A45D]">
+            <p className="font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#C8A45D]">
             Industries
           </p>
           <h2

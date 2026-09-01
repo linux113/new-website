@@ -81,7 +81,13 @@ export default async function HomePage() {
 
       {/* Hero with auto-playing metal frame sequence */}
       <HomeHero
-        company={{ hours: company.hours, gst: company.gst, phones: company.phones }}
+        company={{
+          hours: company.hours,
+          gst: company.gst,
+          phones: company.phones,
+          headline: company.content["content.hero.headline"],
+          subline: company.content["content.hero.subline"],
+        }}
       />
 
       {/* Sourced. Checked. Delivered. */}
@@ -140,7 +146,10 @@ export default async function HomePage() {
       </Reveal>
 
       {/* Final CTA */}
-      <HomeFinalCTA />
+      <HomeFinalCTA
+        headline={company.content["content.cta.headline"]}
+        subline={company.content["content.cta.subline"]}
+      />
     </>
   );
 }

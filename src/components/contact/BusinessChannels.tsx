@@ -50,7 +50,7 @@ export function BusinessChannels() {
                       aria-hidden="true"
                       className="absolute left-0 top-0 h-px w-0 bg-[#B89A62] transition-all duration-300 ease-out group-hover:w-20 group-focus-visible:w-20"
                     />
-                    <span className="col-span-4 font-mono text-[11px] uppercase tracking-[0.25em] text-[#727D86] md:col-span-3">
+                    <span className="col-span-4 font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#727D86] md:col-span-3">
                       {channel.label}
                     </span>
                     <span className="col-span-3 min-w-0 break-words font-display text-lg font-medium text-[#F5F7F8] transition-colors duration-200 group-hover:text-white md:col-span-6 md:text-xl">

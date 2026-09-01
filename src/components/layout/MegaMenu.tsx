@@ -108,7 +108,7 @@ export function MegaMenu({
 
         {/* Header */}
         <div className="px-5 pb-3 pt-4">
-          <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-[#F5F7F8]">
+          <p className="font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#F5F7F8]">
             {heading}
           </p>
           <p className="mt-1 text-xs text-[#727D86]">{sub}</p>
@@ -155,7 +155,7 @@ export function MegaMenu({
           <Link
             href={allHref}
             onClick={() => onClose()}
-            className="group flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#D8A84E] to-[#F0C66D] px-4 py-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-[#05080B] transition-all duration-200 hover:brightness-105 hover:shadow-[0_8px_24px_-10px_rgba(216,168,78,0.9)]"
+            className="group flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#D8A84E] to-[#F0C66D] px-4 py-2.5 font-mono text-[0.9375rem] font-semibold uppercase tracking-[0.14em] text-[#05080B] transition-all duration-200 hover:brightness-105 hover:shadow-[0_8px_24px_-10px_rgba(216,168,78,0.9)]"
           >
             {ctaLabel}
             <ArrowRightIcon size={16}

@@ -263,7 +263,7 @@ export function CertificateModal({ cert, onClose }: ModalProps) {
         >
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="font-mono text-[10.5px] uppercase tracking-[0.2em] text-[#D8A84E]">
+              <p className="font-mono text-[0.875rem] font-semibold uppercase tracking-[0.14em] text-[#D8A84E]">
                 Verified Certificate
               </p>
               <h2 className="mt-2 pr-8 font-display text-xl font-semibold leading-tight text-[#F5F7F8] sm:text-2xl">

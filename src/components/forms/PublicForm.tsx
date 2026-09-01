@@ -95,7 +95,7 @@ interface FieldProps {
 export function Field({ name, label, error, optional, children }: FieldProps) {
   return (
     <div className="flex flex-col gap-2">
-      <label htmlFor={`pf-${name}`} className="text-mono-meta text-surface-muted">
+      <label htmlFor={`pf-${name}`} className="text-[0.9375rem] font-medium text-surface-fg">
         {label}
         {optional ? <span className="text-mist"> (OPTIONAL)</span> : null}
       </label>

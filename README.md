@@ -6,9 +6,9 @@ trading, import and export company.
 - **Public site:** product catalogue (fasteners, pipe fittings, flanges,
   carbon steel pipes), quality certifications, manufacturing process,
   global reach, insights, contact and enquiry forms.
-- **Admin panel:** `/admin` — manage products, categories, blog posts,
-  certifications, enquiries, contacts, vendor requests, media, SEO and
-  site settings (including social links and catalogue downloads).
+- **Admin panel:** `/admin/login` then `/admin/dashboard` — products,
+  categories, blog, certifications, enquiries, vendor requests, media,
+  SEO, settings, and live traffic (visitors / visits by day, week, month).
 
 ## Stack
 

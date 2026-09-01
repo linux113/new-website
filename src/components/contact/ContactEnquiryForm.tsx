@@ -50,7 +50,7 @@ export function ContactEnquiryForm() {
           className="absolute -top-24 right-0 h-64 w-64 rounded-full"
           style={{ background: "radial-gradient(circle, rgba(184,154,98,0.18), transparent 70%)" }}
         />
-        <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-[#B89A62]">
+        <p className="font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#B89A62]">
           03 / Received
         </p>
         <h3 className="mt-4 font-display text-3xl font-medium uppercase tracking-tight text-[#F5F7F8] md:text-4xl">
@@ -329,7 +329,7 @@ function Field({
       <label
         htmlFor={id}
         className={cn(
-          "font-mono text-[11px] uppercase tracking-[0.22em] transition-colors duration-200",
+          "font-mono text-[0.875rem] uppercase tracking-[0.14em] transition-colors duration-200",
           focused ? "text-[#F5F7F8]" : "text-[#727D86]",
           error && "text-red-300",
         )}
@@ -343,7 +343,7 @@ function Field({
         <p
           id={`${id}-error`}
           role="alert"
-          className="font-mono text-[11px] uppercase tracking-[0.15em] text-red-300"
+          className="font-mono text-[0.9375rem] font-medium uppercase tracking-[0.12em] text-red-300"
         >
           {error}
         </p>

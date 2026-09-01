@@ -8,6 +8,8 @@ interface HeroCompany {
   hours: string;
   gst: string;
   phones: { value: string }[];
+  headline?: string;
+  subline?: string;
 }
 
 /**
@@ -21,8 +23,15 @@ interface HeroCompany {
  */
 export function HomeHero({ company }: { company: HeroCompany }) {
   const gst = company.gst.replace(/^GSTIN:\s*/i, "") || "27CRKPS0693G1ZB";
-  // Show the real primary number instead of a meaningless "2 LINES" count.
   const primaryPhone = company.phones?.[0]?.value || "+91 96195 61657";
+  const hours = company.hours?.trim() || "10:00 AM – 7:00 PM";
+  const headline = company.headline?.trim();
+  const headlineLines = headline
+    ? headline.split("\n").map((line) => line.trim()).filter(Boolean)
+    : null;
+  const subline =
+    company.subline?.trim() ||
+    "Engineered supply for industrial buyers — exact specification, dependable delivery, direct communication.";
 
   return (
     <section
@@ -46,16 +55,23 @@ export function HomeHero({ company }: { company: HeroCompany }) {
                     "0 2px 30px rgba(5,8,11,0.65), 0 1px 8px rgba(5,8,11,0.55)",
                 }}
               >
-                {/* Two deliberate lines on every viewport — the mobile
-                    clamp scales down so "supplied without compromise."
-                    holds one line instead of wrapping back to three. */}
-                <span className="block">Precision metals,</span>
-                <span className="block">
-                  supplied without{" "}
-                  <span className="hh-gold bg-gradient-to-r from-[#F0C66D] via-[#C8A45D] to-[#A8843D] bg-clip-text text-transparent">
-                    compromise.
-                  </span>
-                </span>
+                {headlineLines ? (
+                  headlineLines.map((line, i) => (
+                    <span key={i} className="block">
+                      {line}
+                    </span>
+                  ))
+                ) : (
+                  <>
+                    <span className="block">Precision metals,</span>
+                    <span className="block">
+                      supplied without{" "}
+                      <span className="hh-gold bg-gradient-to-r from-[#F0C66D] via-[#C8A45D] to-[#A8843D] bg-clip-text text-transparent">
+                        compromise.
+                      </span>
+                    </span>
+                  </>
+                )}
               </h1>
 
               <span
@@ -70,8 +86,7 @@ export function HomeHero({ company }: { company: HeroCompany }) {
                   textShadow: "0 1px 14px rgba(5,8,11,0.85), 0 1px 4px rgba(5,8,11,0.6)",
                 }}
               >
-                Engineered supply for industrial buyers — exact
-                specification, dependable delivery, direct communication.
+                {subline}
               </p>
 
               <div
@@ -105,7 +120,7 @@ export function HomeHero({ company }: { company: HeroCompany }) {
             >
               <InfoCell
                 icon={<Clock size={18} strokeWidth={1.6} />}
-                value="10–19 IST"
+                value={hours}
                 label="Working hours, Mon–Sat"
               />
               <InfoCell

@@ -4,6 +4,7 @@ import { cookies, headers } from "next/headers";
 import { cache } from "react";
 import { db } from "@/lib/db";
 import type { AdminRole } from "@/generated/prisma/enums";
+import { appCookieOptions } from "@/lib/http/cookie-policy";
 
 /**
  * Admin session management (server-only).
@@ -15,41 +16,21 @@ import type { AdminRole } from "@/generated/prisma/enums";
  * - Server-side expiry + revocation (logout deletes the row).
  * - Cookie: HttpOnly, SameSite=Lax (CSRF mitigation for top-level
  *   POSTs), Secure in production, scoped to path "/".
- * - Default sessions are BROWSER-SESSION cookies (no Max-Age) —
- *   closing the browser/app ends the login, so /admin/dashboard can
- *   never be re-opened days later without authenticating again.
- *   Only an explicit "Remember me" opt-in sends Max-Age (30 days).
+ * - Default sessions are browser-session cookies (no Max-Age).
+ *   "Remember me" sets Max-Age to 30 days.
  */
 
-const COOKIE_NAME = "sm_admin_session";
+export const ADMIN_SESSION_COOKIE = "sm_admin_session";
 const SESSION_TTL_MS = 1000 * 60 * 60 * 12; // 12 hours
-
-/**
- * Cookie policy.
- * Default: SameSite=Lax (CSRF mitigation), Secure in production.
- * PREVIEW_CROSS_SITE_COOKIES=1 (sandbox preview ONLY): the preview
- * embeds the site in an iframe on another origin, and browsers drop
- * Lax cookies in cross-site iframes — the session dies immediately
- * after login. SameSite=None requires Secure; the preview proxy is
- * HTTPS so the browser accepts it. Never enable this in production.
- */
-const CROSS_SITE = process.env.PREVIEW_CROSS_SITE_COOKIES === "1";
-
-function cookieOptions() {
-  return {
-    httpOnly: true as const,
-    sameSite: CROSS_SITE ? ("none" as const) : ("lax" as const),
-    secure: CROSS_SITE || process.env.NODE_ENV === "production",
-    // CHIPS: 2026 browsers drop unpartitioned third-party cookies in
-    // cross-origin iframes even with SameSite=None. Partitioned
-    // cookies are the sanctioned mechanism for embedded contexts.
-    partitioned: CROSS_SITE,
-    path: "/" as const,
-  };
-}
+const TOKEN_RE = /^[A-Za-z0-9_-]{32,128}$/;
 
 function hashToken(token: string): string {
   return createHash("sha256").update(token).digest("hex");
+}
+
+function readToken(value: string | undefined): string | null {
+  if (!value || !TOKEN_RE.test(value)) return null;
+  return value;
 }
 
 export async function createSession(
@@ -71,24 +52,24 @@ export async function createSession(
   });
 
   const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, token, {
-    ...cookieOptions(),
-    // Only a persistent ("remember me") session gets Max-Age and
-    // survives a browser restart. Default sessions are browser-session
-    // cookies — server-side expiry (ttlMs) is always the hard bound.
+  cookieStore.set(ADMIN_SESSION_COOKIE, token, {
+    ...appCookieOptions(),
     ...(persistent ? { maxAge: Math.floor(ttlMs / 1000) } : {}),
   });
 }
 
 export async function destroySession(): Promise<void> {
   const cookieStore = await cookies();
-  const token = cookieStore.get(COOKIE_NAME)?.value;
+  const token = readToken(cookieStore.get(ADMIN_SESSION_COOKIE)?.value);
   if (token) {
     await db.adminSession
       .delete({ where: { tokenHash: hashToken(token) } })
-      .catch(() => undefined); // already gone — fine
+      .catch(() => undefined);
   }
-  cookieStore.delete(COOKIE_NAME);
+  cookieStore.set(ADMIN_SESSION_COOKIE, "", {
+    ...appCookieOptions(),
+    maxAge: 0,
+  });
 }
 
 export interface SessionUser {
@@ -100,14 +81,12 @@ export interface SessionUser {
 
 /**
  * Resolve the current admin user from the session cookie.
- * Returns null for missing/expired/revoked sessions or
- * suspended users. Cached per-request via React cache().
+ * Returns null for missing, malformed, expired or revoked sessions,
+ * and for suspended users. Cached per-request via React cache().
  */
 export const getSessionUser = cache(async (): Promise<SessionUser | null> => {
-  // NOTE: the old PREVIEW_DEV_BYPASS auto-login backdoor was removed —
-  // the admin panel always requires a real login, in every environment.
   const cookieStore = await cookies();
-  const token = cookieStore.get(COOKIE_NAME)?.value;
+  const token = readToken(cookieStore.get(ADMIN_SESSION_COOKIE)?.value);
   if (!token) return null;
 
   const session = await db.adminSession.findUnique({

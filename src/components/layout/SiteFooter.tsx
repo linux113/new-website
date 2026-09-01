@@ -166,9 +166,8 @@ export async function SiteFooter() {
               ))}
             </ul>
             <p className="mt-5 max-w-xs text-[13px] leading-relaxed text-[#A9B2BA]">
-              Mumbai-based metals trading, import &amp; export company
-              providing reliable industrial material solutions across
-              India and global markets.
+              {company.content["content.footer.description"]?.trim() ||
+                "Mumbai-based metals trading, import & export company providing reliable industrial material solutions across India and global markets."}
             </p>
             <p className="mt-5 font-mono text-xs uppercase tracking-[0.16em] text-[#727D86]">
               GSTIN: <span className="text-[#C8A45D]">{gst}</span>
@@ -245,7 +244,7 @@ export async function SiteFooter() {
                       href={company.whatsapp[i].href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-mono text-[11px] uppercase tracking-[0.14em] text-[#C8A45D] hover:text-[#E5C074]"
+                      className="font-mono text-[1rem] font-semibold uppercase tracking-[0.14em] text-[#C8A45D] hover:text-[#E5C074]"
                     >
                       WhatsApp
                     </a>
@@ -336,7 +335,7 @@ export async function SiteFooter() {
 
 function FooterHeading({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="relative inline-block font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-[#C8A45D]">
+    <h2 className="relative inline-block font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#C8A45D]">
       {children}
       <span
         aria-hidden

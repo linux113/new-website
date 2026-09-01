@@ -19,7 +19,7 @@ export function HomeQuality() {
       <Container>
         <Reveal className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-[#C8A45D]">
+            <p className="font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#C8A45D]">
               Quality
             </p>
             <h2

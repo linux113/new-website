@@ -594,7 +594,7 @@ export function TradeClient({ dotsSvg }: { dotsSvg: string }) {
           {/* ---------------- Hero ---------------- */}
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-14">
             <div className="lg:col-span-6">
-              <p className="ie-el font-mono text-[11px] uppercase tracking-[0.3em]" style={{ transitionDelay: "0ms" }}>
+              <p className="ie-el font-mono text-[1rem] font-semibold uppercase tracking-[0.16em]" style={{ transitionDelay: "0ms" }}>
                 <span className="text-[#C8A45D]">SM-10</span>
                 <span className="mx-2 text-[#727D86]">/</span>
                 <span className="text-[#A9B2BA]">Trade</span>

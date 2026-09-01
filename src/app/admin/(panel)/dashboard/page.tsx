@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
+import { getAnalyticsSnapshot } from "@/lib/analytics/stats";
 import { MonthlyBarChart, ProductBars, StatusDonut, type MonthPoint } from "@/components/admin/dashboard/charts";
 import { KpiCard, QuickActions, Reveal } from "@/components/admin/dashboard/widgets";
+import { LiveTraffic } from "@/components/admin/dashboard/LiveTraffic";
 import { RecentEnquiries, type EnquiryRow } from "@/components/admin/dashboard/RecentEnquiries";
 import { WorldMap } from "@/components/admin/dashboard/WorldMap";
 
@@ -55,6 +57,7 @@ export default async function AdminDashboardPage() {
     productEnquiryCounts,
     recentEnquiries,
     countries,
+    traffic,
   ] = await Promise.all([
     db.product.count(),
     db.product.count({ where: { status: "PUBLISHED" } }),
@@ -78,6 +81,7 @@ export default async function AdminDashboardPage() {
       include: { product: { select: { name: true } } },
     }),
     db.globalCountry.findMany({ where: { status: "PUBLISHED" }, orderBy: { sortOrder: "asc" }, select: { code: true, label: true, direction: true } }),
+    getAnalyticsSnapshot(),
   ]);
 
   /* ---- Daily series (for KPI sparklines + comparisons) ---- */
@@ -232,6 +236,8 @@ export default async function AdminDashboardPage() {
           </p>
         </div>
       </header>
+
+      <LiveTraffic initial={traffic} />
 
       {/* KPI cards */}
       <section aria-label="Key metrics" className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">

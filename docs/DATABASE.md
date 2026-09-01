@@ -70,7 +70,7 @@ In normal environments you can also use plain `npx prisma generate`
 | `ProductRelationType` | RELATED, ALTERNATIVE, ACCESSORY | ProductRelation |
 | `ProductDocumentType` | DATASHEET, DRAWING, CATALOGUE, CERTIFICATE, OTHER | ProductDocument |
 
-## 4. Models (29)
+## 4. Models (33)
 
 ### Admin
 - **AdminUser** — `passwordHash` only (bcrypt/argon2 at the app layer; never plaintext). Unique `email`; roles + status enums; `lastLoginAt`.
@@ -98,6 +98,10 @@ In normal environments you can also use plain `npx prisma generate`
 
 ### Settings
 - **WebsiteSetting** (unique key, JSON value, group), **SocialLink** (unique platform), **NavigationItem** (hierarchical, self-relation cascade).
+
+### Analytics (first-party, no PII)
+- **PageView** — one row per public page view. `visitorId` / `sessionId` are opaque random cookie tokens (never IP, email, or user-agent). `dayKey` is the Asia/Kolkata civil date for daily rollups.
+- **VisitorPresence** — sliding “who is on the site now” keyed by `sessionId`. A session is live when `lastSeenAt` is within 5 minutes.
 
 ## 5. Relationship map
 

@@ -626,3 +626,37 @@ model NavigationItem {
   @@index([menu, status, sortOrder])
   @@index([parentId])
 }
+
+// ============================================================
+// ANALYTICS
+// ============================================================
+
+/// Public page view. visitorId / sessionId are anonymous cookie tokens.
+model PageView {
+  id        String   @id @default(cuid())
+  visitorId String
+  sessionId String
+  path      String
+  referrer  String?
+  /// Civil date in Asia/Kolkata (YYYY-MM-DD) for cheap daily rollups.
+  dayKey    String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([visitorId, createdAt])
+  @@index([sessionId, createdAt])
+  @@index([path, createdAt])
+  @@index([dayKey])
+}
+
+/// Active public session. Live = lastSeenAt within 5 minutes.
+model VisitorPresence {
+  sessionId  String   @id
+  visitorId  String
+  path       String
+  lastSeenAt DateTime
+  startedAt  DateTime @default(now())
+
+  @@index([lastSeenAt])
+  @@index([visitorId])
+}

@@ -256,27 +256,27 @@
 @utility text-label {
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 0.8125rem; /* 13px */
-  line-height: 1;
-  letter-spacing: 0.08em;
+  font-size: 0.9375rem; /* 15px */
+  line-height: 1.2;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 @utility text-mono-meta {
   font-family: var(--font-mono);
-  font-weight: 400;
-  font-size: 0.75rem; /* 12px */
-  line-height: 1.4;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  font-size: 1rem; /* 16px — section / UI labels */
+  line-height: 1.35;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 @utility text-mono-micro {
   font-family: var(--font-mono);
-  font-weight: 400;
-  font-size: 0.75rem; /* 12px — kept at the readable floor */
-  line-height: 1.35;
-  letter-spacing: 0.06em;
+  font-weight: 500;
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.4;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -881,8 +881,8 @@
   background: color-mix(in srgb, var(--glow) 8%, transparent);
   color: var(--glow);
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 600;
   letter-spacing: 0.08em;
   line-height: 1;
   text-transform: uppercase;
@@ -1231,8 +1231,8 @@
 }
 .neon-card__label {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.24em;
+  font-size: 0.8125rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(243, 241, 236, 0.7);
 }

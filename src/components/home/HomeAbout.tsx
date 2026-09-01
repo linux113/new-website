@@ -19,7 +19,7 @@ export function HomeAbout() {
       <Container>
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
           <Reveal className="lg:col-span-6">
-            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-[#C8A45D]">
+            <p className="font-mono text-[1rem] font-semibold uppercase tracking-[0.16em] text-[#C8A45D]">
               About
             </p>
             <h2
