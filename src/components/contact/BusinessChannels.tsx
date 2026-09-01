@@ -2,7 +2,7 @@ import { Container } from "@/components/ui";
 import { Reveal } from "@/components/motion";
 
 /**
- * Business channels (07). Four editorial hairline-divided rows —
+ * Business channels. Four editorial hairline-divided rows —
  * Sales / Purchase / Accounts / General — not a generic icon-card
  * grid. Each row expands its accent line and reveals an arrow on
  * hover/focus.
@@ -25,7 +25,7 @@ export function BusinessChannels() {
           <div className="md:col-span-4">
             <Reveal>
               <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#B89A62]">
-                <span className="text-[#727D86]">07 —</span> Channels
+                Channels
               </p>
               <h2
                 id="channels-title"
@@ -51,9 +51,9 @@ export function BusinessChannels() {
                       className="absolute left-0 top-0 h-px w-0 bg-[#B89A62] transition-all duration-300 ease-out group-hover:w-20 group-focus-visible:w-20"
                     />
                     <span className="col-span-4 font-mono text-[11px] uppercase tracking-[0.25em] text-[#727D86] md:col-span-3">
-                      {String(i + 1).padStart(2, "0")} — {channel.label}
+                      {channel.label}
                     </span>
-                    <span className="col-span-3 font-display text-xl font-medium text-[#F5F7F8] transition-colors duration-200 group-hover:text-white md:col-span-6">
+                    <span className="col-span-3 min-w-0 break-words font-display text-lg font-medium text-[#F5F7F8] transition-colors duration-200 group-hover:text-white md:col-span-6 md:text-xl">
                       {channel.email}
                     </span>
                     <span className="col-span-1 hidden justify-self-end font-mono text-[10px] uppercase tracking-[0.2em] text-[#727D86] md:block">

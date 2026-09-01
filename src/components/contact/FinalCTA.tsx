@@ -41,7 +41,7 @@ export function FinalCTA() {
 
         <Reveal delay={100}>
           <p className="font-mono text-xs uppercase tracking-[0.35em] text-[#B89A62]">
-            08 — Next step
+            Next step
           </p>
           <h2
             id="final-cta-title"

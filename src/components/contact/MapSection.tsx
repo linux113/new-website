@@ -37,7 +37,7 @@ export async function MapSection() {
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#B89A62]">
-                <span className="text-[#727D86]">05 —</span> Map
+                Map
               </p>
               <h2 className="mt-4 font-display text-3xl font-medium tracking-tight text-[#F5F7F8] md:text-4xl">
                 Find us in Mumbai

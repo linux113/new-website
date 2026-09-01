@@ -154,7 +154,7 @@ export function ManufacturingClient() {
             <p
               className="absolute bottom-4 left-4 z-20 rounded bg-[#05080B]/70 px-2.5 py-1.5 font-mono text-xs tracking-[0.08em] text-[#A9B2BA] backdrop-blur-[2px] transition-colors duration-500 group-hover:text-[#C9D0D5]"
             >
-              FIG. 01 · Representative imagery — client facility photography pending
+              Representative imagery
             </p>
           </div>
         </div>
@@ -173,7 +173,7 @@ export function ManufacturingClient() {
               className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.03]"
             />
             <p className="absolute bottom-3 left-4 right-4 rounded bg-[#05080B]/70 px-2.5 py-1.5 font-mono text-xs tracking-[0.08em] text-[#A9B2BA] backdrop-blur-[2px]">
-              FIG. 02 · Material detail — representative imagery
+              Material detail
             </p>
           </div>
 
@@ -234,7 +234,7 @@ export function ManufacturingClient() {
         <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
           {INFRASTRUCTURE_ITEMS.map((item, i) => (
             <article
-              key={item.figure}
+              key={item.caption}
               className="mf-card group relative overflow-hidden rounded-xl border border-[#252A2D] bg-[#080B0D] transition-all duration-500 hover:border-[#D8A84E]/45 hover:shadow-[0_0_40px_-12px_rgba(214,168,74,0.35)]"
               style={{
                 animation: "mf-fade-up 0.8s cubic-bezier(0.22,1,0.36,1) both",
@@ -261,7 +261,7 @@ export function ManufacturingClient() {
               <div className="flex items-center justify-between gap-4 px-5 py-5">
                 <div>
                   <p className="font-mono text-xs tracking-[0.08em] text-[#A9B2BA] transition-colors duration-400 group-hover:text-[#C9D0D5]">
-                    {item.figure} · {item.caption}
+                    {item.caption}
                   </p>
                   <p className="mt-2 font-display text-[1.05rem] font-medium uppercase tracking-wide text-[#F5F7F8] sm:text-[1.25rem]">
                     {item.description}

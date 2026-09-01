@@ -24,7 +24,7 @@ export async function OfficeLocation() {
           <div className="md:col-span-4">
             <Reveal>
               <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#B89A62]">
-                <span className="text-[#727D86]">04 —</span> Location
+                Location
               </p>
               <h2
                 id="office-title"

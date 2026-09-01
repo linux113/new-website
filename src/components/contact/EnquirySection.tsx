@@ -18,7 +18,7 @@ export function EnquirySection() {
           <div className="md:col-span-4 lg:col-span-4">
             <Reveal>
               <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#B89A62]">
-                <span className="text-[#727D86]">02 —</span> Enquiry
+                Enquiry
               </p>
               <h2
                 id="enquiry-heading"

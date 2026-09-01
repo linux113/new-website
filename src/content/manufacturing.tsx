@@ -63,7 +63,6 @@ export const HERO_FEATURES: HeroFeature[] = [
 ];
 
 export interface InfrastructureItemData {
-  figure: string;
   caption: string;
   description: string;
   image: string;
@@ -72,14 +71,12 @@ export interface InfrastructureItemData {
 
 export const INFRASTRUCTURE_ITEMS: InfrastructureItemData[] = [
   {
-    figure: "FIG. 03",
     caption: "Covered warehousing",
     description: "Covered storage with material segregation.",
     image: "/images/manufacturing/storage.jpg",
     alt: "Steel coils and metal stock organized in industrial warehouse racks",
   },
   {
-    figure: "FIG. 04",
     caption: "Dispatch coordination",
     description: "Dispatch coordination across India.",
     image: "/images/manufacturing/dispatch.jpg",

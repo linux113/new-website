@@ -17,7 +17,7 @@ import { Container, Section } from "@/components/ui";
  * Restrained premium composition matching the /manufacturing page:
  *   - Two-column editorial heading (eyebrow + display H2 | thin gold
  *     divider | supporting statement)
- *   - Large facility imagery with sentence-case figure captions
+ *   - Large facility imagery with sentence-case captions
  *   - Four process rows — gold line icon in a square outline, number,
  *     title, note — closed by a mono-gold "View infrastructure" link
  * No glows, no heavy motion: staggered reveals only.
@@ -109,7 +109,7 @@ export function ManufacturingSection() {
                 />
                 {/* No shade over the photo — caption carries its own backdrop */}
                 <span className="absolute bottom-4 left-4 rounded bg-[#05080B]/70 px-2.5 py-1.5 font-mono text-xs tracking-[0.05em] text-[#C9D0D5] backdrop-blur-[2px]">
-                  FIG. 01 — Intake, inspection and staging
+                  Intake, inspection and staging
                 </span>
               </div>
             </Reveal>
@@ -124,7 +124,7 @@ export function ManufacturingSection() {
                   className="object-cover transition-transform duration-700 ease-out hover:scale-[1.02] motion-reduce:transition-none motion-reduce:hover:scale-100"
                 />
                 <span className="absolute bottom-3 left-4 rounded bg-[#05080B]/70 px-2.5 py-1.5 font-mono text-xs tracking-[0.05em] text-[#C9D0D5] backdrop-blur-[2px]">
-                  FIG. 02 — Packaging and dispatch
+                  Packaging and dispatch
                 </span>
               </div>
             </Reveal>
