@@ -12,9 +12,9 @@ import { cn } from "@/lib/cn";
 export const revalidate = 300; // revalidated on-demand after admin mutations
 
 export const metadata: Metadata = {
-  title: "Products",
+  title: { absolute: "Industrial Fasteners, Pipes & Fittings | SRIYAAN METALS Mumbai" },
   description:
-    "Browse the SRIYAAN METALS product range. Send a specification for a considered quote.",
+    "Browse bolts, nuts, washers, foundation bolts, rivets, pipe fittings, flanges and carbon steel pipes from SRIYAAN METALS, Mumbai. Specification-led supply.",
   alternates: { canonical: `${SITE_URL}/products` },
 };
 
@@ -71,7 +71,7 @@ export default async function ProductsPage({
             {categories.map((cat) => (
               <Link
                 key={cat.slug}
-                href={`/products/category/${cat.slug}`}
+                href={`/products/${cat.slug}`}
                 className={cn(
                   "border px-3 py-2 text-mono-meta transition-colors duration-(--duration-fast)",
                   category === cat.slug

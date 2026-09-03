@@ -101,6 +101,8 @@ export interface Product {
   specSummary: Placeholder<string>;
   media: MediaRef[];
   specifications?: Specification[];
+  /** Full public href when nested (e.g. /products/bolts/hex-bolts). */
+  href?: string;
 }
 
 /** A single specification row/§10 SpecTable). */

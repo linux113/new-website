@@ -9,6 +9,7 @@ import {
   AdminTextarea,
   SlugField,
 } from "./form";
+import { MediaFileField } from "./MediaFileField";
 
 /**
  * Blog post form. Content is edited as Markdown in a structured
@@ -27,6 +28,8 @@ interface BlogFormProps {
     categoryId?: string;
     status?: string;
     publishedAt?: string;
+    featuredImageId?: string;
+    featuredImageUrl?: string | null;
   };
   action: (prev: ActionState, formData: FormData) => Promise<ActionState>;
   submitLabel: string;
@@ -65,6 +68,14 @@ export function BlogForm({ categories, defaults, action, submitLabel }: BlogForm
             error={fieldErrors.content}
           >
             <AdminTextarea name="content" defaultValue={defaults.content} rows={16} error={fieldErrors.content} />
+          </AdminFormField>
+
+          <AdminFormField name="featuredImageId" label="Featured image" error={fieldErrors.featuredImageId}>
+            <MediaFileField
+              name="featuredImageId"
+              currentId={defaults.featuredImageId}
+              currentUrl={defaults.featuredImageUrl}
+            />
           </AdminFormField>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">

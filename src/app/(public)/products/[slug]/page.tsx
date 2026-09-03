@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { FileText } from "lucide-react";
 import { Breadcrumbs } from "@/components/layout";
 import { ProductGallery, ProductGrid, SpecTable } from "@/components/patterns";
@@ -13,11 +13,18 @@ import {
   Section,
 } from "@/components/ui";
 import { EnquiryForm } from "@/components/forms/EnquiryForm";
-import { getProductBySlug } from "@/lib/repositories/products";
+import { CategorySeoView } from "@/components/seo/CategorySeoView";
+import { getProductBySlug, getPublishedProducts } from "@/lib/repositories/products";
 import { toMediaRef, toPatternProduct } from "@/lib/mappers";
 import { whatsappProductUrl } from "@/lib/whatsapp";
 import { getCompanyInfo } from "@/lib/company";
-import { SITE_URL } from "@/content/site";
+import { SITE_NAME, SITE_URL } from "@/content/site";
+import {
+  SEO_CATEGORIES,
+  findSeoProductByLeaf,
+  getSeoCategory,
+  productHref,
+} from "@/content/seo-catalog";
 
 export const revalidate = 300;
 
@@ -27,19 +34,45 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+  const seoCat = getSeoCategory(slug);
+  if (seoCat) {
+    return {
+      title: { absolute: seoCat.title },
+      description: seoCat.description,
+      alternates: { canonical: `${SITE_URL}/products/${seoCat.slug}` },
+      openGraph: {
+        title: seoCat.title,
+        description: seoCat.description,
+        url: `${SITE_URL}/products/${seoCat.slug}`,
+        siteName: SITE_NAME,
+        type: "website",
+        locale: "en_IN",
+      },
+    };
+  }
+
+  const nested = findSeoProductByLeaf(slug);
+  if (nested) {
+    return {
+      title: { absolute: nested.title },
+      description: nested.description,
+      alternates: { canonical: `${SITE_URL}${productHref(nested)}` },
+    };
+  }
+
   const product = await getProductBySlug(slug).catch(() => null);
   if (!product) return { title: "Product not found" };
 
-  const title = product.seo?.metaTitle ?? product.name;
+  const title = product.seo?.metaTitle ?? `${product.name} Supplier in Mumbai | ${SITE_NAME}`;
   const description =
     product.seo?.metaDescription ??
     product.shortDescription ??
-    `${product.name} — enquire with SRIYAAN METALS for specification and quotation.`;
+    `${product.name} from SRIYAAN METALS, Mumbai — enquire for specification and quotation.`;
   const canonical = product.seo?.canonicalUrl ?? `${SITE_URL}/products/${product.slug}`;
   const ogImage = product.seo?.ogImage?.publicUrl ?? product.images[0]?.media.publicUrl;
 
   return {
-    title,
+    title: { absolute: title.includes("|") ? title : `${title} | ${SITE_NAME}` },
     description,
     alternates: { canonical },
     openGraph: {
@@ -52,8 +85,30 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function ProductDetailPage({ params }: PageProps) {
+export default async function ProductOrCategoryPage({ params }: PageProps) {
   const { slug } = await params;
+
+  const seoCat = getSeoCategory(slug);
+  if (seoCat) {
+    if (seoCat.aliases?.includes(slug) && seoCat.slug !== slug) {
+      redirect(`/products/${seoCat.slug}`);
+    }
+    const dbProducts = await getPublishedProducts({ categorySlug: slug, take: 60 }).catch(
+      () => [],
+    );
+    return (
+      <CategorySeoView
+        category={seoCat}
+        dbProducts={dbProducts.map(toPatternProduct)}
+      />
+    );
+  }
+
+  const nested = findSeoProductByLeaf(slug);
+  if (nested) {
+    redirect(productHref(nested));
+  }
+
   const product = await getProductBySlug(slug).catch(() => null);
   if (!product) notFound();
 
@@ -67,7 +122,6 @@ export default async function ProductDetailPage({ params }: PageProps) {
     .filter((p) => p.status === "PUBLISHED")
     .slice(0, 3);
 
-  /** Product JSON-LD — facts only: no prices, ratings or reviews. */
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -89,7 +143,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
         "@type": "ListItem",
         position: 3,
         name: product.category.name,
-        item: `${SITE_URL}/products/category/${product.category.slug}`,
+        item: `${SITE_URL}/products/${product.category.slug}`,
       },
       { "@type": "ListItem", position: 4, name: product.name },
     ],
@@ -109,29 +163,35 @@ export default async function ProductDetailPage({ params }: PageProps) {
             items={[
               { label: "Home", href: "/" },
               { label: "Products", href: "/products" },
-              { label: product.category.name, href: `/products/category/${product.category.slug}` },
+              { label: product.category.name, href: `/products/${product.category.slug}` },
               { label: product.name },
             ]}
           />
 
           <div className="grid grid-cols-4 gap-8 lg:grid-cols-12">
-            {/* Gallery — sticky left column ≥ lg */}
             <div className="col-span-4 lg:col-span-7">
               <div className="lg:sticky lg:top-24">
                 <ProductGallery
-                  media={media.length > 0 ? media : [{ src: null, alt: product.name, placeholderLabel: "IMAGE — [AWAITING CLIENT ASSET]" }]}
+                  media={
+                    media.length > 0
+                      ? media
+                      : [
+                          {
+                            src: null,
+                            alt: product.name,
+                            placeholderLabel: "IMAGE — [AWAITING CLIENT ASSET]",
+                          },
+                        ]
+                  }
                 />
               </div>
             </div>
 
-            {/* Details + enquiry */}
             <div className="col-span-4 flex flex-col gap-8 lg:col-span-5">
               <div className="flex flex-col gap-4">
-                <Eyebrow code={product.productCode ?? "SM"}>
-                  {product.category.name}
-                </Eyebrow>
-                <h1 id="product-heading" className="text-display-lg">
-                  {product.name}
+                <Eyebrow code={product.productCode ?? "SM"}>{product.category.name}</Eyebrow>
+                <h1 id="product-heading" className="text-display-lg text-surface-fg">
+                  {product.name} Supplier in Mumbai
                 </h1>
                 {product.shortDescription ? (
                   <p className="text-body-lg text-surface-muted max-w-measure">
@@ -145,7 +205,11 @@ export default async function ProductDetailPage({ params }: PageProps) {
                   Get a Quote
                 </ButtonLink>
                 <ButtonLink
-                  href={whatsappProductUrl(product.name, `/products/${product.slug}`, company.siteUrl)}
+                  href={whatsappProductUrl(
+                    product.name,
+                    `/products/${product.slug}`,
+                    company.siteUrl,
+                  )}
                   variant="secondary"
                   size="lg"
                   external
@@ -225,7 +289,6 @@ export default async function ProductDetailPage({ params }: PageProps) {
         </Container>
       </Section>
 
-      {/* Enquiry */}
       <Section surface="sunken" rule id="enquire" aria-labelledby="enquire-heading">
         <Container>
           <div className="grid grid-cols-4 gap-8 md:grid-cols-12">
@@ -246,7 +309,6 @@ export default async function ProductDetailPage({ params }: PageProps) {
         </Container>
       </Section>
 
-      {/* Related */}
       {related.length > 0 ? (
         <Section rule aria-labelledby="related-heading">
           <Container>
@@ -255,14 +317,20 @@ export default async function ProductDetailPage({ params }: PageProps) {
             </h2>
             <ProductGrid
               className="mt-10"
-              products={related.map((p) =>
-                toPatternProduct({ ...p, images: p.images ?? [] }),
-              )}
+              products={related.map((p) => toPatternProduct({ ...p, images: p.images ?? [] }))}
             />
             <div className="mt-10">
-              <Link href="/products" className="group inline-flex items-center gap-2 text-label text-surface-fg transition-colors duration-(--duration-base) hover:text-accent">
+              <Link
+                href="/products"
+                className="group inline-flex items-center gap-2 text-label text-surface-fg transition-colors duration-(--duration-base) hover:text-accent"
+              >
                 All products
-                <span aria-hidden className="transition-transform duration-(--duration-base) group-hover:translate-x-1 motion-reduce:transition-none">→</span>
+                <span
+                  aria-hidden
+                  className="transition-transform duration-(--duration-base) group-hover:translate-x-1 motion-reduce:transition-none"
+                >
+                  →
+                </span>
               </Link>
             </div>
           </Container>

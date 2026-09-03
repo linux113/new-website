@@ -10,6 +10,7 @@ import {
   AdminTextarea,
   SlugField,
 } from "./form";
+import { MediaFileField } from "./MediaFileField";
 
 /**
  * Config-driven entity form. Receives serializable field defs from
@@ -32,6 +33,7 @@ interface EntityFormProps {
   hasStatus: boolean;
   hasSortOrder: boolean;
   defaults: Record<string, string | number | boolean | null>;
+  mediaUrls?: Record<string, string | null>;
   action: (prev: ActionState, formData: FormData) => Promise<ActionState>;
   submitLabel: string;
 }
@@ -41,6 +43,7 @@ export function EntityForm({
   hasStatus,
   hasSortOrder,
   defaults,
+  mediaUrls,
   action,
   submitLabel,
 }: EntityFormProps) {
@@ -92,7 +95,11 @@ export function EntityForm({
                 ) : field.kind === "number" ? (
                   <AdminInput name={field.name} type="number" defaultValue={defaultValue} error={error} />
                 ) : field.kind === "media" ? (
-                  <AdminInput name={field.name} defaultValue={defaultValue} error={error} />
+                  <MediaFileField
+                    name={field.name}
+                    currentId={defaultValue || null}
+                    currentUrl={mediaUrls?.[field.name]}
+                  />
                 ) : (
                   <AdminInput
                     name={field.name}

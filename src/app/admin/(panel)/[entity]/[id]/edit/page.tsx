@@ -22,10 +22,18 @@ export default async function EntityEditPage({
   if (!record) notFound();
 
   const defaults: Record<string, string | number | boolean | null> = {};
+  const mediaUrls: Record<string, string | null> = {};
   for (const field of config.fields) {
     const value = record[field.name];
     defaults[field.name] =
       value instanceof Date ? value.toISOString() : (value ?? null);
+    if (field.kind === "media" && typeof value === "string" && value) {
+      const asset = await db.mediaAsset.findUnique({
+        where: { id: value },
+        select: { publicUrl: true },
+      });
+      mediaUrls[field.name] = asset?.publicUrl ?? null;
+    }
   }
   if (config.hasStatus) defaults.status = record.status;
   if (config.hasSortOrder) defaults.sortOrder = record.sortOrder;
@@ -53,6 +61,7 @@ export default async function EntityEditPage({
           hasStatus={config.hasStatus}
           hasSortOrder={config.hasSortOrder}
           defaults={defaults}
+          mediaUrls={mediaUrls}
           action={updateEntityAction.bind(null, config.segment, id)}
           submitLabel="Save changes"
         />

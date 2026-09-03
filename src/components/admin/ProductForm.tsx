@@ -39,6 +39,7 @@ interface ProductFormProps {
     sortOrder?: number;
     specifications?: SpecRow[];
     applications?: string;
+    images?: { id: string; url: string | null; filename: string }[];
   };
   action: (prev: ActionState, formData: FormData) => Promise<ActionState>;
   submitLabel: string;
@@ -180,11 +181,44 @@ export function ProductForm({ categories, defaults, action, submitLabel }: Produ
             </div>
           </div>
 
-          <p className="text-body-sm text-slate">
-            Images and documents attach from the media library once uploads are
-            enabled (next phase). Related products manage from this form at the
-            same time.
-          </p>
+          <fieldset className="border border-line p-4">
+            <legend className="px-1 text-mono-meta text-slate">Images</legend>
+            {(defaults.images ?? []).length > 0 ? (
+              <ul className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {defaults.images!.map((img) => (
+                  <li key={img.id} className="flex flex-col gap-2">
+                    {img.url ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={img.url}
+                        alt={img.filename}
+                        className="aspect-square w-full rounded-xs border border-line object-cover"
+                      />
+                    ) : (
+                      <div className="aspect-square border border-line bg-paper-sunken" />
+                    )}
+                    <label className="flex items-center gap-2 text-body-sm text-ink">
+                      <input type="checkbox" name="keepImageIds" value={img.id} defaultChecked />
+                      Keep
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-body-sm text-slate">No images yet.</p>
+            )}
+            <label htmlFor="product-images" className="mt-2 block text-mono-micro text-slate">
+              Add images (JPEG, PNG, WebP, GIF — max 10 MB each)
+            </label>
+            <input
+              id="product-images"
+              name="images"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+              multiple
+              className="mt-1 text-body-sm file:mr-3 file:h-10 file:cursor-pointer file:rounded-xs file:border file:border-line file:bg-paper-sunken file:px-3 file:text-label file:text-ink"
+            />
+          </fieldset>
         </>
       )}
     </AdminForm>

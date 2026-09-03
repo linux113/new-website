@@ -21,6 +21,7 @@ export default async function AdminProductEditPage({
       include: {
         specifications: { orderBy: { sortOrder: "asc" } },
         applications: { orderBy: { sortOrder: "asc" } },
+        images: { orderBy: { sortOrder: "asc" }, include: { media: true } },
       },
     }),
     db.category.findMany({
@@ -59,6 +60,11 @@ export default async function AdminProductEditPage({
               unit: s.unit ?? undefined,
             })),
             applications: product.applications.map((a) => a.application).join("\n"),
+            images: product.images.map((img) => ({
+              id: img.id,
+              url: img.media.publicUrl,
+              filename: img.media.filename,
+            })),
           }}
           action={updateProductAction.bind(null, product.id)}
           submitLabel="Save changes"

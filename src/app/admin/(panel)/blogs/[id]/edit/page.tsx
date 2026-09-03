@@ -16,7 +16,7 @@ export default async function AdminBlogEditPage({
   const { id } = await params;
 
   const [post, categories] = await Promise.all([
-    db.blogPost.findUnique({ where: { id } }),
+    db.blogPost.findUnique({ where: { id }, include: { featuredImage: true } }),
     db.blogCategory.findMany({
       orderBy: { sortOrder: "asc" },
       select: { id: true, name: true },
@@ -45,6 +45,8 @@ export default async function AdminBlogEditPage({
             categoryId: post.categoryId ?? undefined,
             status: post.status,
             publishedAt: post.publishedAt?.toISOString(),
+            featuredImageId: post.featuredImageId ?? undefined,
+            featuredImageUrl: post.featuredImage?.publicUrl,
           }}
           action={updateBlogPostAction.bind(null, post.id)}
           submitLabel="Save changes"

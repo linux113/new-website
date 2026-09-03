@@ -53,7 +53,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
           {post.category}
         </p>
 
-        <h3 className="font-display text-[1.35rem] font-medium leading-snug text-paper sm:text-[1.5rem]">
+        <h3 className="font-display text-[1.35rem] font-medium leading-snug text-surface-fg sm:text-[1.5rem]">
           <Link
             href={post.href}
             className="after:absolute after:inset-0 focus-visible:outline-none"
@@ -64,7 +64,7 @@ export function BlogCard({ post, className }: BlogCardProps) {
 
         <p className="text-body-sm text-mist line-clamp-3">{post.excerpt}</p>
 
-        <p className="mt-auto flex items-center gap-2 pt-3 text-label text-paper transition-colors duration-(--duration-base) group-hover:text-accent">
+        <p className="mt-auto flex items-center gap-2 pt-3 text-label text-surface-fg transition-colors duration-(--duration-base) group-hover:text-accent">
           Read
           <span
             aria-hidden="true"

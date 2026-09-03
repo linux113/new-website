@@ -63,11 +63,11 @@ export function HomeHero({ company }: { company: HeroCompany }) {
                   ))
                 ) : (
                   <>
-                    <span className="block">Precision metals,</span>
+                    <span className="block">Industrial Metal Supplier</span>
                     <span className="block">
-                      supplied without{" "}
+                      in Mumbai for Fasteners,{" "}
                       <span className="hh-gold bg-gradient-to-r from-[#F0C66D] via-[#C8A45D] to-[#A8843D] bg-clip-text text-transparent">
-                        compromise.
+                        Pipes & Fittings
                       </span>
                     </span>
                   </>

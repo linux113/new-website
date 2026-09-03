@@ -1418,7 +1418,9 @@ canvas.is-ready { opacity: 1 !important; }
 /* ---------- text ---------- */
 [data-theme="light"] [class*="text-[#F5F7F8]"]:not(.keep-dark, .keep-dark *),
 [data-theme="light"] [class*="text-[#F1F0EC]"]:not(.keep-dark, .keep-dark *),
-[data-theme="light"] .text-white:not(.keep-dark, .keep-dark *) {
+[data-theme="light"] .text-white:not(.keep-dark, .keep-dark *),
+[data-theme="light"] .text-paper:not(.keep-dark, .keep-dark *),
+[data-theme="light"] .text-paper-raised:not(.keep-dark, .keep-dark *) {
   color: #16191c;
 }
 [data-theme="light"] [class*="text-[#C9D0D5]"]:not(.keep-dark, .keep-dark *),

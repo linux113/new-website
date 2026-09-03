@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { requireAdminPage } from "@/lib/auth/guard";
 import { db } from "@/lib/db";
 import { deleteMediaAction } from "@/lib/admin/settings-actions";
@@ -80,12 +79,11 @@ export default async function AdminMediaPage({
             <li key={asset.id} className="flex flex-col border border-line bg-paper-raised">
               <div className="relative aspect-square bg-paper-sunken">
                 {asset.publicUrl && asset.type === "IMAGE" ? (
-                  <Image
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
                     src={asset.publicUrl}
                     alt={asset.altText ?? asset.filename}
-                    fill
-                    sizes="200px"
-                    className="object-cover"
+                    className="absolute inset-0 size-full object-cover"
                   />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center">

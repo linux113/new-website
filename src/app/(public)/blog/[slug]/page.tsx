@@ -7,6 +7,7 @@ import { Container, Eyebrow, Hairline, Section } from "@/components/ui";
 import { getPostBySlug, getPublishedPosts } from "@/lib/repositories/blogs";
 import { toPatternPost } from "@/lib/mappers";
 import { SITE_URL } from "@/content/site";
+import { BlogInternalLinks } from "@/components/seo/BlogInternalLinks";
 
 export const revalidate = 300;
 
@@ -159,6 +160,12 @@ export default async function BlogPostPage({ params }: PageProps) {
             {post.content ? (
               <div className="mt-6">{renderContent(post.content)}</div>
             ) : null}
+
+            <BlogInternalLinks
+              title={post.title}
+              excerpt={post.excerpt}
+              content={post.content}
+            />
 
             {post.tags.length > 0 ? (
               <>
