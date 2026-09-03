@@ -6,6 +6,7 @@ import { getCompanyInfo } from "@/lib/company";
 import { FooterSocials } from "./FooterSocials";
 
 const COMPANY_LINKS = [
+  { label: "Metal supplier, Mumbai", href: "/metal-supplier-mumbai" },
   { label: "About", href: "/about" },
   { label: "Manufacturing", href: "/manufacturing" },
   { label: "Quality", href: "/quality" },
@@ -16,11 +17,13 @@ const COMPANY_LINKS = [
 ];
 
 const PRODUCT_LINKS = [
-  { label: "Bolts, Studs & Screws", href: "/products/category/bolts-studs-screws" },
-  { label: "Nuts & Washers", href: "/products/category/nuts-washers" },
-  { label: "Anchors & Foundation Bolts", href: "/products/category/anchors-foundation" },
-  { label: "Rivets & Inserts", href: "/products/category/rivets-inserts" },
-  { label: "Pipe Fittings & Flanges", href: "/products/category/pipe-fittings-flanges" },
+  { label: "Bolts, Studs & Screws", href: "/products/bolts-studs-screws" },
+  { label: "Nuts & Washers", href: "/products/nuts-washers" },
+  { label: "Anchors & Foundation Bolts", href: "/products/anchor-foundation-bolts" },
+  { label: "Rivets & Inserts", href: "/products/rivets-inserts" },
+  { label: "Pipe Fittings", href: "/products/pipe-fittings" },
+  { label: "Pipe Flanges", href: "/products/pipe-flanges" },
+  { label: "Carbon Steel Pipes", href: "/products/carbon-steel-pipes" },
   { label: "All Products", href: "/products" },
 ];
 

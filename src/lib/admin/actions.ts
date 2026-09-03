@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { requireAdminAction } from "@/lib/auth/guard";
 import { db } from "@/lib/db";
+import { isUploadFile, saveUploadedFile } from "@/lib/admin/upload-file";
 import { buildEntitySchema, getEntity } from "./entities";
 
 /**
@@ -18,6 +19,8 @@ export interface ActionState {
   error?: string;
   fieldErrors?: Record<string, string>;
   success?: boolean;
+  mediaId?: string;
+  publicUrl?: string;
 }
 
 const idSchema = z.string().cuid();
@@ -65,11 +68,32 @@ async function checkUnique(
   return null;
 }
 
+async function applyMediaUploads(
+  segment: string,
+  formData: FormData,
+  data: Record<string, unknown>,
+): Promise<string | null> {
+  const config = getEntity(segment);
+  if (!config) return null;
+  for (const field of config.fields.filter((f) => f.kind === "media")) {
+    const file = formData.get(`${field.name}File`);
+    if (!isUploadFile(file)) continue;
+    try {
+      const saved = await saveUploadedFile(file);
+      data[field.name] = saved.id;
+    } catch (error) {
+      return error instanceof Error ? error.message : "Image upload failed.";
+    }
+  }
+  return null;
+}
+
 function revalidateAdmin(segment: string) {
   revalidatePath(`/admin/${segment}`);
   revalidatePath("/");
   if (segment === "categories") {
     revalidatePath("/products");
+    revalidatePath("/products/[slug]", "page");
     revalidatePath("/products/category/[slug]", "page");
     revalidatePath("/sitemap.xml");
   }
@@ -92,6 +116,9 @@ export async function createEntityAction(
   if (!parsed.success) {
     return { error: "Fix the errors below.", fieldErrors: zodFieldErrors(parsed.error) };
   }
+
+  const uploadError = await applyMediaUploads(segment, formData, parsed.data);
+  if (uploadError) return { error: uploadError };
 
   const uniqueError = await checkUnique(segment, parsed.data);
   if (uniqueError) return { error: uniqueError };

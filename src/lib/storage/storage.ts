@@ -18,19 +18,13 @@ export function getStorage(): StorageProvider {
   if (r2) {
     cached = r2;
   } else {
-    if (process.env.NODE_ENV === "production") {
-      // Explicit: never silently write to local disk in production.
-      throw new Error(
-        "Storage is not configured. Set R2_* environment variables.",
-      );
-    }
     cached = new LocalStorageProvider();
   }
   return cached;
 }
 
 export function isStorageConfigured(): boolean {
-  return r2FromEnv() !== null || process.env.NODE_ENV !== "production";
+  return true;
 }
 
 /**

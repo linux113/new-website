@@ -5,6 +5,13 @@ const r2Host = process.env.R2_PUBLIC_URL
   : null;
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      { source: "/products/category/:slug", destination: "/products/:slug", permanent: true },
+      { source: "/products/anchors-foundation", destination: "/products/anchor-foundation-bolts", permanent: true },
+      { source: "/products/pipe-fittings-flanges", destination: "/products/pipe-fittings", permanent: true },
+    ];
+  },
   // Strict security headers (preview-safe: frame-ancestors left open
   // for the sandbox preview iframe; everything else locked down).
   async headers() {
@@ -26,6 +33,8 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["*.e2b.app"],
   experimental: {
     serverActions: {
+      // Default is 1 MB — too small for product photos.
+      bodySizeLimit: "12mb",
       // The preview proxies https://3000-<id>.e2b.app → localhost:3000;
       // allow those origins for server-action POSTs (login, forms).
       allowedOrigins: ["*.e2b.app", "localhost:3000"],

@@ -6,6 +6,7 @@ import { z } from "zod";
 import { requireAdminAction } from "@/lib/auth/guard";
 import { db } from "@/lib/db";
 import { slugSchema } from "@/lib/validation";
+import { isUploadFile, saveUploadedFile } from "@/lib/admin/upload-file";
 import type { ActionState } from "./actions";
 
 const idSchema = z.string().cuid();
@@ -31,6 +32,16 @@ const blogFormSchema = z.object({
     z.coerce.date().optional(),
   ),
 });
+
+async function featuredFromForm(formData: FormData): Promise<string | undefined> {
+  const existing = String(formData.get("featuredImageId") ?? "");
+  const file = formData.get("featuredImageIdFile");
+  if (isUploadFile(file)) {
+    const saved = await saveUploadedFile(file);
+    return saved.id;
+  }
+  return existing || undefined;
+}
 
 function parseForm(formData: FormData) {
   return blogFormSchema.safeParse({
@@ -87,11 +98,14 @@ export async function createBlogPostAction(
   if (clash) return { error: "Slug is already in use — choose another." };
 
   try {
+    const featuredImageId = await featuredFromForm(formData);
     await db.blogPost.create({
-      data: { ...normalizePublication(parsed.data), authorId: user.id },
+      data: { ...normalizePublication(parsed.data), authorId: user.id, featuredImageId },
     });
-  } catch {
-    return { error: "Could not save the post." };
+  } catch (error) {
+    return {
+      error: error instanceof Error ? error.message : "Could not save the post.",
+    };
   }
 
   revalidateBlog();
@@ -119,12 +133,15 @@ export async function updateBlogPostAction(
   if (clash) return { error: "Slug is already in use — choose another." };
 
   try {
+    const featuredImageId = await featuredFromForm(formData);
     await db.blogPost.update({
       where: { id: parsedId.data },
-      data: normalizePublication(parsed.data),
+      data: { ...normalizePublication(parsed.data), featuredImageId },
     });
-  } catch {
-    return { error: "Could not save. The post may no longer exist." };
+  } catch (error) {
+    return {
+      error: error instanceof Error ? error.message : "Could not save. The post may no longer exist.",
+    };
   }
 
   revalidateBlog();

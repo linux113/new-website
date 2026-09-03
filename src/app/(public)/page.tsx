@@ -19,16 +19,14 @@ import { HomeAbout } from "@/components/home/HomeAbout";
 import { HomeQuality } from "@/components/home/HomeQuality";
 import { HomeFinalCTA } from "@/components/home/HomeFinalCTA";
 import { CONTACT, SITE_NAME, SITE_URL } from "@/content/site";
+import { HOME_DESCRIPTION, HOME_TITLE } from "@/content/seo-catalog";
 import { getCompanyInfo } from "@/lib/company";
-
-const DESCRIPTION =
-  "SRIYAAN METALS — Mumbai-based metals trading, import & export. A B2B industrial metal supplier offering metal sourcing, specification matching and reliable procurement.";
 
 export async function generateMetadata(): Promise<Metadata> {
   const company = await getCompanyInfo();
-  const title = company.seo["seo.home.title"] || SITE_NAME;
+  const title = company.seo["seo.home.title"] || HOME_TITLE;
   const description =
-    company.seo["seo.home.description"] || DESCRIPTION;
+    company.seo["seo.home.description"] || HOME_DESCRIPTION;
   const robots = company.seo["seo.robots"] || undefined;
 
   return {

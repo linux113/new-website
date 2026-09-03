@@ -37,7 +37,7 @@ export function MediaUploadForm() {
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
         <div className="flex flex-1 flex-col gap-1.5">
           <label htmlFor="media-file" className="text-mono-micro text-slate">
-            File (JPEG, PNG, WebP, AVIF, PDF — max 10 MB)
+            File (JPEG, PNG, WebP, GIF, AVIF, PDF — max 10 MB)
           </label>
           <input
             ref={fileRef}

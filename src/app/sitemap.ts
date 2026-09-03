@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { db } from "@/lib/db";
 import { SITE_URL } from "@/content/site";
+import { LOCATION_PAGES, SEO_CATEGORIES, SEO_PRODUCTS, productHref } from "@/content/seo-catalog";
 
 /**
  * Sitemap — public, published content only. Admin routes, drafts and
@@ -21,6 +22,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/global-reach`, changeFrequency: "monthly", priority: 0.5 },
     { url: `${SITE_URL}/privacy`, changeFrequency: "yearly", priority: 0.2 },
     { url: `${SITE_URL}/terms`, changeFrequency: "yearly", priority: 0.2 },
+    ...LOCATION_PAGES.map((p) => ({
+      url: `${SITE_URL}/${p.slug}`,
+      changeFrequency: "monthly" as const,
+      priority: 0.85,
+    })),
+    ...SEO_CATEGORIES.map((c) => ({
+      url: `${SITE_URL}/products/${c.slug}`,
+      changeFrequency: "weekly" as const,
+      priority: 0.85,
+    })),
+    ...SEO_PRODUCTS.map((p) => ({
+      url: `${SITE_URL}${productHref(p)}`,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
   ];
 
   try {
@@ -42,7 +58,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return [
       ...staticEntries,
       ...categories.map((cat) => ({
-        url: `${SITE_URL}/products/category/${cat.slug}`,
+        url: `${SITE_URL}/products/${cat.slug}`,
         lastModified: cat.updatedAt,
         changeFrequency: "weekly" as const,
         priority: 0.8,

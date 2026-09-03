@@ -44,11 +44,12 @@ const plexMono = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://sriyaanmetals.com"),
   title: {
-    default: "SRIYAAN METALS",
-    template: "%s — SRIYAAN METALS",
+    default:
+      "SRIYAAN METALS | Metal Supplier, Fasteners, Pipes & Fittings in Mumbai",
+    template: "%s | SRIYAAN METALS",
   },
   description:
-    "SRIYAAN METALS — Mumbai-based metals trading, import and export.",
+    "SRIYAAN METALS is a Mumbai-based metal trading, import and export company supplying industrial fasteners, bolts, nuts, pipes, pipe fittings, flanges and foundation bolts across India and global markets.",
 };
 
 /**

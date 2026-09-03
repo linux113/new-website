@@ -4,14 +4,14 @@ import { Container } from "@/components/ui";
 import { Reveal } from "@/components/motion";
 
 const CATEGORIES = [
-  { index: "01", name: "Bolts, Studs & Screws", desc: "Hex bolts, hex screws, stud bolts & threaded rods" },
-  { index: "02", name: "Nuts", desc: "Hex, slotted, break, coupling & thin nuts" },
-  { index: "03", name: "Washers", desc: "Stainless steel & carbon steel plain washers" },
-  { index: "04", name: "Anchors & Foundation Bolts", desc: "Anchor bolts & J-type foundation bolts" },
-  { index: "05", name: "Rivets & Inserts", desc: "Rivet nuts, threaded inserts & blind rivets" },
-  { index: "06", name: "Pipe Fittings", desc: "Butt-weld, socket-weld & threaded fittings" },
-  { index: "07", name: "Pipe Flanges", desc: "Forged flanges to ASTM, DIN & JIS" },
-  { index: "08", name: "Carbon Steel Pipes", desc: "Dimensions per ASTM ANSI B36.10" },
+  { index: "01", name: "Bolts, Studs & Screws", desc: "Hex bolts, hex screws, stud bolts & threaded rods", href: "/products/bolts-studs-screws" },
+  { index: "02", name: "Nuts", desc: "Hex, slotted, break, coupling & thin nuts", href: "/products/nuts-washers" },
+  { index: "03", name: "Washers", desc: "Stainless steel & carbon steel plain washers", href: "/products/nuts-washers" },
+  { index: "04", name: "Anchors & Foundation Bolts", desc: "Anchor bolts & J-type foundation bolts", href: "/products/anchor-foundation-bolts" },
+  { index: "05", name: "Rivets & Inserts", desc: "Rivet nuts, threaded inserts & blind rivets", href: "/products/rivets-inserts" },
+  { index: "06", name: "Pipe Fittings", desc: "Butt-weld, socket-weld & threaded fittings", href: "/products/pipe-fittings" },
+  { index: "07", name: "Pipe Flanges", desc: "Forged flanges to ASTM, DIN & JIS", href: "/products/pipe-flanges" },
+  { index: "08", name: "Carbon Steel Pipes", desc: "Dimensions per ASTM ANSI B36.10", href: "/products/carbon-steel-pipes" },
 ];
 
 /**
@@ -50,7 +50,7 @@ export function HomeProducts() {
           {CATEGORIES.map((c, i) => (
             <Reveal as="li" key={c.index} delay={i * 70}>
               <Link
-                href="/products"
+                href={c.href}
                 className="group flex items-center gap-5 border-b border-white/10 py-5 transition-colors duration-300 hover:bg-white/[0.025] sm:gap-8"
               >
                 <span className="w-10 shrink-0 font-mono text-sm tabular-nums text-[#727D86] transition-colors duration-300 group-hover:text-[#C8A45D]">

@@ -6,6 +6,7 @@ import { z } from "zod";
 import { requireAdminAction } from "@/lib/auth/guard";
 import { db } from "@/lib/db";
 import { contentStatusSchema, slugSchema } from "@/lib/validation";
+import { isUploadFile, saveUploadedFile } from "@/lib/admin/upload-file";
 import type { ActionState } from "./actions";
 
 /**
@@ -113,11 +114,33 @@ function zodFieldErrors(error: z.ZodError): Record<string, string> {
   return out;
 }
 
+async function syncProductImages(productId: string, formData: FormData, isUpdate: boolean) {
+  if (isUpdate) {
+    const keep = formData
+      .getAll("keepImageIds")
+      .filter((v): v is string => typeof v === "string" && v.length > 0);
+    await db.productImage.deleteMany({
+      where: { productId, id: { notIn: keep } },
+    });
+  }
+
+  const files = formData.getAll("images").filter(isUploadFile);
+  const existing = await db.productImage.count({ where: { productId } });
+  let order = existing;
+  for (const file of files) {
+    const saved = await saveUploadedFile(file);
+    await db.productImage.create({
+      data: { productId, mediaId: saved.id, sortOrder: order++ },
+    });
+  }
+}
+
 function revalidateProducts() {
   revalidatePath("/admin/products");
   revalidatePath("/");
   revalidatePath("/products");
   revalidatePath("/products/[slug]", "page");
+  revalidatePath("/products/[slug]/[product]", "page");
   revalidatePath("/products/category/[slug]", "page");
   revalidatePath("/sitemap.xml");
 }
@@ -138,7 +161,7 @@ export async function createProductAction(
   if (taken) return { error: taken };
 
   try {
-    await db.product.create({
+    const product = await db.product.create({
       data: {
         ...data,
         specifications: {
@@ -149,8 +172,15 @@ export async function createProductAction(
         },
       },
     });
-  } catch {
-    return { error: "Could not save the product. Check the category and try again." };
+    await syncProductImages(product.id, formData, false);
+  } catch (error) {
+    console.error("[product] save failed:", error instanceof Error ? error.message : error);
+    return {
+      error:
+        error instanceof Error && error.message.includes("Unsupported")
+          ? error.message
+          : "Could not save the product. Check the category and try again.",
+    };
   }
 
   revalidateProducts();
@@ -195,8 +225,15 @@ export async function updateProductAction(
         })),
       }),
     ]);
-  } catch {
-    return { error: "Could not save. The product may no longer exist." };
+    await syncProductImages(parsedId.data, formData, true);
+  } catch (error) {
+    console.error("[product] save failed:", error instanceof Error ? error.message : error);
+    return {
+      error:
+        error instanceof Error && /too large|Unsupported|File contents/i.test(error.message)
+          ? error.message
+          : "Could not save. The product may no longer exist.",
+    };
   }
 
   revalidateProducts();
