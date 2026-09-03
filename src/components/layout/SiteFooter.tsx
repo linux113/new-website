@@ -16,11 +16,11 @@ const COMPANY_LINKS = [
 ];
 
 const PRODUCT_LINKS = [
-  { label: "Bolts, Studs & Screws", href: "/products" },
-  { label: "Nuts & Washers", href: "/products" },
-  { label: "Anchors & Foundation Bolts", href: "/products" },
-  { label: "Rivets & Inserts", href: "/products" },
-  { label: "Pipe Fittings & Flanges", href: "/products" },
+  { label: "Bolts, Studs & Screws", href: "/products/category/bolts-studs-screws" },
+  { label: "Nuts & Washers", href: "/products/category/nuts-washers" },
+  { label: "Anchors & Foundation Bolts", href: "/products/category/anchors-foundation" },
+  { label: "Rivets & Inserts", href: "/products/category/rivets-inserts" },
+  { label: "Pipe Fittings & Flanges", href: "/products/category/pipe-fittings-flanges" },
   { label: "All Products", href: "/products" },
 ];
 
