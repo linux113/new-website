@@ -38,7 +38,7 @@ export function HeroVideoBackground() {
     <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden bg-[#05080B]">
       <video
         ref={videoRef}
-        src="/videos/hero.mp4"
+        src="/videos/workers-loading-cargo-truck.mp4"
         poster="/images/home/hero-metal.jpg"
         muted
         playsInline
