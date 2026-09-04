@@ -55,7 +55,7 @@ export async function saveSettingsAction(
   return { success: true };
 }
 
-/** Media: update alt text / delete (no uploads this phase). */
+/** Media: update alt text / delete. Uploads live in media-actions.ts. */
 const idSchema = z.string().cuid();
 
 export async function updateMediaAltAction(

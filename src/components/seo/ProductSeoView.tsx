@@ -80,5 +80,3 @@ export function ProductSeoView({ product }: { product: SeoProduct }) {
     </>
   );
 }
-
-export { productHref, siblings };
