@@ -18,6 +18,15 @@ export function getStorage(): StorageProvider {
   if (r2) {
     cached = r2;
   } else {
+    if (process.env.NODE_ENV === "production") {
+      // Loud, so a misconfigured deployment isn't silently losing files.
+      console.warn(
+        "[storage] R2 credentials not found — media uploads will be stored " +
+          "on the local filesystem. This works on a persistent VPS but NOT on " +
+          "ephemeral/read-only hosts (e.g. Vercel serverless). Set R2_* to use " +
+          "Cloudflare R2.",
+      );
+    }
     cached = new LocalStorageProvider();
   }
   return cached;

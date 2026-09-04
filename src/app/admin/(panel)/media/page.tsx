@@ -19,10 +19,10 @@ function formatSize(bytes: number | null): string {
 }
 
 /**
- * Media library. Listing/alt-editing/deletion over the MediaAsset
- * model. Uploads intentionally absent this phase — the storage
- * abstraction (storageProvider/storageKey) is ready for the R2
- * integration; nothing is faked.
+ * Media library. Uploads + listing/alt-editing/deletion over the
+ * MediaAsset model, backed by the storage abstraction
+ * (storageProvider/storageKey). R2 when configured, otherwise the
+ * local filesystem served via /uploads/[...path].
  */
 export default async function AdminMediaPage({
   searchParams,
@@ -71,7 +71,7 @@ export default async function AdminMediaPage({
       {assets.length === 0 ? (
         <AdminEmptyState
           title={q ? `No results for “${q}”` : "No media yet"}
-          description="Upload the first asset above. Without R2 credentials, files store locally for development."
+          description="Upload the first asset above. Without R2 credentials, files store on the local filesystem (persistent VPS required)."
         />
       ) : (
         <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
