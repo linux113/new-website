@@ -26,7 +26,7 @@ export function CategorySeoView({
     category: category.name,
     code: "SM",
     specSummary: { value: p.specSummary, placeholder: "" },
-    media: [],
+    media: p.image ? [p.image] : [],
     href: productHref(p),
   }));
 

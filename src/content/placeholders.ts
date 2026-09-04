@@ -27,8 +27,8 @@ export const PENDING = "[PENDING CLIENT INPUT]";
 export const PLACEHOLDER_CATEGORIES: Category[] = [
   // Fallback tiles when the database is unreachable — mirrors the
   // SRIYAAN METALS catalogue range.
-  { slug: "bolts-studs-screws", index: "01", title: "Bolts, Studs & Screws", image: { src: "/images/cat-bars.jpg", alt: "Steel fasteners — representative imagery" } },
-  { slug: "nuts-washers", index: "02", title: "Nuts & Washers", image: { src: "/images/cat-bars.jpg", alt: "Nuts and washers — representative imagery" } },
+  { slug: "bolts-studs-screws", index: "01", title: "Bolts, Studs & Screws", image: { src: "/images/products/screw-flat-head.jpg", alt: "Stainless steel screws" } },
+  { slug: "nuts-washers", index: "02", title: "Nuts & Washers", image: { src: "/images/products/screws-warehouse.jpg", alt: "Screws and fasteners stocked in warehouse bins" } },
   { slug: "pipe-fittings-flanges", index: "03", title: "Pipe Fittings & Flanges", image: { src: "/images/cat-pipes.jpg", alt: "Pipe fittings — representative imagery" } },
   { slug: "carbon-steel-pipes", index: "04", title: "Carbon Steel Pipes", image: { src: "/images/cat-pipes.jpg", alt: "Carbon steel pipes — representative imagery" } },
 ];
@@ -42,7 +42,7 @@ export const PLACEHOLDER_PRODUCTS: Product[] = [
     category: "Bolts, Studs & Screws",
     code: "SM-BLT-001",
     specSummary: { value: "M6 – M42 · SS 304/316, alloy steel, brass, copper", placeholder: "" },
-    media: [{ src: "/images/cat-bars.jpg", alt: "Hex bolts — representative imagery" }],
+    media: [{ src: "/images/products/screw-flat-head.jpg", alt: "Stainless steel self-tapping screws with countersunk heads" }],
   },
   {
     slug: "nuts",
@@ -50,7 +50,7 @@ export const PLACEHOLDER_PRODUCTS: Product[] = [
     category: "Nuts & Washers",
     code: "SM-NUT-001",
     specSummary: { value: "Hex, slotted, break, coupling & thin nuts", placeholder: "" },
-    media: [{ src: "/images/cat-bars.jpg", alt: "Nuts — representative imagery" }],
+    media: [{ src: "/images/products/screws-warehouse.jpg", alt: "Fasteners stocked in warehouse bins" }],
   },
   {
     slug: "butt-weld-pipe-fittings",

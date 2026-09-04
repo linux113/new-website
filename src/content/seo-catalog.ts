@@ -3,6 +3,8 @@
  * Static, indexable content for Mumbai supplier queries.
  */
 
+import type { MediaRef } from "./types";
+
 export const HOME_TITLE =
   "SRIYAAN METALS | Metal Supplier, Fasteners, Pipes & Fittings in Mumbai";
 
@@ -28,6 +30,8 @@ export interface SeoProduct {
   description: string;
   categorySlug: string;
   specSummary: string;
+  /** Primary product image. */
+  image?: MediaRef;
   sections: SeoSection[];
 }
 
@@ -194,6 +198,7 @@ export const SEO_PRODUCTS: SeoProduct[] = [
       "Hex bolts and hex screws supplier in Mumbai — SS 304/316, alloy and carbon steel, metric and imperial threads. Enquire with SRIYAAN METALS.",
     categorySlug: "bolts-studs-screws",
     specSummary: "M6 – M42 · SS 304/316, alloy steel, carbon steel, brass, copper",
+    image: { src: "/images/products/screw-flat-head.jpg", alt: "Stainless steel self-tapping screws with countersunk heads" },
     sections: [
       {
         heading: "Material",
@@ -247,6 +252,7 @@ export const SEO_PRODUCTS: SeoProduct[] = [
       "Stud bolts for flanges and high-temperature joints. ASTM A193 grades from SRIYAAN METALS, Mumbai, with matching nuts.",
     categorySlug: "bolts-studs-screws",
     specSummary: "ASTM A193 B7 / B8 / B8M · matching nuts ASTM A194",
+    image: { src: "/images/products/stud-bolts-pallets.jpg", alt: "Stud bolts and threaded rods banded on pallets in the Mumbai warehouse" },
     sections: [
       { heading: "Material", body: "Alloy and stainless studs to ASTM A193, with nuts to ASTM A194. Other grades on enquiry." },
       { heading: "Grades", body: "B7, B7M, B8, B8M and B16 are typical. Confirm service temperature and medium on the RFQ." },
@@ -270,6 +276,7 @@ export const SEO_PRODUCTS: SeoProduct[] = [
       "Fully threaded rods and all-thread bar from SRIYAAN METALS, Mumbai. Stainless, carbon and alloy steel, cut to length.",
     categorySlug: "bolts-studs-screws",
     specSummary: "Fully threaded bar · metric & UNC · cut to length",
+    image: { src: "/images/products/stud-bolts-pallets.jpg", alt: "Fully threaded rods and stud bolts on pallets" },
     sections: [
       { heading: "Material", body: "Stainless 304/316, carbon steel and alloy grades. Brass on request." },
       { heading: "Grades", body: "A2/A4 stainless, 4.8 / 8.8 carbon, and ASTM A193 grades for high-temperature duty." },

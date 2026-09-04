@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Breadcrumbs } from "@/components/layout";
 import {
   ButtonLink,
@@ -32,6 +33,18 @@ export function ProductSeoView({ product }: { product: SeoProduct }) {
 
           <div className="grid grid-cols-4 gap-8 lg:grid-cols-12">
             <div className="col-span-4 lg:col-span-7">
+              {product.image?.src ? (
+                <div className="mb-8 overflow-hidden border border-edge bg-ink-soft">
+                  <Image
+                    src={product.image.src}
+                    alt={product.image.alt}
+                    width={1280}
+                    height={960}
+                    priority
+                    className="aspect-4/3 w-full object-cover"
+                  />
+                </div>
+              ) : null}
               <Eyebrow code="SM">{category?.name ?? "Product"}</Eyebrow>
               <h1 id="product-heading" className="text-display-lg mt-4 text-surface-fg">
                 {product.h1}
