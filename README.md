@@ -23,7 +23,7 @@ trading, import and export company.
 
 ## Requirements
 
-- Node.js 20+
+- Node.js 20.19+ (Node.js 22 LTS recommended — see `"engines"` in package.json)
 - PostgreSQL 14+
 - npm
 
@@ -62,11 +62,19 @@ See `.env.example` for the full list. Required in production:
 ## Production build
 
 ```bash
-npm run build
+npm run build   # auto-generates the Prisma client, applies pending
+                # migrations + runs the deploy bootstrap when
+                # DATABASE_URL is set, then compiles the site
 npm start
 ```
 
+The generated Prisma client (`src/generated/`) is gitignored, so the
+build step always regenerates it first — required on hosts (such as
+Hostinger's managed Node.js hosting) that only run `npm install` +
+`npm run build` with no SSH access.
+
 ## Documentation
 
-- [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — hosting on Hostinger (VPS) or Vercel
+- [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) — hosting on Hostinger (VPS or
+  managed Node.js Web App) or Vercel
 - [`docs/DATABASE.md`](docs/DATABASE.md) — schema, migrations and seeds
