@@ -43,6 +43,10 @@ export const PLACEHOLDER_PRODUCTS: Product[] = [
     code: "SM-BLT-001",
     specSummary: { value: "M6 – M42 · SS 304/316, alloy steel, brass, copper", placeholder: "" },
     media: [{ src: "/images/products/screw-flat-head.jpg", alt: "Stainless steel self-tapping screws with countersunk heads" }],
+    // Fallback cards must link to pages that resolve WITHOUT the
+    // database (static SEO-catalog routes). Slug-derived hrefs
+    // (/products/<slug>) 404 when the catalogue is unreachable.
+    href: "/products/bolts/hex-bolts",
   },
   {
     slug: "nuts",
@@ -51,6 +55,7 @@ export const PLACEHOLDER_PRODUCTS: Product[] = [
     code: "SM-NUT-001",
     specSummary: { value: "Hex, slotted, break, coupling & thin nuts", placeholder: "" },
     media: [{ src: "/images/products/screws-warehouse.jpg", alt: "Fasteners stocked in warehouse bins" }],
+    href: "/products/nuts-washers",
   },
   {
     slug: "butt-weld-pipe-fittings",
@@ -59,6 +64,7 @@ export const PLACEHOLDER_PRODUCTS: Product[] = [
     code: "SM-FIT-001",
     specSummary: { value: "ASTM / ASME / DIN / JIS · EN 10204 3.1 & 3.2", placeholder: "" },
     media: [{ src: "/images/cat-pipes.jpg", alt: "Pipe fittings — representative imagery" }],
+    href: "/products/pipe-fittings",
   },
   {
     slug: "carbon-steel-pipes",
@@ -67,6 +73,7 @@ export const PLACEHOLDER_PRODUCTS: Product[] = [
     code: "SM-PIP-001",
     specSummary: { value: "Dimensions per ASTM ANSI B36.10 / B36.19", placeholder: "" },
     media: [{ src: "/images/cat-pipes.jpg", alt: "Carbon steel pipes — representative imagery" }],
+    href: "/products/pipes/carbon-steel-pipes",
   },
 ];
 
