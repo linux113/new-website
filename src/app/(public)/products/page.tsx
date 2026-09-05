@@ -61,8 +61,12 @@ export default async function ProductsPage({
               href="/products"
               className={cn(
                 "border px-3 py-2 text-mono-meta transition-colors duration-(--duration-fast)",
+                // keep-dark: an active chip is intentionally ink-on-paper;
+                // without it, light mode remaps both bg-ink and text-paper
+                // to near-black — invisible label (same bug class as the
+                // floating WhatsApp button).
                 !category
-                  ? "border-ink bg-ink text-paper"
+                  ? "keep-dark border-ink bg-ink text-paper"
                   : "border-line text-slate hover:border-steel hover:text-surface-fg",
               )}
             >
@@ -75,7 +79,7 @@ export default async function ProductsPage({
                 className={cn(
                   "border px-3 py-2 text-mono-meta transition-colors duration-(--duration-fast)",
                   category === cat.slug
-                    ? "border-ink bg-ink text-paper"
+                    ? "keep-dark border-ink bg-ink text-paper"
                     : "border-line text-slate hover:border-steel hover:text-surface-fg",
                 )}
               >

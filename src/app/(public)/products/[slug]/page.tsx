@@ -20,7 +20,6 @@ import { whatsappProductUrl } from "@/lib/whatsapp";
 import { getCompanyInfo } from "@/lib/company";
 import { SITE_NAME, SITE_URL } from "@/content/site";
 import {
-  SEO_CATEGORIES,
   findSeoProductByLeaf,
   getSeoCategory,
   productHref,
@@ -60,7 +59,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const product = await getProductBySlug(slug).catch(() => null);
+  // A failed query (database unreachable) must not be reported as
+  // "Product not found" — keep the URL out of the index while the
+  // catalogue is briefly offline.
+  let product: Awaited<ReturnType<typeof getProductBySlug>> = null;
+  try {
+    product = await getProductBySlug(slug);
+  } catch (error) {
+    console.error("[product] query failed:", error instanceof Error ? error.message : error);
+    return {
+      title: { absolute: `Catalogue temporarily unavailable | ${SITE_NAME}` },
+      robots: { index: false, follow: true },
+    };
+  }
   if (!product) return { title: "Product not found" };
 
   const title = product.seo?.metaTitle ?? `${product.name} Supplier in Mumbai | ${SITE_NAME}`;
@@ -109,8 +120,23 @@ export default async function ProductOrCategoryPage({ params }: PageProps) {
     redirect(productHref(nested));
   }
 
-  const product = await getProductBySlug(slug).catch(() => null);
-  if (!product) notFound();
+  // Distinguish "product missing" from "database unreachable".
+  // A connection failure must render a recoverable "temporarily
+  // unavailable" state — never a 404 (which search engines treat as
+  // "gone for good" and users read as a broken site).
+  let product: Awaited<ReturnType<typeof getProductBySlug>> = null;
+  let dbUnavailable = false;
+  try {
+    product = await getProductBySlug(slug);
+  } catch (error) {
+    console.error("[product] query failed:", error instanceof Error ? error.message : error);
+    dbUnavailable = true;
+  }
+
+  if (!product) {
+    if (dbUnavailable) return <CatalogueUnavailable />;
+    notFound();
+  }
 
   const company = await getCompanyInfo();
   const media = product.images
@@ -337,5 +363,37 @@ export default async function ProductOrCategoryPage({ params }: PageProps) {
         </Section>
       ) : null}
     </>
+  );
+}
+
+/**
+ * Rendered when the catalogue database cannot be reached. Keeps the
+ * visitor oriented (products index, contact channels) instead of a
+ * dead-end 404 during a transient outage.
+ */
+function CatalogueUnavailable() {
+  return (
+    <Section rhythm="default" className="pt-32 lg:pt-44" aria-labelledby="product-unavailable">
+      <Container>
+        <div className="border-y border-edge py-16 text-center">
+          <p className="text-mono-meta text-surface-muted">CATALOGUE — TEMPORARILY UNAVAILABLE</p>
+          <h1 id="product-unavailable" className="mt-3 text-display-md">
+            This product page is briefly offline.
+          </h1>
+          <p className="mt-2 text-body-sm text-surface-muted">
+            Our catalogue database did not respond. Please try again shortly, or reach us
+            directly by phone or WhatsApp — sales responds during working hours.
+          </p>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <ButtonLink href="/products" variant="primary" arrow>
+              Back to products
+            </ButtonLink>
+            <ButtonLink href="/contact" variant="secondary">
+              Contact us
+            </ButtonLink>
+          </div>
+        </div>
+      </Container>
+    </Section>
   );
 }
