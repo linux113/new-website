@@ -53,3 +53,6 @@ next-env.d.ts
 
 # local embedded PostgreSQL data (dev sandbox)
 .env.local
+
+# Generated at build time (scripts/gen-world-dots.mjs)
+/public/world-dots.svg

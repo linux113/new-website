@@ -182,6 +182,11 @@ if (process.env.DATABASE_URL) {
   );
 }
 
+// 2.5/3 — Static world-map asset (public/world-dots.svg).
+// Generated rather than committed; must exist before `next build`.
+console.log("[prod-build] Generating public/world-dots.svg…");
+node(["scripts/gen-world-dots.mjs"]);
+
 // 3/3 — Next.js production build.
 console.log("[prod-build] 3/3 Running next build…");
 npx(["--no-install", "next", "build"]);

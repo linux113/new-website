@@ -17,6 +17,17 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        // The dotted world map is a build-generated, content-stable
+        // asset (~150 KB) requested by three homepage sections and
+        // /global-reach. `next start` serves public/ with
+        // "max-age=0" by default, which would re-fetch it on every
+        // navigation, so cache it explicitly.
+        source: "/world-dots.svg",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+      {
         source: "/:path*",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },

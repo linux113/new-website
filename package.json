@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/prod-build.mjs",
-    "vercel-build": "prisma generate && prisma migrate deploy && tsx scripts/deploy-setup.ts && next build",
+    "vercel-build": "prisma generate && prisma migrate deploy && tsx scripts/deploy-setup.ts && node scripts/gen-world-dots.mjs && next build",
     "start": "next start",
     "lint": "eslint",
     "db:generate": "node scripts/generate-offline.mjs",
