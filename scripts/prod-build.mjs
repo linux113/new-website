@@ -30,6 +30,7 @@
  * `npm run vercel-build`, which runs the same steps explicitly.
  */
 import { spawnSync } from "node:child_process";
+import { readdirSync } from "node:fs";
 import process from "node:process";
 
 /** Run `npx --no-install <args>` (resolves from local node_modules). */
@@ -42,6 +43,63 @@ function npx(args) {
   );
   if (result.error) throw result.error;
   if (result.status !== 0) process.exit(result.status ?? 1);
+}
+
+/**
+ * Run `npx --no-install <args>`, capturing output instead of exiting.
+ * Returns { status, output }. Used where a non-zero exit is recoverable.
+ */
+function npxSoft(args) {
+  const isWin = process.platform === "win32";
+  const result = spawnSync(
+    isWin ? "cmd" : "npx",
+    isWin ? ["/d", "/s", "/c", "npx", ...args] : ["--no-install", ...args],
+    { encoding: "utf8" },
+  );
+  if (result.error) throw result.error;
+  const output = `${result.stdout ?? ""}${result.stderr ?? ""}`;
+  process.stdout.write(output);
+  return { status: result.status ?? 1, output };
+}
+
+/** Name of the one migration directory that ships with the repo. */
+function firstMigrationName() {
+  const dir = new URL("../prisma/migrations/", import.meta.url);
+  return readdirSync(dir, { withFileTypes: true })
+    .filter((e) => e.isDirectory())
+    .map((e) => e.name)
+    .sort()[0];
+}
+
+/**
+ * Apply migrations, tolerating a database whose schema was created
+ * outside Prisma.
+ *
+ * Importing db-export/sriyaan-reset-and-import.sql builds all 32 tables
+ * directly, so Prisma finds a populated database with no
+ * _prisma_migrations bookkeeping table and refuses to continue:
+ *
+ *   Error: P3005
+ *   The database schema is not empty.
+ *
+ * The schema in that SQL file is generated from this exact migration,
+ * so the correct response is to baseline: record the migration as
+ * already applied, then continue. That is a one-time no-op write; later
+ * deploys take the normal `migrate deploy` path.
+ */
+function applyMigrations() {
+  const first = npxSoft(["prisma", "migrate", "deploy"]);
+  if (first.status === 0) return;
+
+  if (!first.output.includes("P3005")) process.exit(first.status);
+
+  const name = firstMigrationName();
+  console.log(
+    `[prod-build] P3005: schema already exists (created by the SQL import). ` +
+      `Baselining "${name}" as applied…`,
+  );
+  npx(["prisma", "migrate", "resolve", "--applied", name]);
+  npx(["prisma", "migrate", "deploy"]);
 }
 
 /** Run `node <args>` with the current interpreter. */
@@ -59,7 +117,7 @@ node(["scripts/generate-offline.mjs"]);
 // 2/3 — Database preparation (only when a database is configured).
 if (process.env.DATABASE_URL) {
   console.log("[prod-build] 2/3 DATABASE_URL found — applying pending migrations…");
-  npx(["--no-install", "prisma", "migrate", "deploy"]);
+  applyMigrations();
   console.log("[prod-build] Running deploy bootstrap (admin / settings)…");
   npx(["--no-install", "tsx", "scripts/deploy-setup.ts"]);
 } else {
