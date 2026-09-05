@@ -9,6 +9,17 @@ Two files. Pick one:
 
 Both produce exactly the same end state.
 
+## Check you have the current file
+
+Both files start with a `FILE VERSION:` line. Open the `.sql` in a text
+editor and confirm it says **v3**. If it does not, you are importing a
+cached download — re-download it.
+
+The `contact.address` row is the quickest tell. In v3 it looks like
+`CONVERT(0x22466C6F... USING utf8mb4)`. If you can read the address as
+plain text with `\n` in it, that is an older file and it will fail with
+`#4025`.
+
 ## If you saw "#1050 - Table 'SeoMeta' already exists"
 
 A previous import stopped partway and left tables behind. Use
