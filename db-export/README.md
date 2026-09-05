@@ -1,6 +1,23 @@
 # Database import
 
-`sriyaan-full-import.sql` creates the entire database in one step.
+Two files. Pick one:
+
+| File | Use when |
+| --- | --- |
+| `sriyaan-full-import.sql` | The database is **empty**. |
+| `sriyaan-reset-and-import.sql` | The database **already has tables** — e.g. you got `#1050 Table already exists`. Drops everything first, then imports. |
+
+Both produce exactly the same end state.
+
+## If you saw "#1050 - Table 'SeoMeta' already exists"
+
+A previous import stopped partway and left tables behind. Use
+`sriyaan-reset-and-import.sql` — it drops all 32 tables before
+recreating them, so it works on a half-finished database and can be
+re-run safely.
+
+**It deletes everything in the database.** If you already have real
+enquiries or admin edits, back up first: phpMyAdmin -> Export -> Go.
 
 ## Import it
 
