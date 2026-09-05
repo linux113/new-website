@@ -237,6 +237,29 @@ WASM engine can emit MySQL DDL in this sandbox. In an environment with
 network access, `npx prisma migrate dev` is authoritative and should be
 preferred — the generator simply reproduces the same output.
 
+### Checking a live connection (`npm run db:check`)
+
+Run this against any environment to find out exactly what is wrong with
+`DATABASE_URL`:
+
+```bash
+npm run db:check
+```
+
+It reports the target it parsed, then distinguishes the failure modes
+that otherwise look identical from the app: host unreachable, IP not
+allowlisted, wrong credentials, missing database, wrong character set,
+schema not migrated, or no admin user yet.
+
+On Hostinger it also warns about the two most common mistakes — a
+username or database missing the `u391782884_` prefix, and a password
+with unencoded special characters.
+
+An `ER_SOCKET_UNEXPECTED_CLOSE` / `45009` error means the server
+accepted the TCP connection then hung up before the MySQL handshake.
+That is an IP allowlist rejection (hPanel -> Databases -> Remote MySQL),
+not a bad password.
+
 ### Verifying without a MySQL server (`scripts/dev-mysql-shim.mjs`)
 
 **Test tooling only — never imported by application code.**
