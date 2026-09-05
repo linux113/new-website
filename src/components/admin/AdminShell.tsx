@@ -15,6 +15,7 @@ import {
   Globe,
   Image as ImageIcon,
   Inbox,
+  Mail,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -74,6 +75,7 @@ const NAV_GROUPS: { heading: string; items: { label: string; href: string; icon:
     heading: "Inbox",
     items: [
       { label: "Enquiries", href: "/admin/enquiries", icon: Inbox },
+      { label: "Messages", href: "/admin/messages", icon: Mail },
       { label: "Vendor requests", href: "/admin/vendor-requests", icon: Truck },
     ],
   },

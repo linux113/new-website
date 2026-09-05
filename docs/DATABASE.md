@@ -1,5 +1,9 @@
 # Database
 
+> Deploying to Hostinger? Follow
+> [HOSTINGER-DATABASE-SETUP.md](./HOSTINGER-DATABASE-SETUP.md) for the
+> hPanel click-by-click walkthrough.
+
 **Stack:** MySQL 8 · Prisma 7 (MariaDB/MySQL driver adapter) · Zod validation
 **Schema:** `prisma/schema.prisma` · **Client output:** `src/generated/prisma/` (gitignored, regenerate with `npm run db:generate`)
 

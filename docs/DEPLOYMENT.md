@@ -35,6 +35,9 @@ Supported paths:
 
 ---
 
+> **Setting up the MySQL database on Hostinger?** See the dedicated
+> step-by-step guide: [HOSTINGER-DATABASE-SETUP.md](./HOSTINGER-DATABASE-SETUP.md)
+
 ## Option A — Hostinger VPS
 
 ### 1. Server preparation

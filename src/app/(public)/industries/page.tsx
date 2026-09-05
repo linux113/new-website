@@ -3,6 +3,8 @@ import { Breadcrumbs } from "@/components/layout";
 import { Container } from "@/components/ui";
 import { SITE_URL } from "@/content/site";
 import { IndustriesClient } from "@/components/industries/IndustriesClient";
+import { INDUSTRIES } from "@/content/industries";
+import { getPublishedIndustries } from "@/lib/repositories/content";
 
 export const revalidate = 300;
 
@@ -21,7 +23,28 @@ export const metadata: Metadata = {
   },
 };
 
-export default function IndustriesPage() {
+export default async function IndustriesPage() {
+  // Admin-managed industries take priority. Icons/images are not
+  // editable fields on the CMS record, so reuse the matching static
+  // entry (by slug) for those and fall back to the first one.
+  const rows = await getPublishedIndustries().catch(() => []);
+  const bySlug = new Map(INDUSTRIES.map((i) => [i.slug, i]));
+  const industries = rows.map((row, i) => {
+    const base = bySlug.get(row.slug) ?? INDUSTRIES[i % INDUSTRIES.length];
+    return {
+      slug: row.slug,
+      // iconSlug (not the component) — functions cannot cross the
+      // server/client boundary; the client maps it back to an icon.
+      iconSlug: bySlug.has(row.slug) ? row.slug : base.slug,
+      index: String(i + 1).padStart(2, "0"),
+      total: String(rows.length).padStart(2, "0"),
+      name: row.name,
+      description: row.description ?? base.description,
+      image: base.image,
+      alt: base.alt,
+    };
+  });
+
   return (
     <main
       className="relative min-h-screen overflow-hidden bg-[#05080B] pb-20 pt-28 text-[#F5F7F8] lg:pt-36"
@@ -67,7 +90,7 @@ export default function IndustriesPage() {
           />
         </nav>
 
-        <IndustriesClient />
+        <IndustriesClient industries={industries} />
       </Container>
 
       <style>{`

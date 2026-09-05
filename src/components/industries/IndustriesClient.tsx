@@ -12,7 +12,27 @@ import { INDUSTRIES, TRUST } from "@/content/industries";
  * Owns the subtle hero-image parallax and staggered card reveals;
  * all content is data-driven (src/content/industries.ts).
  */
-export function IndustriesClient() {
+/** Serialisable industry row from the server (no icon component). */
+export type IndustryRow = {
+  slug: string;
+  iconSlug: string;
+  index: string;
+  total: string;
+  name: string;
+  description: string;
+  image: string;
+  alt: string;
+};
+
+export function IndustriesClient({ industries }: { industries?: IndustryRow[] }) {
+  // Admin-managed industries win when any are published; the static
+  // set in src/content/industries.tsx is the fallback so the page is
+  // never empty before the client fills the CMS in.
+  const iconFor = (slug: string) =>
+    INDUSTRIES.find((i) => i.slug === slug)?.icon ?? INDUSTRIES[0].icon;
+  const items = industries?.length
+    ? industries.map((r) => ({ ...r, icon: iconFor(r.iconSlug) }))
+    : INDUSTRIES;
   const reduced = useReducedMotion();
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -110,7 +130,7 @@ export function IndustriesClient() {
           Industries we serve
         </h2>
         <ul className="flex flex-col gap-4">
-          {INDUSTRIES.map((industry, i) => {
+          {items.map((industry, i) => {
             const Icon = industry.icon;
             return (
               <li
