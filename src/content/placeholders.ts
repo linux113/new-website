@@ -27,10 +27,10 @@ export const PENDING = "[PENDING CLIENT INPUT]";
 export const PLACEHOLDER_CATEGORIES: Category[] = [
   // Fallback tiles when the database is unreachable — mirrors the
   // SRIYAAN METALS catalogue range.
-  { slug: "bolts-studs-screws", index: "01", title: "Bolts, Studs & Screws", image: { src: "/images/products/screw-flat-head.jpg", alt: "Stainless steel screws" } },
-  { slug: "nuts-washers", index: "02", title: "Nuts & Washers", image: { src: "/images/products/screws-warehouse.jpg", alt: "Screws and fasteners stocked in warehouse bins" } },
-  { slug: "pipe-fittings-flanges", index: "03", title: "Pipe Fittings & Flanges", image: { src: "/images/cat-pipes.jpg", alt: "Pipe fittings — representative imagery" } },
-  { slug: "carbon-steel-pipes", index: "04", title: "Carbon Steel Pipes", image: { src: "/images/cat-pipes.jpg", alt: "Carbon steel pipes — representative imagery" } },
+  { slug: "bolts-studs-screws", index: "01", title: "Bolts, Studs & Screws", image: { src: "/images/products/hex-bolts.jpg", alt: "Stainless steel hex bolts" } },
+  { slug: "nuts-washers", index: "02", title: "Nuts & Washers", image: { src: "/images/products/hex-nuts.jpg", alt: "Stainless steel hexagon nuts" } },
+  { slug: "pipe-fittings", index: "03", title: "Pipe Fittings & Flanges", image: { src: "/images/products/pipe-fittings.jpg", alt: "Butt-weld pipe fittings" } },
+  { slug: "carbon-steel-pipes", index: "04", title: "Carbon Steel Pipes", image: { src: "/images/products/carbon-steel-pipes.jpg", alt: "Carbon steel pipes" } },
 ];
 
 /* ---- Products ---- */
@@ -42,7 +42,7 @@ export const PLACEHOLDER_PRODUCTS: Product[] = [
     category: "Bolts, Studs & Screws",
     code: "SM-BLT-001",
     specSummary: { value: "M6 – M42 · SS 304/316, alloy steel, brass, copper", placeholder: "" },
-    media: [{ src: "/images/products/screw-flat-head.jpg", alt: "Stainless steel self-tapping screws with countersunk heads" }],
+    media: [{ src: "/images/products/hex-bolts.jpg", alt: "Stainless steel hex bolts" }],
     // Fallback cards must link to pages that resolve WITHOUT the
     // database (static SEO-catalog routes). Slug-derived hrefs
     // (/products/<slug>) 404 when the catalogue is unreachable.
@@ -54,7 +54,7 @@ export const PLACEHOLDER_PRODUCTS: Product[] = [
     category: "Nuts & Washers",
     code: "SM-NUT-001",
     specSummary: { value: "Hex, slotted, break, coupling & thin nuts", placeholder: "" },
-    media: [{ src: "/images/products/screws-warehouse.jpg", alt: "Fasteners stocked in warehouse bins" }],
+    media: [{ src: "/images/products/hex-nuts.jpg", alt: "Stainless steel hexagon nuts" }],
     href: "/products/nuts-washers",
   },
   {
@@ -63,7 +63,7 @@ export const PLACEHOLDER_PRODUCTS: Product[] = [
     category: "Pipe Fittings & Flanges",
     code: "SM-FIT-001",
     specSummary: { value: "ASTM / ASME / DIN / JIS · EN 10204 3.1 & 3.2", placeholder: "" },
-    media: [{ src: "/images/cat-pipes.jpg", alt: "Pipe fittings — representative imagery" }],
+    media: [{ src: "/images/products/pipe-fittings.jpg", alt: "Butt-weld pipe fittings" }],
     href: "/products/pipe-fittings",
   },
   {
@@ -72,7 +72,7 @@ export const PLACEHOLDER_PRODUCTS: Product[] = [
     category: "Carbon Steel Pipes",
     code: "SM-PIP-001",
     specSummary: { value: "Dimensions per ASTM ANSI B36.10 / B36.19", placeholder: "" },
-    media: [{ src: "/images/cat-pipes.jpg", alt: "Carbon steel pipes — representative imagery" }],
+    media: [{ src: "/images/products/carbon-steel-pipes.jpg", alt: "Carbon steel pipes" }],
     href: "/products/pipes/carbon-steel-pipes",
   },
 ];

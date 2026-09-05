@@ -15,12 +15,13 @@ export interface SettingField {
 /** Grouped key-value settings editor (contact / social / content / seo). */
 export function SettingsForm({ group, fields }: { group: string; fields: SettingField[] }) {
   const [state, formAction, pending] = useActionState(
-    saveSettingsAction.bind(null, group),
+    saveSettingsAction,
     {} as ActionState,
   );
 
   return (
     <form action={formAction} noValidate className="flex flex-col gap-5">
+      <input type="hidden" name="__group" value={group} />
       {state.error ? (
         <p role="alert" className="border border-error/30 bg-error-tint px-4 py-3 text-body-sm text-error">
           {state.error}

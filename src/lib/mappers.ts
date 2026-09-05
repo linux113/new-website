@@ -1,5 +1,32 @@
 import "server-only";
 import type { MediaRef, Post, Product as PatternProduct } from "@/content/types";
+import {
+  findSeoProductByLeaf,
+  getSeoCategory,
+  productHref,
+} from "@/content/seo-catalog";
+
+/**
+ * Resolve the public URL for a catalogue product.
+ *
+ * `/products/<slug>` is a shared namespace: the route resolves SEO
+ * categories first, so a product whose slug collides with a category
+ * slug (e.g. "carbon-steel-pipes") used to render the *category* page —
+ * a different heading and a different image than the card the user
+ * clicked. Nested SEO product pages have their own collision-free URL,
+ * so prefer those and only fall back to the flat product route.
+ */
+function resolveProductHref(slug: string): string {
+  const seoProduct = findSeoProductByLeaf(slug);
+  if (seoProduct) return productHref(seoProduct);
+
+  // Slug also names a category landing page (e.g. "pipe-flanges"): the flat
+  // route resolves the category first, so use the nested, collision-free URL.
+  const collidingCategory = getSeoCategory(slug);
+  if (collidingCategory) return `/products/${collidingCategory.nest}/${slug}`;
+
+  return `/products/${slug}`;
+}
 
 /**
  * DB row → frontend pattern type mappers.
@@ -53,6 +80,7 @@ export function toPatternProduct(row: DbProductListRow): PatternProduct {
     media: firstImage
       ? [toMediaRef(firstImage.media, firstImage.altText) ?? { src: null, alt: row.name }]
       : [],
+    href: resolveProductHref(row.slug),
   };
 }
 

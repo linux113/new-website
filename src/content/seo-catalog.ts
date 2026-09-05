@@ -44,7 +44,16 @@ export interface SeoCategory {
   title: string;
   description: string;
   lede: string;
+  /** Extra URL slugs that 301-redirect to this category. */
   aliases?: string[];
+  /**
+   * Database Category.slug values whose products belong on this page.
+   * The public URL slug and the catalogue slug drifted apart (the seeded
+   * catalogue uses "anchors-foundation" / "pipe-fittings-flanges"), so
+   * querying by the URL slug alone returned zero products and the page
+   * rendered "NO RESULTS". Defaults to [slug] when omitted.
+   */
+  dbSlugs?: string[];
   productSlugs: string[];
   sections: SeoSection[];
 }
@@ -108,6 +117,7 @@ export const SEO_CATEGORIES: SeoCategory[] = [
       "Anchor bolts and J-type foundation bolts supplied from Mumbai by SRIYAAN METALS for civil, plant and infrastructure foundations.",
     lede: "Foundation and anchor fasteners for base plates, columns and equipment skids — cut, threaded and coated to drawing.",
     aliases: ["anchors-foundation"],
+    dbSlugs: ["anchors-foundation"],
     productSlugs: [],
     sections: [
       {
@@ -143,6 +153,7 @@ export const SEO_CATEGORIES: SeoCategory[] = [
       "Butt-weld, socket-weld and threaded pipe fittings from SRIYAAN METALS in Mumbai. Elbows, tees, reducers and caps to ASTM, ASME, DIN and JIS.",
     lede: "Welded and threaded fittings for process, utility and structural piping — mill test certificates with each lot where specified.",
     aliases: ["pipe-fittings-flanges"],
+    dbSlugs: ["pipe-fittings-flanges"],
     productSlugs: [],
     sections: [
       {
@@ -160,6 +171,7 @@ export const SEO_CATEGORIES: SeoCategory[] = [
     description:
       "Forged pipe flanges — weld neck, slip-on, blind, socket-weld and threaded — supplied from Mumbai by SRIYAAN METALS to ASME, DIN and JIS.",
     lede: "Forged flanges for pressure piping, matched to pipe schedule and facing (RF / FF / RTJ).",
+    dbSlugs: ["pipe-fittings-flanges"],
     productSlugs: [],
     sections: [
       {
@@ -198,7 +210,7 @@ export const SEO_PRODUCTS: SeoProduct[] = [
       "Hex bolts and hex screws supplier in Mumbai — SS 304/316, alloy and carbon steel, metric and imperial threads. Enquire with SRIYAAN METALS.",
     categorySlug: "bolts-studs-screws",
     specSummary: "M6 – M42 · SS 304/316, alloy steel, carbon steel, brass, copper",
-    image: { src: "/images/products/screw-flat-head.jpg", alt: "Stainless steel self-tapping screws with countersunk heads" },
+    image: { src: "/images/products/hex-bolts.jpg", alt: "Stainless steel hex bolts" },
     sections: [
       {
         heading: "Material",
@@ -252,7 +264,7 @@ export const SEO_PRODUCTS: SeoProduct[] = [
       "Stud bolts for flanges and high-temperature joints. ASTM A193 grades from SRIYAAN METALS, Mumbai, with matching nuts.",
     categorySlug: "bolts-studs-screws",
     specSummary: "ASTM A193 B7 / B8 / B8M · matching nuts ASTM A194",
-    image: { src: "/images/products/stud-bolts-pallets.jpg", alt: "Stud bolts and threaded rods banded on pallets in the Mumbai warehouse" },
+    image: { src: "/images/products/stud-bolts.jpg", alt: "Stud bolts and threaded rods with matching nuts" },
     sections: [
       { heading: "Material", body: "Alloy and stainless studs to ASTM A193, with nuts to ASTM A194. Other grades on enquiry." },
       { heading: "Grades", body: "B7, B7M, B8, B8M and B16 are typical. Confirm service temperature and medium on the RFQ." },
@@ -276,7 +288,7 @@ export const SEO_PRODUCTS: SeoProduct[] = [
       "Fully threaded rods and all-thread bar from SRIYAAN METALS, Mumbai. Stainless, carbon and alloy steel, cut to length.",
     categorySlug: "bolts-studs-screws",
     specSummary: "Fully threaded bar · metric & UNC · cut to length",
-    image: { src: "/images/products/stud-bolts-pallets.jpg", alt: "Fully threaded rods and stud bolts on pallets" },
+    image: { src: "/images/products/stud-bolts.jpg", alt: "Fully threaded rods and stud bolts" },
     sections: [
       { heading: "Material", body: "Stainless 304/316, carbon steel and alloy grades. Brass on request." },
       { heading: "Grades", body: "A2/A4 stainless, 4.8 / 8.8 carbon, and ASTM A193 grades for high-temperature duty." },
@@ -300,6 +312,7 @@ export const SEO_PRODUCTS: SeoProduct[] = [
       "Hex nuts, lock nuts and coupling nuts from SRIYAAN METALS in Mumbai. Grades matched to bolts. Stainless and carbon steel.",
     categorySlug: "nuts-washers",
     specSummary: "Hex, nyloc, slotted, coupling & thin nuts",
+    image: { src: "/images/products/hex-nuts.jpg", alt: "Stainless steel hexagon nuts" },
     sections: [
       { heading: "Material", body: "Stainless 304/316, carbon steel and alloy. Brass and copper on request." },
       { heading: "Grades", body: "A2/A4, Class 8 / 10, ASTM A194 2H / 8 / 8M to match the bolt grade." },
@@ -323,6 +336,7 @@ export const SEO_PRODUCTS: SeoProduct[] = [
       "Carbon steel pipes in Mumbai — seamless and welded to ASTM ANSI B36.10 / B36.19. SRIYAAN METALS supplies pipe, fittings and flanges together.",
     categorySlug: "carbon-steel-pipes",
     specSummary: "Dimensions per ASTM ANSI B36.10 / B36.19",
+    image: { src: "/images/products/carbon-steel-pipes.jpg", alt: "Carbon steel pipes stacked with beveled ends" },
     sections: [
       { heading: "Material", body: "Carbon steel line pipe. Stainless and alloy pipe quoted separately against the same piping class." },
       { heading: "Grades", body: "ASTM A106, A53, API 5L and equivalent IS grades as specified on the enquiry." },
@@ -501,6 +515,15 @@ export function productHref(p: SeoProduct): string {
 
 export function categoryHref(c: SeoCategory): string {
   return `/products/${c.slug}`;
+}
+
+/**
+ * Database Category.slug values to query for a landing page.
+ * Always includes the page's own slug plus any declared dbSlugs, so a
+ * page keeps working whether the catalogue uses the new or legacy slug.
+ */
+export function categoryDbSlugs(c: SeoCategory): string[] {
+  return Array.from(new Set([c.slug, ...(c.dbSlugs ?? [])]));
 }
 
 export function getLocationPage(slug: string): LocationPage | undefined {

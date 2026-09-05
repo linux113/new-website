@@ -15,11 +15,36 @@ import type { ActionState } from "./actions";
 
 const valueSchema = z.string().max(5000);
 
+/**
+ * Public pages that render admin-managed settings (contact details, hero and
+ * CTA copy, footer text, SEO metadata) and therefore need refreshing on save.
+ */
+const PUBLIC_SETTING_PATHS = [
+  "/",
+  "/contact",
+  "/about",
+  "/products",
+  "/quality",
+  "/industries",
+  "/manufacturing",
+  "/global-reach",
+  "/enquiry",
+  "/vendor",
+  "/blog",
+] as const;
+
+/**
+ * The settings group is carried in a hidden `__group` field rather than
+ * bound with `.bind()`. Binding an argument to a server action referenced
+ * from a client component makes the action response never finish streaming,
+ * so the admin "Save" button spins forever even though the write commits.
+ */
 export async function saveSettingsAction(
-  group: string,
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
+  const group = String(formData.get("__group") ?? "");
+  if (!group) return { error: "Missing settings group." };
   await requireAdminAction(group === "content" ? "EDITOR" : "ADMIN");
 
   const entries: { key: string; value: string }[] = [];
@@ -49,9 +74,9 @@ export async function saveSettingsAction(
   revalidatePath("/admin/settings");
   revalidatePath("/admin/content");
   revalidatePath("/admin/seo");
-  revalidatePath("/", "layout");
-  revalidatePath("/contact");
-  revalidatePath("/about");
+  // Settings feed the header/footer, so every public page that surfaces them
+  // is refreshed explicitly.
+  for (const path of PUBLIC_SETTING_PATHS) revalidatePath(path);
   return { success: true };
 }
 
@@ -59,12 +84,11 @@ export async function saveSettingsAction(
 const idSchema = z.string().cuid();
 
 export async function updateMediaAltAction(
-  id: string,
   _prev: ActionState,
   formData: FormData,
 ): Promise<ActionState> {
   await requireAdminAction("EDITOR");
-  const parsedId = idSchema.safeParse(id);
+  const parsedId = idSchema.safeParse(String(formData.get("__id") ?? ""));
   if (!parsedId.success) return { error: "Invalid id." };
   const alt = z.string().max(300).safeParse(formData.get("altText") ?? "");
   if (!alt.success) return { error: "Alt text too long." };

@@ -26,14 +26,19 @@ export function getFeaturedProducts(limit = 6) {
 
 export function getPublishedProducts(params?: {
   categorySlug?: string;
+  /** Accept several catalogue slugs (URL slug + legacy DB slugs). */
+  categorySlugs?: string[];
   skip?: number;
   take?: number;
 }) {
-  const { categorySlug, skip = 0, take = 24 } = params ?? {};
+  const { categorySlug, categorySlugs, skip = 0, take = 24 } = params ?? {};
+  const slugs = Array.from(
+    new Set([...(categorySlugs ?? []), ...(categorySlug ? [categorySlug] : [])]),
+  );
   return db.product.findMany({
     where: {
       status: "PUBLISHED",
-      ...(categorySlug ? { category: { slug: categorySlug } } : {}),
+      ...(slugs.length > 0 ? { category: { slug: { in: slugs } } } : {}),
     },
     orderBy: [{ sortOrder: "asc" }, { name: "asc" }],
     skip,

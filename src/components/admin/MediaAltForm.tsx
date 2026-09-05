@@ -7,12 +7,13 @@ import type { ActionState } from "@/lib/admin/actions";
 /** Inline alt-text editor for a media asset. */
 export function MediaAltForm({ id, altText }: { id: string; altText: string }) {
   const [state, formAction, pending] = useActionState(
-    updateMediaAltAction.bind(null, id),
+    updateMediaAltAction,
     {} as ActionState,
   );
 
   return (
     <form action={formAction} className="flex items-center gap-1.5">
+      <input type="hidden" name="__id" value={id} />
       <label className="sr-only" htmlFor={`alt-${id}`}>
         Alt text
       </label>

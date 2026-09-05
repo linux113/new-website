@@ -138,14 +138,17 @@ async function main() {
   await upsertSetting("social.instagram", "https://www.instagram.com/sriyaanmetals", "social");
   await upsertSetting("social.facebook", "https://www.facebook.com/sriyaanmetals", "social");
 
+  // Must match the designed hero copy. A placeholder string here silently
+  // overrode the real headline on the homepage, because admin-managed
+  // settings take precedence over the built-in default.
   await upsertSetting(
     "content.hero.headline",
-    "Precision-engineered metal, supplied with editorial calm.",
+    "Industrial Metal Supplier\nin Mumbai for Fasteners, Pipes & Fittings",
     "content",
   );
   await upsertSetting(
     "content.hero.subline",
-    "Mumbai-based metals trading, import and export. Send your specification for a considered quote.",
+    "Engineered supply for industrial buyers — exact specification, dependable delivery, direct communication.",
     "content",
   );
   await upsertSetting(
@@ -160,20 +163,20 @@ async function main() {
   );
   await upsertSetting(
     "content.footer.description",
-    "SRIYAAN METALS — Mumbai-based metals trading, import & export. Demonstration content.",
+    "SRIYAAN METALS — Mumbai-based metals trading, import and export. Industrial fasteners, pipes, fittings and flanges supplied to specification.",
     "content",
   );
 
-  await upsertSetting("seo.default.title", "SRIYAAN METALS — Metals Trading, Import & Export, Mumbai", "seo");
+  await upsertSetting("seo.default.title", "SRIYAAN METALS | Metal Supplier, Fasteners, Pipes & Fittings in Mumbai", "seo");
   await upsertSetting(
     "seo.default.description",
-    "Mumbai-based metals trading, import and export. Send your specification for a considered quote.",
+    "SRIYAAN METALS is a Mumbai-based metal trading, import and export company supplying industrial fasteners, bolts, nuts, pipes, pipe fittings, flanges and foundation bolts across India and global markets.",
     "seo",
   );
-  await upsertSetting("seo.home.title", "SRIYAAN METALS — Metals Trading, Import & Export, Mumbai", "seo");
+  await upsertSetting("seo.home.title", "SRIYAAN METALS | Metal Supplier, Fasteners, Pipes & Fittings in Mumbai", "seo");
   await upsertSetting(
     "seo.home.description",
-    "SRIYAAN METALS — Mumbai-based metals trading, import and export. Browse the catalogue and send a specification for a quote.",
+    "SRIYAAN METALS is a Mumbai-based metal trading, import and export company supplying industrial fasteners, bolts, nuts, pipes, pipe fittings, flanges and foundation bolts across India and global markets.",
     "seo",
   );
   await upsertSetting("seo.robots", "index,follow", "seo");

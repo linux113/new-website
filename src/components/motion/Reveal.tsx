@@ -38,8 +38,29 @@ export function Reveal({
   const reduced = useReducedMotion();
   const ref = useRef<HTMLElement | null>(null);
   const [visible, setVisible] = useState(false);
+  // Armed only after mount. Server-rendered markup must never carry the
+  // hidden (opacity-0) state: with JS still loading — or blocked, or
+  // failed — the whole page stayed blank while the document reported as
+  // "loaded". Pre-hydration HTML is now the final, visible state and the
+  // reveal transition is layered on afterwards.
+  const [armed, setArmed] = useState(false);
 
-  const inert = disabled || reduced;
+  const inert = disabled || reduced || !armed;
+
+  useEffect(() => {
+    if (disabled || reduced) return;
+    // If the element is already on screen at mount, show it immediately
+    // rather than flashing it out and animating it back in.
+    const node = ref.current;
+    const onScreen =
+      node && node.getBoundingClientRect().top < window.innerHeight * 0.9;
+    if (onScreen) {
+      setArmed(true);
+      setVisible(true);
+      return;
+    }
+    setArmed(true);
+  }, [disabled, reduced]);
 
   useEffect(() => {
     if (inert) return;

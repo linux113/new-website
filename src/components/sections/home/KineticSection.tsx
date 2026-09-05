@@ -44,6 +44,14 @@ export function KineticSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
+  // Server-rendered markup must show the final, visible state. Starting
+  // hidden meant the section stayed blank whenever JS was slow or blocked.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+  const shown = active || reduced || !mounted;
 
   // Reveal when the middle of the section enters the viewport.
   useEffect(() => {
@@ -186,7 +194,7 @@ export function KineticSection() {
 
           <p
             className={`text-mono-meta text-mist transition-all duration-700 ease-out motion-reduce:transition-none ${
-              active ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+              shown ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
             }`}
           >
             The sequence
@@ -202,12 +210,11 @@ export function KineticSection() {
                   color: line.accent
                     ? "var(--color-accent-on-dark)"
                     : "var(--color-paper)",
-                  opacity: active || reduced ? 1 : 0,
-                  transform:
-                    active || reduced
-                      ? "translate3d(0,0,0)"
-                      : "translate3d(0,28px,0)",
-                  filter: active || reduced ? "none" : "blur(8px)",
+                  opacity: shown ? 1 : 0,
+                  transform: shown
+                    ? "translate3d(0,0,0)"
+                    : "translate3d(0,28px,0)",
+                  filter: shown ? "none" : "blur(8px)",
                   transition: `opacity 800ms cubic-bezier(0.22,1,0.36,1) ${line.delay}ms, transform 800ms cubic-bezier(0.22,1,0.36,1) ${line.delay}ms, filter 800ms cubic-bezier(0.22,1,0.36,1) ${line.delay}ms`,
                 }}
               >
@@ -219,11 +226,10 @@ export function KineticSection() {
           <p
             className="text-body-lg mt-10 max-w-xl text-mist transition-all duration-700 ease-out motion-reduce:transition-none"
             style={{
-              opacity: active || reduced ? 1 : 0,
-              transform:
-                active || reduced
-                  ? "translate3d(0,0,0)"
-                  : "translate3d(0,20px,0)",
+              opacity: shown ? 1 : 0,
+              transform: shown
+                ? "translate3d(0,0,0)"
+                : "translate3d(0,20px,0)",
               transitionDelay: "380ms",
             }}
           >

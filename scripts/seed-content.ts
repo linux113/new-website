@@ -40,6 +40,20 @@ async function main() {
   await media("images/material-wide.jpg", "material-wide.jpg", "Metal stock — representative imagery", 1920, 1080);
   await media("images/material-detail.jpg", "material-detail.jpg", "Metal detail — representative imagery", 1536, 1024);
 
+  // Per-product imagery. Previously every fastener shared cat-bars.jpg and
+  // every pipe product shared cat-pipes.jpg, so the homepage card and the
+  // product page it links to showed different (and duplicated) pictures.
+  const imgHexBolts = await media("images/products/hex-bolts.jpg", "hex-bolts.jpg", "Stainless steel hex bolts", 1200, 900);
+  const imgStudBolts = await media("images/products/stud-bolts.jpg", "stud-bolts.jpg", "Stud bolts and threaded rods with matching nuts", 1200, 900);
+  const imgScrews = await media("images/products/screws.jpg", "screws.jpg", "Assorted stainless steel machine screws", 1200, 900);
+  const imgNuts = await media("images/products/hex-nuts.jpg", "hex-nuts.jpg", "Stainless steel hexagon nuts", 1200, 900);
+  const imgWashers = await media("images/products/washers.jpg", "washers.jpg", "Stainless steel plain washers", 1200, 900);
+  const imgAnchors = await media("images/products/anchor-bolts.jpg", "anchor-bolts.jpg", "J-type anchor foundation bolts with nuts and washers", 1200, 900);
+  const imgRivets = await media("images/products/rivet-nuts.jpg", "rivet-nuts.jpg", "Steel rivet nuts and threaded inserts", 1200, 900);
+  const imgFittings = await media("images/products/pipe-fittings.jpg", "pipe-fittings.jpg", "Butt-weld pipe fittings — elbows, tees and reducers", 1200, 900);
+  const imgFlanges = await media("images/products/pipe-flanges.jpg", "pipe-flanges.jpg", "Forged steel pipe flanges", 1200, 900);
+  const imgCsPipes = await media("images/products/carbon-steel-pipes.jpg", "carbon-steel-pipes.jpg", "Carbon steel pipes stacked with beveled ends", 1200, 900);
+
   /* ---- Purge demo analytics (admin shows only REAL submissions) ---- */
   // Content rows are marked source="demo-seed" / "(demo)" — real enquiries,
   // contacts and vendor requests from the public forms are never touched.
@@ -87,12 +101,12 @@ async function main() {
 
   /* ---- Categories (Sriyaan Metals catalogue range) ---- */
   const catDefs = [
-    { slug: "bolts-studs-screws", name: "Bolts, Studs & Screws", image: imgBars, desc: "Hex bolts, hex screws, stud bolts and threaded rods in stainless steel, alloy steel, brass and copper." },
-    { slug: "nuts-washers", name: "Nuts & Washers", image: imgBars, desc: "Hex nuts, slotted nuts, coupling nuts and thin nuts, with plain washers in stainless and carbon steel." },
-    { slug: "anchors-foundation", name: "Anchors & Foundation Bolts", image: imgBars, desc: "Anchor bolts and J-type foundation bolts for concrete structures, pillars and columns." },
-    { slug: "rivets-inserts", name: "Rivets & Inserts", image: imgBars, desc: "Rivet nuts, threaded inserts and blind rivet nuts with a wide grip range tolerance." },
-    { slug: "pipe-fittings-flanges", name: "Pipe Fittings & Flanges", image: imgPipes, desc: "Butt-weld, socket-weld and threaded fittings plus forged pipe flanges to ASTM, ASME, DIN and JIS." },
-    { slug: "carbon-steel-pipes", name: "Carbon Steel Pipes", image: imgPipes, desc: "Carbon steel pipes with dimensions and weights per ASTM ANSI B36.10 / B36.19." },
+    { slug: "bolts-studs-screws", name: "Bolts, Studs & Screws", image: imgHexBolts, desc: "Hex bolts, hex screws, stud bolts and threaded rods in stainless steel, alloy steel, brass and copper." },
+    { slug: "nuts-washers", name: "Nuts & Washers", image: imgNuts, desc: "Hex nuts, slotted nuts, coupling nuts and thin nuts, with plain washers in stainless and carbon steel." },
+    { slug: "anchors-foundation", name: "Anchors & Foundation Bolts", image: imgAnchors, desc: "Anchor bolts and J-type foundation bolts for concrete structures, pillars and columns." },
+    { slug: "rivets-inserts", name: "Rivets & Inserts", image: imgRivets, desc: "Rivet nuts, threaded inserts and blind rivet nuts with a wide grip range tolerance." },
+    { slug: "pipe-fittings-flanges", name: "Pipe Fittings & Flanges", image: imgFittings, desc: "Butt-weld, socket-weld and threaded fittings plus forged pipe flanges to ASTM, ASME, DIN and JIS." },
+    { slug: "carbon-steel-pipes", name: "Carbon Steel Pipes", image: imgCsPipes, desc: "Carbon steel pipes with dimensions and weights per ASTM ANSI B36.10 / B36.19." },
   ];
   const cats: Record<string, string> = {};
   for (const [i, c] of catDefs.entries()) {
@@ -107,67 +121,67 @@ async function main() {
   /* ---- Products (Sriyaan Metals catalogue) ---- */
   const prodDefs = [
     {
-      slug: "hex-bolts", name: "Hex Bolts & Hex Screws", code: "SM-BLT-001", cat: "bolts-studs-screws", featured: true, image: imgBars,
+      slug: "hex-bolts", name: "Hex Bolts & Hex Screws", code: "SM-BLT-001", cat: "bolts-studs-screws", featured: true, image: imgHexBolts,
       short: "Hex bolts and hex screws manufactured from stainless steel, alloy steel, brass and copper, in customised sizes and shapes.",
       specs: [["Size range", "M6 – M42, customised sizes on request"], ["Materials", "SS 304 / 316, alloy steel, brass, copper"], ["Grades", "Hastelloy, Inconel, Monel, Duplex"], ["Standards", "DIN / ASTM / IS"]],
       apps: ["Chemical and petrochemical plants", "Engineering assembly"],
     },
     {
-      slug: "stud-bolts-threaded-rods", name: "Stud Bolts & Threaded Rods", code: "SM-BLT-002", cat: "bolts-studs-screws", featured: false, image: imgBars,
+      slug: "stud-bolts-threaded-rods", name: "Stud Bolts & Threaded Rods", code: "SM-BLT-002", cat: "bolts-studs-screws", featured: false, image: imgStudBolts,
       short: "Properly coated, corrosion-resistant stud bolts and threaded rods for industrial fastening applications.",
       specs: [["Coating", "Corrosion-resistant coating"], ["Sizes", "Customised sizes and shapes"], ["Materials", "SS / alloy steel / brass"]],
       apps: ["Industrial fastening", "Flanged joints"],
     },
     {
-      slug: "screws", name: "Screws", code: "SM-SCR-001", cat: "bolts-studs-screws", featured: false, image: imgBars,
+      slug: "screws", name: "Screws", code: "SM-SCR-001", cat: "bolts-studs-screws", featured: false, image: imgScrews,
       short: "Screw fasteners with least decarburization, manufactured from premium grade material in various sizes and dimensions.",
       specs: [["Materials", "Stainless steel, alloy steel, brass, copper"], ["Sizes", "Various sizes and dimensions"]],
       apps: ["Machinery assembly", "General engineering"],
     },
     {
-      slug: "nuts", name: "Hex, Slotted & Coupling Nuts", code: "SM-NUT-001", cat: "nuts-washers", featured: true, image: imgBars,
+      slug: "nuts", name: "Hex, Slotted & Coupling Nuts", code: "SM-NUT-001", cat: "nuts-washers", featured: true, image: imgNuts,
       short: "Hex nuts, slotted nuts, break nuts, hexagon coupling nuts and thin nuts — superlative quality and precision dimensions for extreme working conditions.",
       specs: [["Types", "Hex, slotted, break, hexagon coupling, hexagon thin, steel coupling, steel thin"], ["Performance", "Withstands extreme working conditions and pressure"]],
       apps: ["Power plants", "Structural and general engineering"],
     },
     {
-      slug: "washers", name: "Washers — SS & CS Plain", code: "SM-WSH-001", cat: "nuts-washers", featured: false, image: imgBars,
+      slug: "washers", name: "Washers — SS & CS Plain", code: "SM-WSH-001", cat: "nuts-washers", featured: false, image: imgWashers,
       short: "Stainless steel and carbon steel plain washers, manufactured in different grades of metals and alloys.",
       specs: [["Types", "SS washers, CS washers, SS plain, CS plain"], ["Sizes", "Customised sizes and shapes"]],
       apps: ["Bolting assemblies", "Machinery and equipment"],
     },
     {
-      slug: "anchor-bolts", name: "Anchor Bolts", code: "SM-ANC-001", cat: "anchors-foundation", featured: true, image: imgBars,
+      slug: "anchor-bolts", name: "Anchor Bolts", code: "SM-ANC-001", cat: "anchors-foundation", featured: true, image: imgAnchors,
       short: "Anchor bolts and threaded rods used across industries for fastening applications, coated for corrosion resistance and higher output.",
       specs: [["Finish", "Properly coated, corrosion resistant"], ["Sizes", "Customised sizes and shapes"]],
       apps: ["Construction projects", "Structural erection"],
     },
     {
-      slug: "foundation-bolts", name: "Foundation Bolts (J-Type)", code: "SM-FDN-001", cat: "anchors-foundation", featured: false, image: imgBars,
+      slug: "foundation-bolts", name: "Foundation Bolts (J-Type)", code: "SM-FDN-001", cat: "anchors-foundation", featured: false, image: imgAnchors,
       short: "Foundation bolts for engineering structures — tower foundations with concrete, erection of pillars and columns; strong, corrosion resistant and cost effective.",
       specs: [["Types", "J-type foundation bolts"], ["Material", "Stainless steel (strong, corrosion resistant)"]],
       apps: ["Tower foundations", "Pillars, columns and concrete structures"],
     },
     {
-      slug: "rivet-nuts-inserts", name: "Rivet Nuts & Threaded Inserts", code: "SM-RIV-001", cat: "rivets-inserts", featured: true, image: imgBars,
+      slug: "rivet-nuts-inserts", name: "Rivet Nuts & Threaded Inserts", code: "SM-RIV-001", cat: "rivets-inserts", featured: true, image: imgRivets,
       short: "Rivet nuts (threaded inserts / blind rivet nuts) with wide grip range tolerance, installed entirely from one side of the material.",
       specs: [["Grip range", "Wide range of material thicknesses"], ["Type", "One-piece threaded counter-bored tubular rivet"]],
       apps: ["Sheet metal assembly", "One-side installations"],
     },
     {
-      slug: "butt-weld-pipe-fittings", name: "Butt-Weld Pipe Fittings", code: "SM-FIT-001", cat: "pipe-fittings-flanges", featured: true, image: imgPipes,
+      slug: "butt-weld-pipe-fittings", name: "Butt-Weld Pipe Fittings", code: "SM-FIT-001", cat: "pipe-fittings-flanges", featured: true, image: imgFittings,
       short: "Butt-weld pipe fittings manufactured to ASTM / ASME / DIN / JIS with EN 10204 3.1 & 3.2 test certificates and NACE MR-01-75 conformance.",
       specs: [["Standards", "JIS / ISS / BSS / DIN / ASTM / ASME"], ["Certification", "EN 10204 3.1 & 3.2, third-party inspection"], ["Compliance", "NACE MR-01-75"]],
       apps: ["Oil and gas", "Petrochemical and chemical plants"],
     },
     {
-      slug: "pipe-flanges", name: "Pipe Flanges", code: "SM-FLG-001", cat: "pipe-fittings-flanges", featured: false, image: imgPipes,
+      slug: "pipe-flanges", name: "Pipe Flanges", code: "SM-FLG-001", cat: "pipe-fittings-flanges", featured: false, image: imgFlanges,
       short: "Forged pipe flanges and branch connections from an ISO 9001:2015 and IBR approved manufacturer.",
       specs: [["Standards", "ASTM A350, DIN, JIS"], ["Approval", "ISO 9001:2015, IBR"]],
       apps: ["Refining and processing", "Plumbing and HVAC"],
     },
     {
-      slug: "carbon-steel-pipes", name: "Carbon Steel Pipes", code: "SM-PIP-001", cat: "carbon-steel-pipes", featured: true, image: imgPipes,
+      slug: "carbon-steel-pipes", name: "Carbon Steel Pipes", code: "SM-PIP-001", cat: "carbon-steel-pipes", featured: true, image: imgCsPipes,
       short: "Carbon steel pipes with dimensions and weights per metre as per ASTM ANSI B36.10 / B36.19.",
       specs: [["Dimensions", "ASTM ANSI B36.10 / B36.19"], ["Supply", "Third-party inspection certificates"]],
       apps: ["Oil and gas exploration", "Structural piping"],
@@ -183,10 +197,16 @@ async function main() {
         status: "PUBLISHED", featured: p.featured, sortOrder: i,
       },
     });
+    // Re-point the primary image. Plain upsert left stale rows behind, so a
+    // product kept whatever picture it was first seeded with (every fastener
+    // shared cat-bars.jpg) even after the mapping was corrected.
+    await db.productImage.deleteMany({
+      where: { productId: row.id, mediaId: { not: p.image.id }, sortOrder: 0 },
+    });
     await db.productImage.upsert({
       where: { productId_mediaId: { productId: row.id, mediaId: p.image.id } },
-      update: {},
-      create: { productId: row.id, mediaId: p.image.id, altText: `${p.name} — representative imagery`, sortOrder: 0 },
+      update: { altText: p.name, sortOrder: 0 },
+      create: { productId: row.id, mediaId: p.image.id, altText: p.name, sortOrder: 0 },
     });
     await db.productSpecification.deleteMany({ where: { productId: row.id } });
     await db.productSpecification.createMany({
