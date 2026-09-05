@@ -30,7 +30,8 @@
  * `npm run vercel-build`, which runs the same steps explicitly.
  */
 import { spawnSync } from "node:child_process";
-import { readdirSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
+import { join } from "node:path";
 import process from "node:process";
 
 /** Run `npx --no-install <args>` (resolves from local node_modules). */
@@ -102,6 +103,61 @@ function applyMigrations() {
   npx(["prisma", "migrate", "deploy"]);
 }
 
+/**
+ * Run the optional deploy bootstrap (scripts/deploy-setup.ts).
+ *
+ * This step only does anything when ADMIN_NAME + ADMIN_EMAIL +
+ * ADMIN_PASSWORD are set; otherwise it is a no-op. It must therefore
+ * never be able to fail a deploy.
+ *
+ * Two ways it used to break the build on shared hosting:
+ *
+ *   1. The script is TypeScript and was run via `npx tsx`. Hosts that
+ *      run `npm install --omit=dev` (Hostinger does) have no tsx, and
+ *      npx aborts non-interactively:
+ *        npm error npx canceled due to missing packages and no YES
+ *        option: ["tsx@4.23.13"]
+ *      We now prefer the locally installed tsx binary, then fall back
+ *      to Node's built-in type stripping (Node 22.6+), which needs no
+ *      dependency at all.
+ *
+ *   2. Any runtime error inside the bootstrap aborted the build even
+ *      though the site itself was fine.
+ *
+ * Failures are now reported as warnings and the build continues. The
+ * admin user already exists (created by the SQL import), so a skipped
+ * bootstrap is not a problem in practice.
+ */
+function runDeployBootstrap() {
+  const hasAdminVars =
+    process.env.ADMIN_NAME && process.env.ADMIN_EMAIL && process.env.ADMIN_PASSWORD;
+  if (!hasAdminVars && !process.env.SEED_DEMO && !process.env.SEED_CONTENT) {
+    console.log(
+      "[prod-build] Deploy bootstrap skipped (no ADMIN_*/SEED_* env vars — nothing to do).",
+    );
+    return;
+  }
+
+  console.log("[prod-build] Running deploy bootstrap (admin / settings)…");
+  const script = "scripts/deploy-setup.ts";
+  const localTsx = join("node_modules", ".bin", process.platform === "win32" ? "tsx.cmd" : "tsx");
+
+  const runners = existsSync(localTsx)
+    ? [[localTsx, [script]]]
+    : [[process.execPath, ["--experimental-strip-types", "--no-warnings", script]]];
+
+  for (const [cmd, args] of runners) {
+    const result = spawnSync(cmd, args, { stdio: "inherit" });
+    if (!result.error && result.status === 0) return;
+  }
+
+  console.warn(
+    "[prod-build] WARNING: deploy bootstrap did not complete. Continuing — " +
+      "it is optional and only creates/updates the admin user. If you needed " +
+      "it, run it manually: npx tsx scripts/deploy-setup.ts",
+  );
+}
+
 /** Run `node <args>` with the current interpreter. */
 function node(args) {
   const result = spawnSync(process.execPath, args, { stdio: "inherit" });
@@ -118,8 +174,7 @@ node(["scripts/generate-offline.mjs"]);
 if (process.env.DATABASE_URL) {
   console.log("[prod-build] 2/3 DATABASE_URL found — applying pending migrations…");
   applyMigrations();
-  console.log("[prod-build] Running deploy bootstrap (admin / settings)…");
-  npx(["--no-install", "tsx", "scripts/deploy-setup.ts"]);
+  runDeployBootstrap();
 } else {
   console.log(
     "[prod-build] 2/3 DATABASE_URL not set — skipping migrations and deploy bootstrap. " +
