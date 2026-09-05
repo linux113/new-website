@@ -1,6 +1,5 @@
 import "./env.mjs";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../src/generated/prisma/client";
+import { createScriptClient } from "./db-client.mjs";
 
 /**
  * Supplementary content seed for client presentations — fills the tables
@@ -21,9 +20,7 @@ import { PrismaClient } from "../src/generated/prisma/client";
  * Idempotent: upserts by unique slug/key. Everything is clearly demo
  * content. NEVER run against production with real data.
  */
-const db = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
-});
+const db = createScriptClient();
 
 async function upsertSetting(key: string, value: unknown, group: string) {
   await db.websiteSetting.upsert({

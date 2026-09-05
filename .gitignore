@@ -52,5 +52,4 @@ next-env.d.ts
 /.shots/
 
 # local embedded PostgreSQL data (dev sandbox)
-.pgdata/
 .env.local

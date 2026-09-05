@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Container, Globe2, FileCheck2, Handshake } from "lucide-react";
 import { useReducedMotion } from "@/components/motion";
+import { cn } from "@/lib/cn";
 import {
   GLOBAL_REGIONS,
   GLOBAL_STATS,
@@ -15,6 +16,11 @@ import { RegionCard } from "./RegionCard";
 interface Props {
   /** Published region codes from the database (used to mark confirmed). */
   confirmedCodes: string[];
+  /**
+   * Admin-supplied Global Reach figures keyed by setting key
+   * (content.reach.*). Stats without a value are not rendered.
+   */
+  stats?: Record<string, number>;
   /** Server-rendered dotted world map SVG inner markup. */
   dotsSvg: string;
   /**
@@ -33,12 +39,26 @@ interface Props {
  * cards and the right-side world map. Cards and markers stay in sync
  * via hover and click.
  */
-export function GlobalReachClient({ confirmedCodes, dotsSvg, embedded = false }: Props) {
+export function GlobalReachClient({ confirmedCodes, dotsSvg, stats = {}, embedded = false }: Props) {
   const reduced = useReducedMotion();
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [counts, setCounts] = useState<number[]>(
-    GLOBAL_STATS.map(() => 0),
+  // Only stats the client has actually verified (set in the admin
+  // panel) are shown — no invented figures, and no "0+" placeholders.
+  // Memoised on the serialised values so the count-up effect below has
+  // a stable dependency instead of a fresh array every render.
+  const statsKey = JSON.stringify(stats);
+  const visibleStats = useMemo(
+    () =>
+      GLOBAL_STATS.map((stat, index) => ({
+        ...stat,
+        index,
+        value: (JSON.parse(statsKey) as Record<string, number>)[stat.key],
+      })).filter((stat): stat is typeof stat & { value: number } =>
+        typeof stat.value === "number" && Number.isFinite(stat.value),
+      ),
+    [statsKey],
   );
+  const [counts, setCounts] = useState<number[]>(() => visibleStats.map(() => 0));
 
   const regions: GlobalRegion[] = GLOBAL_REGIONS.map((r) => ({
     ...r,
@@ -51,7 +71,7 @@ export function GlobalReachClient({ confirmedCodes, dotsSvg, embedded = false }:
   useEffect(() => {
     if (reduced) {
       const id = requestAnimationFrame(() =>
-        setCounts(GLOBAL_STATS.map((s) => s.value)),
+        setCounts(visibleStats.map((s) => s.value)),
       );
       return () => cancelAnimationFrame(id);
     }
@@ -69,7 +89,7 @@ export function GlobalReachClient({ confirmedCodes, dotsSvg, embedded = false }:
               const p = Math.min(1, (now - t0) / duration);
               const eased = 1 - Math.pow(1 - p, 3);
               setCounts(
-                GLOBAL_STATS.map((s) => Math.round(s.value * eased)),
+                visibleStats.map((s) => Math.round(s.value * eased)),
               );
               if (p < 1) requestAnimationFrame(tick);
             };
@@ -82,7 +102,7 @@ export function GlobalReachClient({ confirmedCodes, dotsSvg, embedded = false }:
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [reduced]);
+  }, [reduced, visibleStats]);
 
   return (
     <div className="relative">
@@ -184,37 +204,48 @@ export function GlobalReachClient({ confirmedCodes, dotsSvg, embedded = false }:
         </div>
       </div>
 
-      {/* ---- Statistics strip ---- */}
-      <div
-        id="gr-stats"
-        className="gr-fade-up mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-[#252A2D] bg-[#252A2D] lg:mt-24 lg:grid-cols-4"
-        style={{ animationDelay: "200ms" }}
-      >
-        {GLOBAL_STATS.map((stat, i) => {
-          const Icon = [Globe2, Container, Handshake, FileCheck2][i];
-          return (
-            <div
-              key={stat.label}
-              className="group relative flex flex-col gap-3 bg-[#080B0D] p-6 transition-colors duration-300 hover:bg-[#0D1114] sm:p-8"
-            >
-              <Icon
-                size={20}
-                strokeWidth={1.4}
-                className="text-[#D8A84E] opacity-80 transition-opacity duration-300 group-hover:opacity-100"
-              />
-              <p className="font-display text-4xl font-semibold tracking-tight text-[#F5F7F8] sm:text-5xl">
-                <span className="gr-count" key={counts[i]}>
-                  {counts[i]}
-                </span>
-                <span className="text-[#D8A84E]">{stat.suffix}</span>
-              </p>
-              <p className="text-xs tracking-[0.06em] text-[#A9B2BA] sm:text-[13.5px]">
-                {stat.label}
-              </p>
-            </div>
-          );
-        })}
-      </div>
+      {/* ---- Statistics strip (only verified, admin-set figures) ---- */}
+      {visibleStats.length > 0 ? (
+        <div
+          id="gr-stats"
+          className={cn(
+            "gr-fade-up mt-16 grid gap-px overflow-hidden rounded-xl border border-[#252A2D] bg-[#252A2D] lg:mt-24",
+            visibleStats.length === 1
+              ? "grid-cols-1"
+              : visibleStats.length === 2
+                ? "grid-cols-2"
+                : visibleStats.length === 3
+                  ? "grid-cols-2 lg:grid-cols-3"
+                  : "grid-cols-2 lg:grid-cols-4",
+          )}
+          style={{ animationDelay: "200ms" }}
+        >
+          {visibleStats.map((stat, i) => {
+            const Icon = [Globe2, Container, Handshake, FileCheck2][stat.index];
+            return (
+              <div
+                key={stat.label}
+                className="group relative flex flex-col gap-3 bg-[#080B0D] p-6 transition-colors duration-300 hover:bg-[#0D1114] sm:p-8"
+              >
+                <Icon
+                  size={20}
+                  strokeWidth={1.4}
+                  className="text-[#D8A84E] opacity-80 transition-opacity duration-300 group-hover:opacity-100"
+                />
+                <p className="font-display text-4xl font-semibold tracking-tight text-[#F5F7F8] sm:text-5xl">
+                  <span className="gr-count" key={counts[i]}>
+                    {counts[i] ?? 0}
+                  </span>
+                  <span className="text-[#D8A84E]">{stat.suffix}</span>
+                </p>
+                <p className="text-xs tracking-[0.06em] text-[#A9B2BA] sm:text-[13.5px]">
+                  {stat.label}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+      ) : null}
 
       {/* ---- CTA ---- */}
       <div

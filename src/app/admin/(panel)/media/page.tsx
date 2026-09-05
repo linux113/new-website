@@ -33,11 +33,14 @@ export default async function AdminMediaPage({
   const { q, page: pageParam } = await searchParams;
   const page = Math.max(1, Number(pageParam) || 1);
 
+  // Search is case-insensitive by virtue of the MySQL collation
+  // (utf8mb4_unicode_ci). Prisma's `mode: "insensitive"` is a
+  // PostgreSQL-only option and is rejected by the MySQL connector.
   const where = q
     ? {
         OR: [
-          { filename: { contains: q, mode: "insensitive" as const } },
-          { altText: { contains: q, mode: "insensitive" as const } },
+          { filename: { contains: q } },
+          { altText: { contains: q } },
         ],
       }
     : undefined;

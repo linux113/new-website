@@ -12,14 +12,17 @@
     "start": "next start",
     "lint": "eslint",
     "db:generate": "node scripts/generate-offline.mjs",
-    "db:migrate:create": "node scripts/migrate.mjs create",
-    "db:migrate:apply": "node scripts/migrate.mjs apply",
-    "db:migrate:status": "node scripts/migrate.mjs status",
+    "db:migrate:create": "prisma migrate dev --create-only",
+    "db:migrate:apply": "prisma migrate deploy",
+    "db:migrate:status": "prisma migrate status",
     "db:seed": "tsx prisma/seed.ts",
-    "db:generate:native": "prisma generate"
+    "db:generate:native": "prisma generate",
+    "db:setup": "node scripts/setup-local-mysql.mjs",
+    "db:ddl": "node scripts/gen-mysql-ddl.mjs",
+    "db:migrate:dev": "prisma migrate dev"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/adapter-mariadb": "^7.10.0",
     "@prisma/client": "^7.9.1",
     "@splinetool/react-spline": "^2.2.6",
     "@splinetool/runtime": "^1.9.99",
@@ -37,13 +40,11 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@prisma/schema-engine-wasm": "^7.9.0-1.e922089b7d7502aff4249d5da3420f6fa55fc6ad",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "dotenv": "^17.4.2",
-    "embedded-postgres": "^18.4.0-beta.17",
     "eslint": "^9",
     "eslint-config-next": "16.3.2",
     "playwright": "^1.63.0",

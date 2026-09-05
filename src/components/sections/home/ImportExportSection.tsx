@@ -1,5 +1,6 @@
 import { getWorldDotsSvg } from "@/components/global-reach/world-map-data";
 import { TradeClient } from "@/components/trade/TradeClient";
+import { getCompanyInfo } from "@/lib/company";
 
 /**
  * SM-10 / TRADE (homepage) — server shell.
@@ -7,8 +8,19 @@ import { TradeClient } from "@/components/trade/TradeClient";
  * Generates the dotted world map server-side (`dotted-map` is a
  * Node-only package) and hands it to the premium client experience:
  * hero + animated global trade visual + Import/Export cards + trust bar.
+ *
+ * The small status line on each card comes from admin settings
+ * (content.trade.*.meta). Unset → the footer row is omitted rather than
+ * rendering a placeholder.
  */
-export function ImportExportSection() {
+export async function ImportExportSection() {
   const dotsSvg = getWorldDotsSvg();
-  return <TradeClient dotsSvg={dotsSvg} />;
+  const company = await getCompanyInfo();
+  return (
+    <TradeClient
+      dotsSvg={dotsSvg}
+      importMeta={company.content["content.trade.import.meta"]?.trim() || undefined}
+      exportMeta={company.content["content.trade.export.meta"]?.trim() || undefined}
+    />
+  );
 }

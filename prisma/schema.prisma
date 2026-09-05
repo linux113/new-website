@@ -12,10 +12,15 @@ generator client {
 }
 
 // Connection URL is provided via prisma.config.ts (CLI) and the
-// pg driver adapter in src/lib/db.ts (runtime) — both read
+// mariadb driver adapter in src/lib/db.ts (runtime) — both read
 // DATABASE_URL from the environment. Never hardcode credentials.
+//
+// MySQL note: Prisma maps `String` to VARCHAR(191) on MySQL, which is
+// far too small for prose. Every free-text column below is therefore
+// given an explicit @db.Text / @db.LongText, and columns that must be
+// indexed or made UNIQUE are kept inside the 191-char key-length limit.
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
 }
 
 // ============================================================
@@ -83,10 +88,10 @@ enum ProductDocumentType {
 model SeoMeta {
   id              String      @id @default(cuid())
   metaTitle       String?
-  metaDescription String?
-  canonicalUrl    String?
+  metaDescription String? @db.Text
+  canonicalUrl    String? @db.Text
   ogTitle         String?
-  ogDescription   String?
+  ogDescription   String? @db.Text
   ogImageId       String?
   ogImage         MediaAsset? @relation("SeoOgImage", fields: [ogImageId], references: [id], onDelete: SetNull)
   robots          String? // e.g. "index,follow" | "noindex"
@@ -134,7 +139,7 @@ model AdminSession {
   expiresAt DateTime
   createdAt DateTime  @default(now())
   ip        String?
-  userAgent String?
+  userAgent String? @db.Text
 
   @@index([userId])
   @@index([expiresAt])
@@ -150,7 +155,7 @@ model MediaAsset {
   storageProvider String    @default("r2")
   /// Object key within the bucket. Unique per provider.
   storageKey      String
-  publicUrl       String?
+  publicUrl       String? @db.Text
   filename        String
   mimeType        String
   type            MediaType @default(IMAGE)
@@ -158,7 +163,7 @@ model MediaAsset {
   height          Int?
   /// Bytes.
   size            Int?
-  altText         String?
+  altText         String? @db.Text
   /// Free-form JSON (EXIF, focal point, duotone flag, etc.)
   metadata        Json?
   createdAt       DateTime  @default(now())
@@ -187,7 +192,7 @@ model Category {
   id          String        @id @default(cuid())
   name        String
   slug        String        @unique
-  description String?
+  description String? @db.Text
   imageId     String?
   image       MediaAsset?   @relation(fields: [imageId], references: [id], onDelete: SetNull)
   status      ContentStatus @default(DRAFT)
@@ -207,8 +212,8 @@ model Product {
   id               String        @id @default(cuid())
   name             String
   slug             String        @unique
-  shortDescription String?
-  description      String?
+  shortDescription String? @db.Text
+  description      String? @db.Text
   productCode      String?       @unique
   status           ContentStatus @default(DRAFT)
   featured         Boolean       @default(false)
@@ -239,7 +244,7 @@ model ProductImage {
   product   Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
   mediaId   String
   media     MediaAsset @relation(fields: [mediaId], references: [id], onDelete: Restrict)
-  altText   String?
+  altText   String? @db.Text
   sortOrder Int        @default(0)
 
   @@unique([productId, mediaId])
@@ -317,9 +322,9 @@ model BlogPost {
   id              String        @id @default(cuid())
   title           String
   slug            String        @unique
-  excerpt         String?
+  excerpt         String? @db.Text
   /// Rich content (markdown or serialized editor state).
-  content         String?
+  content         String? @db.LongText
   featuredImageId String?
   featuredImage   MediaAsset?   @relation("BlogFeaturedImage", fields: [featuredImageId], references: [id], onDelete: SetNull)
   authorId        String?
@@ -369,7 +374,7 @@ model CompanyPage {
   id        String        @id @default(cuid())
   key       String        @unique // e.g. "about", "quality"
   title     String
-  content   String?
+  content   String? @db.LongText
   status    ContentStatus @default(DRAFT)
   seoId     String?       @unique
   seo       SeoMeta?      @relation(fields: [seoId], references: [id], onDelete: SetNull)
@@ -381,7 +386,7 @@ model CompanyPage {
 model Capability {
   id           String        @id @default(cuid())
   label        String
-  note         String?
+  note         String? @db.Text
   /// Optional verified numeric metric; null → label-only rendering.
   metricValue  Decimal?      @db.Decimal(12, 2)
   metricPrefix String?
@@ -398,7 +403,7 @@ model Industry {
   id          String        @id @default(cuid())
   name        String
   slug        String        @unique
-  description String?
+  description String? @db.Text
   status      ContentStatus @default(DRAFT)
   sortOrder   Int           @default(0)
   createdAt   DateTime      @default(now())
@@ -412,7 +417,7 @@ model Industry {
 model InfrastructureItem {
   id        String        @id @default(cuid())
   title     String
-  caption   String?
+  caption   String? @db.Text
   mediaId   String?
   media     MediaAsset?   @relation(fields: [mediaId], references: [id], onDelete: SetNull)
   status    ContentStatus @default(DRAFT)
@@ -447,7 +452,7 @@ model Customer {
   name      String
   logoId    String?
   logo      MediaAsset?   @relation(fields: [logoId], references: [id], onDelete: SetNull)
-  website   String?
+  website   String? @db.Text
   /// Logos are published only with permission.
   consent   Boolean       @default(false)
   status    ContentStatus @default(DRAFT)
@@ -463,7 +468,7 @@ model Customer {
 
 model Testimonial {
   id         String        @id @default(cuid())
-  quote      String
+  quote      String @db.Text
   personName String
   personRole String?
   customerId String?
@@ -502,7 +507,7 @@ model ImportExportCapability {
   /// "import" | "export"
   direction   String
   title       String
-  description String?
+  description String? @db.Text
   status      ContentStatus @default(DRAFT)
   sortOrder   Int           @default(0)
   createdAt   DateTime      @default(now())
@@ -522,9 +527,9 @@ model ProductEnquiry {
   email       String
   phone       String?
   whatsapp    String?
-  message     String
+  message     String @db.Text
   /// Quantity / grade / delivery expectations as free text for now.
-  requirement String?
+  requirement String? @db.Text
   productId   String?
   product     Product?      @relation(fields: [productId], references: [id], onDelete: SetNull)
   status      EnquiryStatus @default(NEW)
@@ -546,7 +551,7 @@ model ContactMessage {
   phone     String?
   whatsapp  String?
   subject   String?
-  message   String
+  message   String @db.Text
   status    EnquiryStatus @default(NEW)
   source    String        @default("website")
   createdAt DateTime      @default(now())
@@ -565,8 +570,8 @@ model VendorRequest {
   phone     String?
   whatsapp  String?
   /// What they supply.
-  offering  String
-  message   String?
+  offering  String @db.Text
+  message   String? @db.Text
   status    EnquiryStatus @default(NEW)
   source    String        @default("website")
   createdAt DateTime      @default(now())
@@ -598,7 +603,7 @@ model SocialLink {
   id        String        @id @default(cuid())
   platform  String // "linkedin", "x", "youtube", …
   label     String
-  url       String
+  url       String @db.Text
   status    ContentStatus @default(DRAFT)
   sortOrder Int           @default(0)
   createdAt DateTime      @default(now())
@@ -614,7 +619,7 @@ model NavigationItem {
   /// "header" | "footer-company" | "footer-products" | "footer-engage"
   menu      String
   label     String
-  href      String
+  href      String @db.Text
   parentId  String?
   parent    NavigationItem?  @relation("NavTree", fields: [parentId], references: [id], onDelete: Cascade)
   children  NavigationItem[] @relation("NavTree")
@@ -637,7 +642,7 @@ model PageView {
   visitorId String
   sessionId String
   path      String
-  referrer  String?
+  referrer  String? @db.Text
   /// Civil date in Asia/Kolkata (YYYY-MM-DD) for cheap daily rollups.
   dayKey    String
   createdAt DateTime @default(now())

@@ -1,6 +1,5 @@
 import "../scripts/env.mjs";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../src/generated/prisma/client";
+import { createScriptClient } from "../scripts/db-client.mjs";
 
 /**
  * SRIYAAN METALS — development seed.
@@ -17,8 +16,7 @@ import { PrismaClient } from "../src/generated/prisma/client";
  * Run:  npx tsx prisma/seed.ts
  */
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
-const db = new PrismaClient({ adapter });
+const db = createScriptClient();
 
 async function main() {
   if (process.env.NODE_ENV === "production") {

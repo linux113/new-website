@@ -1,6 +1,5 @@
 import "./env.mjs";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../src/generated/prisma/client";
+import { createScriptClient } from "./db-client.mjs";
 
 /**
  * Content seed — product categories and products from the official
@@ -9,9 +8,7 @@ import { PrismaClient } from "../src/generated/prisma/client";
  * certifications/markets. Clears the old "(demo)" catalogue first;
  * idempotent via upserts by slug.
  */
-const db = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
-});
+const db = createScriptClient();
 
 async function media(storageKey: string, filename: string, alt: string, w: number, h: number) {
   const existing = await db.mediaAsset.findFirst({ where: { storageProvider: "local", storageKey } });

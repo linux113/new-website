@@ -1,8 +1,7 @@
 import "./env.mjs";
 import { execSync } from "node:child_process";
 import bcrypt from "bcryptjs";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../src/generated/prisma/client";
+import { createScriptClient } from "./db-client.mjs";
 
 /**
  * One-shot production bootstrap, run automatically during the Vercel
@@ -32,7 +31,7 @@ async function main() {
     if (ADMIN_PASSWORD.length < 12) {
       throw new Error("[deploy-setup] ADMIN_PASSWORD must be at least 12 characters.");
     }
-    const db = new PrismaClient({ adapter: new PrismaPg({ connectionString: DATABASE_URL }) });
+    const db = createScriptClient(DATABASE_URL);
     const passwordHash = await bcrypt.hash(ADMIN_PASSWORD, 12);
     const user = await db.adminUser.upsert({
       where: { email: ADMIN_EMAIL.toLowerCase() },
@@ -55,7 +54,7 @@ async function main() {
      (create-only — never overwrites admin-configured URLs) and drop the
      retired LinkedIn/X/YouTube settings. Runs on every deploy. */
   {
-    const db = new PrismaClient({ adapter: new PrismaPg({ connectionString: DATABASE_URL }) });
+    const db = createScriptClient(DATABASE_URL);
     const socials = [
       { key: "social.instagram", value: "https://www.instagram.com/sriyaanmetals" },
       { key: "social.facebook", value: "https://www.facebook.com/sriyaanmetals" },

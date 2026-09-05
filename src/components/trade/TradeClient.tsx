@@ -462,6 +462,8 @@ interface TradeCardProps {
   title: string;
   description: string;
   metaLabel: string;
+  /** Admin-managed status line; the footer row is hidden when empty. */
+  metaValue?: string;
   accent: "blue" | "gold";
   delay: number;
   children: React.ReactNode;
@@ -473,6 +475,7 @@ function TradeCard({
   title,
   description,
   metaLabel,
+  metaValue,
   accent,
   delay,
   children,
@@ -535,14 +538,16 @@ function TradeCard({
           {description}
         </p>
 
-        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.07] pt-6">
-          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#727D86]">
-            {metaLabel}
-          </span>
-          <span className="font-mono text-xs tracking-[0.1em] text-[#727D86]">
-            [ Pending client input ]
-          </span>
-        </div>
+        {metaValue ? (
+          <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.07] pt-6">
+            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#727D86]">
+              {metaLabel}
+            </span>
+            <span className="font-mono text-xs tracking-[0.1em] text-[#727D86]">
+              {metaValue}
+            </span>
+          </div>
+        ) : null}
       </div>
     </article>
   );
@@ -550,7 +555,17 @@ function TradeCard({
 
 /* ----------------------------- section ---------------------------- */
 
-export function TradeClient({ dotsSvg }: { dotsSvg: string }) {
+export function TradeClient({
+  dotsSvg,
+  importMeta,
+  exportMeta,
+}: {
+  dotsSvg: string;
+  /** content.trade.import.meta — blank hides the card footer. */
+  importMeta?: string;
+  /** content.trade.export.meta — blank hides the card footer. */
+  exportMeta?: string;
+}) {
   const reduced = useReducedMotion();
   const { ref, inView } = useInViewOnce<HTMLDivElement>();
   const shown = inView || reduced;
@@ -659,6 +674,7 @@ export function TradeClient({ dotsSvg }: { dotsSvg: string }) {
               title="Import"
               description="Sourcing material from international suppliers against specific buyer requirements — grades, quantities and schedules confirmed before commitment."
               metaLabel="Routes & Origins"
+              metaValue={importMeta}
               accent="blue"
               delay={0}
             >
@@ -681,6 +697,7 @@ export function TradeClient({ dotsSvg }: { dotsSvg: string }) {
               title="Export"
               description="Supplying material to overseas buyers with export documentation and coordinated dispatch from Mumbai."
               metaLabel="Markets & Terms"
+              metaValue={exportMeta}
               accent="gold"
               delay={140}
             >

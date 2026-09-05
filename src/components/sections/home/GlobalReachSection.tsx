@@ -2,6 +2,7 @@ import { Reveal } from "@/components/motion";
 import { Container } from "@/components/ui";
 import { GlobalReachClient } from "@/components/global-reach/GlobalReachClient";
 import { getPublishedGlobalCountries } from "@/lib/repositories/content";
+import { getGlobalReachStats } from "@/lib/company";
 import { getWorldDotsSvg } from "@/components/global-reach/world-map-data";
 
 /**
@@ -14,6 +15,7 @@ export async function GlobalReachSection() {
   const countries = await getPublishedGlobalCountries().catch(() => []);
   const confirmedCodes = countries.map((c) => c.code.toLowerCase());
   const dotsSvg = getWorldDotsSvg();
+  const stats = await getGlobalReachStats();
 
   return (
     <section
@@ -53,6 +55,7 @@ export async function GlobalReachSection() {
           <GlobalReachClient
             confirmedCodes={confirmedCodes}
             dotsSvg={dotsSvg}
+            stats={stats}
             embedded
           />
         </Reveal>

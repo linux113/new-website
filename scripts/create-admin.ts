@@ -1,8 +1,7 @@
 import "./env.mjs";
 import { createInterface } from "node:readline/promises";
 import bcrypt from "bcryptjs";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../src/generated/prisma/client";
+import { createScriptClient } from "./db-client.mjs";
 
 /**
  * Bootstrap/rotate an admin user (interactive or env-driven).
@@ -15,9 +14,7 @@ import { PrismaClient } from "../src/generated/prisma/client";
  * plaintext is never persisted anywhere.
  */
 
-const db = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
-});
+const db = createScriptClient();
 
 async function main() {
   let name = process.env.ADMIN_NAME;

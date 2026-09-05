@@ -97,12 +97,15 @@ export const GLOBAL_REGIONS: GlobalRegion[] = [
 
 /**
  * Statistics shown under the map.
- * when real verified metrics exist they should be supplied from
- * Capability / WebsiteSetting records instead.
+ *
+ * These are LABELS AND UNITS ONLY — the numbers themselves come from
+ * admin settings (content.reach.*) so the site never advertises a
+ * figure the client has not verified. A stat with no configured value
+ * is skipped, and when none are set the whole strip is hidden.
  */
 export const GLOBAL_STATS = [
-  { value: 30, suffix: "+", label: "Countries connected" },
-  { value: 500, suffix: "+", label: "Shipments delivered" },
-  { value: 100, suffix: "+", label: "Trusted partners" },
-  { value: 100, suffix: "%", label: "Compliance & transparency" },
+  { key: "content.reach.countries", suffix: "+", label: "Countries connected" },
+  { key: "content.reach.shipments", suffix: "+", label: "Shipments delivered" },
+  { key: "content.reach.partners", suffix: "+", label: "Trusted partners" },
+  { key: "content.reach.compliance", suffix: "%", label: "Compliance & transparency" },
 ] as const;

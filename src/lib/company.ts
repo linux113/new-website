@@ -96,3 +96,21 @@ export const getCompanyInfo = cache(async (): Promise<CompanyInfo> => {
     ),
   };
 });
+
+/**
+ * Global Reach counters, parsed from admin settings (content.reach.*).
+ *
+ * Only keys with a finite numeric value are returned, so an unset or
+ * non-numeric setting simply hides that stat instead of rendering "0+".
+ */
+export async function getGlobalReachStats(): Promise<Record<string, number>> {
+  const { content } = await getCompanyInfo();
+  const stats: Record<string, number> = {};
+  for (const [key, raw] of Object.entries(content)) {
+    if (!key.startsWith("content.reach.")) continue;
+    // Tolerate values typed as "1,200" or "30 +" in the admin panel.
+    const parsed = Number.parseFloat(String(raw).replace(/[^0-9.-]/g, ""));
+    if (Number.isFinite(parsed)) stats[key] = parsed;
+  }
+  return stats;
+}

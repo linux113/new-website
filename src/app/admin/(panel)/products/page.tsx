@@ -17,13 +17,16 @@ const PAGE_SIZE = 20;
 
 type ProductRow = Awaited<ReturnType<typeof fetchRows>>["rows"][number];
 
+// Search is case-insensitive by virtue of the MySQL collation
+// (utf8mb4_unicode_ci). Prisma's `mode: "insensitive"` is a
+// PostgreSQL-only option and is rejected by the MySQL connector.
 async function fetchRows(q: string | undefined, page: number) {
   const where = q
     ? {
         OR: [
-          { name: { contains: q, mode: "insensitive" as const } },
-          { productCode: { contains: q, mode: "insensitive" as const } },
-          { slug: { contains: q, mode: "insensitive" as const } },
+          { name: { contains: q } },
+          { productCode: { contains: q } },
+          { slug: { contains: q } },
         ],
       }
     : undefined;

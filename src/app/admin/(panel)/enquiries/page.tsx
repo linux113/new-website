@@ -12,14 +12,17 @@ export const metadata = { title: "Enquiries" };
 const PAGE_SIZE = 20;
 const STATUSES = ["NEW", "IN_PROGRESS", "CONTACTED", "CLOSED", "SPAM"] as const;
 
+// Search is case-insensitive by virtue of the MySQL collation
+// (utf8mb4_unicode_ci). Prisma's `mode: "insensitive"` is a
+// PostgreSQL-only option and is rejected by the MySQL connector.
 async function fetchRows(q: string | undefined, status: string | undefined, page: number) {
   const where = {
     ...(q
       ? {
           OR: [
-            { name: { contains: q, mode: "insensitive" as const } },
-            { email: { contains: q, mode: "insensitive" as const } },
-            { company: { contains: q, mode: "insensitive" as const } },
+            { name: { contains: q } },
+            { email: { contains: q } },
+            { company: { contains: q } },
           ],
         }
       : {}),

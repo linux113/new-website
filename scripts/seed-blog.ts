@@ -1,6 +1,5 @@
 import "./env.mjs";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../src/generated/prisma/client";
+import { createScriptClient } from "./db-client.mjs";
 
 /**
  * Additional content seed for client presentations:
@@ -14,9 +13,7 @@ import { PrismaClient } from "../src/generated/prisma/client";
  * collections (images/specs/applications) before re-creating them.
  * Content mirrors the real SRIYAAN METALS catalogue credentials.
  */
-const db = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
-});
+const db = createScriptClient();
 
 async function media(
   storageKey: string,

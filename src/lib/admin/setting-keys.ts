@@ -32,6 +32,17 @@ export const SETTING_KEYS: Record<string, SettingDef> = {
   "content.cta.headline": { group: "content", label: "Quote CTA headline", multiline: true },
   "content.cta.subline": { group: "content", label: "Quote CTA copy", multiline: true },
   "content.footer.description": { group: "content", label: "Footer company line", multiline: true },
+  // Import/export cards (homepage trade section). Each card shows a small
+  // status line in its footer; leave blank to hide it entirely rather
+  // than print a placeholder.
+  "content.trade.import.meta": { group: "content", label: "Trade card — import status line" },
+  "content.trade.export.meta": { group: "content", label: "Trade card — export status line" },
+  // Global Reach counters. Blank = the whole stats strip is hidden, so
+  // the site never advertises unverified numbers.
+  "content.reach.countries": { group: "content", label: "Global Reach — countries connected" },
+  "content.reach.shipments": { group: "content", label: "Global Reach — shipments delivered" },
+  "content.reach.partners": { group: "content", label: "Global Reach — trusted partners" },
+  "content.reach.compliance": { group: "content", label: "Global Reach — compliance %" },
   // group: seo (managed under /admin/seo)
   "seo.default.title": { group: "seo", label: "Default meta title" },
   "seo.default.description": { group: "seo", label: "Default meta description", multiline: true },

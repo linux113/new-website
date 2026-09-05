@@ -15,8 +15,11 @@ export const metadata = { title: "Blog" };
 
 const PAGE_SIZE = 20;
 
+// Search is case-insensitive by virtue of the MySQL collation
+// (utf8mb4_unicode_ci). Prisma's `mode: "insensitive"` is a
+// PostgreSQL-only option and is rejected by the MySQL connector.
 async function fetchRows(q: string | undefined, page: number) {
-  const where = q ? { title: { contains: q, mode: "insensitive" as const } } : undefined;
+  const where = q ? { title: { contains: q } } : undefined;
   const [rows, total] = await Promise.all([
     db.blogPost.findMany({
       where,

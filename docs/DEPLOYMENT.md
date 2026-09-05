@@ -1,7 +1,7 @@
 # Deployment
 
 The app is a standard Next.js server — it needs Node.js 20.19+ (Node 22
-LTS recommended), a PostgreSQL database, and a long-running process.
+LTS recommended), a MySQL 8 database, and a long-running process.
 
 Supported paths:
 
@@ -42,7 +42,7 @@ Supported paths:
 ```bash
 # as root on a fresh Ubuntu/Debian VPS
 apt update && apt upgrade -y
-apt install -y nginx postgresql git curl
+apt install -y nginx mysql-server git curl
 curl -fsSL https://deb.nodesource.com/setup_22.x | bash -   # Node.js 22 LTS
 apt install -y nodejs
 npm install -g pm2
@@ -51,11 +51,18 @@ npm install -g pm2
 ### 2. Database
 
 ```bash
-sudo -u postgres psql <<'SQL'
-CREATE USER sriyaan WITH PASSWORD 'use-a-strong-password';
-CREATE DATABASE sriyaan_prod OWNER sriyaan;
+sudo mysql <<'SQL'
+CREATE DATABASE sriyaan_prod
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'sriyaan'@'localhost' IDENTIFIED BY 'use-a-strong-password';
+GRANT ALL PRIVILEGES ON sriyaan_prod.* TO 'sriyaan'@'localhost';
+FLUSH PRIVILEGES;
 SQL
 ```
+
+> The `utf8mb4` / `utf8mb4_unicode_ci` charset is required — it stores ₹,
+> — and emoji, and its case-insensitive comparison is what the admin
+> search relies on.
 
 ### 3. Application
 
@@ -74,7 +81,7 @@ npm run build           # generates Prisma client, applies migrations,
 
 | Variable | Value |
 |---|---|
-| `DATABASE_URL` | `postgresql://sriyaan:PASSWORD@127.0.0.1:5432/sriyaan_prod` |
+| `DATABASE_URL` | `mysql://sriyaan:PASSWORD@127.0.0.1:3306/sriyaan_prod` (percent-encode reserved chars in the password) |
 | `NEXT_PUBLIC_SITE_URL` | `https://sriyaanmetals.com` |
 | `ADMIN_NAME` / `ADMIN_EMAIL` / `ADMIN_PASSWORD` | first admin credentials (password min 12 chars) |
 | `SEED_CONTENT` | `1` to seed the catalogue; remove and redeploy to stop |
@@ -132,8 +139,8 @@ pm2 restart sriyaan
 
 ## Option B — Vercel (managed)
 
-1. Create a PostgreSQL database (Neon, Supabase or Hostinger's managed
-   PostgreSQL) and copy the connection string.
+1. Create a MySQL database (PlanetScale, Aiven, Hostinger's managed MySQL,
+   or any MySQL 8 host) and copy the connection string.
 2. Import the GitHub repository at vercel.com.
 3. Set the environment variables from the table above (build command is
    pre-wired via `npm run vercel-build`, which runs migrations, the
@@ -151,13 +158,13 @@ inside `npm run build`, which this repo now does automatically
 failed with output ending at `Creating an optimized production build …`
 was the missing generated Prisma client.
 
-1. **Create a PostgreSQL database** the app can reach:
-   - On a **Cloud** plan, create a PostgreSQL database in hPanel and note
-     the connection string.
-   - On a **Business** plan (MySQL only), use an external PostgreSQL such
-     as Supabase or Neon. The Node.js dashboard's *Database Connect
-     Wizard* supports Supabase (and MongoDB Atlas) and applies the
-     connection variables to your next deployment automatically.
+1. **Create a MySQL database** the app can reach:
+   - In hPanel → *Databases* → **MySQL Databases**, create a database and
+     user, then build the URL as
+     `mysql://USER:PASSWORD@HOST:3306/DATABASE`.
+   - Set the collation to **`utf8mb4_unicode_ci`**.
+   - This works on every Hostinger plan, including **Business** (which
+     offers MySQL only) — no external database provider is needed.
 2. **Add the website**: hPanel → Websites → *Add Website* → **Deploy Web
    App** → choose **GitHub integration** (recommended, auto-builds on
    push) or **Upload your website files** (a ZIP of the repo; exclude
@@ -172,7 +179,7 @@ was the missing generated Prisma client.
 
    | Variable | Purpose |
    |---|---|
-   | `DATABASE_URL` | PostgreSQL connection string (required for migrations + runtime) |
+   | `DATABASE_URL` | MySQL connection string (required for migrations + runtime) |
    | `NEXT_PUBLIC_SITE_URL` | `https://sriyaanmetals.com` (inlined at build) |
    | `ADMIN_NAME` / `ADMIN_EMAIL` / `ADMIN_PASSWORD` | first admin credentials (password min 12 chars) |
    | `SEED_CONTENT` | `1` to seed the catalogue; remove and redeploy to stop |

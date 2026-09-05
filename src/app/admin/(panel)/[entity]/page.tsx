@@ -38,8 +38,11 @@ export default async function EntityListPage({
   const page = Math.max(1, Number(pageParam) || 1);
   const searchField = config.fields[0].name; // first field is the display name
 
+  // Search is case-insensitive by virtue of the MySQL collation
+  // (utf8mb4_unicode_ci). Prisma's `mode: "insensitive"` is a
+  // PostgreSQL-only option and is rejected by the MySQL connector.
   const where = q
-    ? { [searchField]: { contains: q, mode: "insensitive" } }
+    ? { [searchField]: { contains: q } }
     : undefined;
 
   const modelClient = (db as any)[config.model];

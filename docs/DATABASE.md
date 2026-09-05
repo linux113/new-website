@@ -1,6 +1,6 @@
 # Database
 
-**Stack:** PostgreSQL · Prisma 7 (pg driver adapter) · Zod validation
+**Stack:** MySQL 8 · Prisma 7 (MariaDB/MySQL driver adapter) · Zod validation
 **Schema:** `prisma/schema.prisma` · **Client output:** `src/generated/prisma/` (gitignored, regenerate with `npm run db:generate`)
 
 > No business data lives in the schema or seeds. All real records arrive
@@ -13,49 +13,84 @@
 
 | Variable | Purpose |
 |---|---|
-| `DATABASE_URL` | PostgreSQL connection string (Prisma CLI + runtime) |
+| `DATABASE_URL` | MySQL connection string, `mysql://USER:PASS@HOST:3306/DB` (Prisma CLI + runtime) |
+| `DATABASE_CONNECTION_LIMIT` | Optional pool size (default `5`) |
 | `NEXT_PUBLIC_SITE_URL` | Canonical site URL |
 
 Copy `.env.example` → `.env`. **Never commit `.env`.** No credentials are
 hardcoded anywhere; `prisma/schema.prisma` intentionally has no `url` field
-(Prisma 7) — the connection comes from `prisma.config.ts` (CLI) and the pg
-adapter in `src/lib/db.ts` (runtime), both reading `DATABASE_URL`.
+(Prisma 7) — the connection comes from `prisma.config.ts` (CLI) and the
+MariaDB/MySQL adapter in `src/lib/db.ts` (runtime), both reading
+`DATABASE_URL`.
+
+The database must be created with **`utf8mb4` / `utf8mb4_unicode_ci`**.
+That collation is case-insensitive, which is what the admin search relies
+on (see §"MySQL specifics" below).
 
 ## 2. Setup (fresh environment)
 
 ```bash
-cp .env.example .env          # fill DATABASE_URL
+cp .env.example .env          # fill DATABASE_URL (mysql://…)
 npm install
+npm run db:setup              # verify MySQL, create the DB, write .env.local
 npm run db:generate           # prisma generate → src/generated/prisma
-npm run db:migrate:apply      # apply migrations (sandbox path), or:
-# npx prisma migrate dev      # in unrestricted environments
+npm run db:migrate:apply      # prisma migrate deploy
 npm run db:seed               # optional, DEVELOPMENT ONLY
 ```
 
-### Sandbox note (`scripts/migrate.mjs` + offline generate)
-
-This sandbox cannot reach `binaries.prisma.sh`, so the Prisma CLI cannot
-download its native engines. Two scripts work around it:
-
-- `scripts/migrate.mjs` drives the official `@prisma/schema-engine-wasm`
-  with the pg adapter and produces **standard Prisma migration folders** —
-  fully compatible with `prisma migrate deploy` in CI/production.
-- `scripts/generate-offline.mjs` (behind `npm run db:generate`) first tries
-  a normal `prisma generate`; if the engine download fails, it retries with
-  a stub `PRISMA_SCHEMA_ENGINE_BINARY`. That is safe because the Prisma 7
-  `prisma-client` generator builds the client entirely in-process (WASM
-  `getDMMF`) and never executes the native binary. In unrestricted
-  environments the real engine is used transparently.
+Need a server locally?
 
 ```bash
-npm run db:generate               # offline-safe client generation
-npm run db:migrate:create -- <name>   # diff schema → new migration folder
-npm run db:migrate:apply              # apply pending migrations
-npm run db:migrate:status             # list migrations + DB version
+docker run --name sriyaan-mysql -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_DATABASE=sriyaan -p 3306:3306 -d mysql:8
 ```
 
-In normal environments you can also use plain `npx prisma generate`
-(`npm run db:generate:native`) and `npx prisma migrate dev`.
+### Offline client generation
+
+This sandbox cannot reach `binaries.prisma.sh`, so the Prisma CLI cannot
+download its native engines. `scripts/generate-offline.mjs` (behind
+`npm run db:generate`) first tries a normal `prisma generate`; if the
+engine download fails it retries with a stub
+`PRISMA_SCHEMA_ENGINE_BINARY`. That is safe because the Prisma 7
+`prisma-client` generator builds the client entirely in-process (WASM
+`getDMMF`) and never executes the native binary. In unrestricted
+environments the real engine is used transparently.
+
+```bash
+npm run db:generate                   # offline-safe client generation
+npm run db:migrate:create -- <name>   # prisma migrate dev --create-only
+npm run db:migrate:apply              # prisma migrate deploy
+npm run db:migrate:status             # prisma migrate status
+npm run db:ddl                        # regenerate the MySQL DDL from the schema
+```
+
+> The former `scripts/migrate.mjs` WASM runner was removed: the bundled
+> `@prisma/schema-engine-wasm` only implements the PostgreSQL connector
+> and panics with *"Unsupported adapter provider: Mysql"*. Migrations now
+> go through the normal Prisma CLI, which works wherever the engine can
+> be downloaded.
+
+### MySQL specifics
+
+Things that differ from the previous PostgreSQL setup — read before
+adding queries or columns:
+
+- **Text lengths.** Prisma maps a bare `String` to `VARCHAR(191)` on
+  MySQL. Every prose column in the schema therefore carries an explicit
+  `@db.Text` (or `@db.LongText` for blog/page bodies). If you add a
+  free-text field, add the annotation too or it will silently truncate.
+- **Keys stay on `VARCHAR`.** MySQL cannot index a `TEXT` column without
+  a prefix length, so anything `@unique`/`@@index`ed must remain
+  `VARCHAR(191)` (191 × 4 bytes utf8mb4 = 764 B, inside the index limit).
+- **Case-insensitive search.** Prisma's `mode: "insensitive"` is
+  PostgreSQL-only and is rejected by the MySQL connector. It has been
+  removed from all admin search queries — `utf8mb4_unicode_ci` already
+  compares case-insensitively.
+- **Identifier length.** MySQL caps names at 64 characters; the DDL
+  generator truncates long index names exactly the way Prisma does.
+- **Enums are inline.** MySQL has no `CREATE TYPE`, so each enum becomes
+  an inline `ENUM(...)` column definition.
+- **Engine.** All tables are `InnoDB` — required for foreign keys.
 
 ## 3. Enums
 
@@ -144,7 +179,7 @@ src/lib/
 └── repositories/          # products, categories, blogs, enquiries, content
 ```
 
-- `db.ts`: dev-global singleton (no pool churn under HMR), pg adapter, `server-only` makes any client-component import a build error.
+- `db.ts`: dev-global singleton (no pool churn under HMR), MariaDB/MySQL adapter, `server-only` makes any client-component import a build error.
 - Validation: `.strict()` schemas with bounded lengths; lead forms include a honeypot field that is stripped before persistence.
 - Repositories: public readers hard-filter `PUBLISHED` (+ `consent` for customers, `publishedAt <= now` for posts); enquiry writes accept only Zod-validated input types. No raw SQL anywhere.
 
@@ -165,21 +200,39 @@ src/lib/
 5. Extend validation + repository functions.
 6. `npx tsc --noEmit && npm run lint && npm run build`.
 
-### Local development database (`scripts/start-local-pg.mjs`)
+### Local development database (`scripts/setup-local-mysql.mjs`)
 
-For sandbox/CI-less development the repo ships an embedded PostgreSQL
-launcher (uses the `embedded-postgres` dev dependency):
+Unlike the old embedded-PostgreSQL launcher, the repo no longer ships a
+database server — MySQL is expected to be running already (Docker,
+Homebrew, XAMPP, or a remote host):
 
 ```bash
-node scripts/start-local-pg.mjs   # keep it running in its own terminal
+docker run --name sriyaan-mysql -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_DATABASE=sriyaan -p 3306:3306 -d mysql:8
+
+npm run db:setup    # verify connection, create DB, write .env.local
 ```
 
-It initialises a data dir at `.pgdata/` (gitignored), listens on
-`127.0.0.1:55432`, creates the `sriyaan_dev` database, and writes
-`DATABASE_URL` + `NEXT_PUBLIC_SITE_URL` to `.env.local` (gitignored).
-All standalone DB scripts (`scripts/migrate.mjs`, `prisma/seed.ts`,
-`scripts/*.ts`, `prisma.config.ts`) load `.env.local` in addition to
-`.env` via the shared `scripts/env.mjs` loader — the same precedence
-Next.js itself uses (process env → `.env.local` → `.env`).
+`db:setup` connects with `MYSQL_HOST`/`MYSQL_PORT`/`MYSQL_USER`/
+`MYSQL_PASSWORD`/`MYSQL_DB` (defaults `127.0.0.1:3306`, `root`/`root`,
+`sriyaan`), creates the database with `utf8mb4` / `utf8mb4_unicode_ci`
+if missing, and writes `DATABASE_URL` + `NEXT_PUBLIC_SITE_URL` to
+`.env.local` (gitignored) while preserving any other keys already there.
 
-Production uses any standard PostgreSQL via `DATABASE_URL`.
+All standalone DB scripts (`prisma/seed.ts`, `scripts/*.ts`,
+`prisma.config.ts`) load `.env.local` in addition to `.env` via the
+shared `scripts/env.mjs` loader — the same precedence Next.js itself
+uses (process env → `.env.local` → `.env`). They obtain their Prisma
+client from `scripts/db-client.mjs`, which keeps the MySQL adapter
+wiring in one place.
+
+Production uses any standard MySQL 8 (or MariaDB) via `DATABASE_URL`.
+
+### Regenerating the MySQL DDL
+
+`prisma/migrations/20260905000000_initial_mysql_schema/migration.sql` is
+generated from the schema by `scripts/gen-mysql-ddl.mjs`
+(`npm run db:ddl`). It exists because neither the native engine nor the
+WASM engine can emit MySQL DDL in this sandbox. In an environment with
+network access, `npx prisma migrate dev` is authoritative and should be
+preferred — the generator simply reproduces the same output.

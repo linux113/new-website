@@ -17,22 +17,26 @@ trading, import and export company.
 | Framework | Next.js (App Router, server actions) |
 | Language | TypeScript |
 | Styling | Tailwind CSS v4 |
-| Database | PostgreSQL + Prisma (pg driver adapter) |
+| Database | MySQL 8 + Prisma (MariaDB/MySQL driver adapter) |
 | Validation | Zod |
 | Auth | Custom session auth (opaque tokens, bcrypt, HttpOnly cookies) |
 
 ## Requirements
 
 - Node.js 20.19+ (Node.js 22 LTS recommended — see `"engines"` in package.json)
-- PostgreSQL 14+
+- MySQL 8.0+ (or MariaDB 10.6+)
 - npm
 
 ## Local setup
 
 ```bash
 npm install
-node scripts/start-local-pg.mjs   # embedded PostgreSQL (terminal 1)
-                                  # → writes DATABASE_URL to .env.local
+
+# A MySQL server must be reachable. Quickest option:
+docker run --name sriyaan-mysql -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_DATABASE=sriyaan -p 3306:3306 -d mysql:8
+
+npm run db:setup                  # create DB (utf8mb4) + write .env.local
 npm run db:generate               # Prisma client (offline-safe fallback)
 npm run db:migrate:apply          # apply database migrations
 npm run db:seed                   # optional: development placeholders
@@ -42,8 +46,9 @@ npx tsx scripts/seed-blog.ts      # optional: sample articles
 npm run dev                       # http://localhost:3000
 ```
 
-If you already run a PostgreSQL server, copy `.env.example` → `.env`,
-fill `DATABASE_URL`, and skip the embedded-PostgreSQL step.
+If you already run MySQL elsewhere, copy `.env.example` → `.env`, set
+`DATABASE_URL=mysql://user:pass@host:3306/dbname`, and skip `db:setup`.
+The database must use `utf8mb4` / `utf8mb4_unicode_ci`.
 
 Admin panel: `http://localhost:3000/admin/login`
 (first admin: `npx tsx scripts/create-admin.ts`)
@@ -54,7 +59,7 @@ See `.env.example` for the full list. Required in production:
 
 | Variable | Purpose |
 |---|---|
-| `DATABASE_URL` | PostgreSQL connection string |
+| `DATABASE_URL` | MySQL connection string (`mysql://user:pass@host:3306/db`) |
 | `NEXT_PUBLIC_SITE_URL` | Canonical site URL |
 | `ADMIN_NAME` / `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Creates the first admin user |
 | `SEED_CONTENT` | Set to `1` to seed catalogue content on deploy |
