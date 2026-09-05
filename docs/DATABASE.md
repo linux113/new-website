@@ -236,3 +236,28 @@ generated from the schema by `scripts/gen-mysql-ddl.mjs`
 WASM engine can emit MySQL DDL in this sandbox. In an environment with
 network access, `npx prisma migrate dev` is authoritative and should be
 preferred — the generator simply reproduces the same output.
+
+### Verifying without a MySQL server (`scripts/dev-mysql-shim.mjs`)
+
+**Test tooling only — never imported by application code.**
+
+Some environments (CI sandboxes, locked-down machines) cannot install or
+reach a MySQL server. This script is a Prisma driver adapter that reports
+`provider: "mysql"`, so Prisma's MySQL query compiler runs and emits real
+MySQL SQL, then translates that SQL to SQLite so it can actually execute.
+
+That makes it possible to exercise the whole app — migrations, seeds,
+admin CRUD, uploads — and still be testing genuine MySQL query
+generation.
+
+```js
+import { PrismaDevMysqlShim } from "./scripts/dev-mysql-shim.mjs";
+import { PrismaClient } from "./src/generated/prisma/client.ts";
+
+const db = new PrismaClient({ adapter: new PrismaDevMysqlShim("/tmp/test.sqlite") });
+```
+
+Caveats: SQLite cannot add foreign keys via `ALTER TABLE`, so FK
+constraints are skipped, and the translation covers the subset of MySQL
+this app emits. It is a smoke-test harness, **not** a substitute for
+running against real MySQL before release.

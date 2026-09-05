@@ -32,10 +32,6 @@ export function getStorage(): StorageProvider {
   return cached;
 }
 
-export function isStorageConfigured(): boolean {
-  return true;
-}
-
 /**
  * Safe, unique object key: media/<yyyy>/<mm>/<random>.<ext>
  * The extension comes from the validated MIME type (never from the

@@ -8,12 +8,12 @@ import { cn } from "@/lib/cn";
 
 /* ---------------- AdminPageHeader + Breadcrumbs ---------------- */
 
-export interface AdminCrumb {
+interface AdminCrumb {
   label: string;
   href?: string;
 }
 
-export function AdminBreadcrumbs({ items }: { items: AdminCrumb[] }) {
+function AdminBreadcrumbs({ items }: { items: AdminCrumb[] }) {
   if (!items.length) return null;
   return (
     <nav aria-label="Breadcrumb">
@@ -127,25 +127,6 @@ export function AdminEmptyState({
       <p className="text-heading-sm text-ink">{title}</p>
       {description ? <p className="text-body-sm text-slate max-w-105">{description}</p> : null}
       {action ? <div className="mt-2">{action}</div> : null}
-    </div>
-  );
-}
-
-export function AdminLoadingState({ label = "Loading…" }: { label?: string }) {
-  return (
-    <div aria-busy="true" className="adm-card flex flex-col gap-2 p-4">
-      <span className="sr-only">{label}</span>
-      {[0, 1, 2, 3, 4].map((i) => (
-        <div key={i} aria-hidden className="h-10 animate-pulse rounded-xs bg-paper-sunken motion-reduce:animate-none" />
-      ))}
-    </div>
-  );
-}
-
-export function AdminErrorState({ message }: { message: string }) {
-  return (
-    <div role="alert" className="rounded-xs border border-error/30 bg-error-tint px-4 py-3 text-body-sm text-error">
-      {message}
     </div>
   );
 }

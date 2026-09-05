@@ -15,9 +15,3 @@ export function getPublishedCategories() {
   });
 }
 
-export function getCategoryBySlug(slug: string) {
-  return db.category.findUnique({
-    where: { slug, status: "PUBLISHED" },
-    include: { image: true, seo: { include: { ogImage: true } } },
-  });
-}

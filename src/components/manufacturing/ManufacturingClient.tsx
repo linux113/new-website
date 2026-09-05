@@ -18,7 +18,22 @@ import { ProcessWorkflow } from "./ProcessWorkflow";
  * Content is data-driven (src/content/manufacturing.ts) so an admin
  * layer can later drive titles, steps and imagery.
  */
-export function ManufacturingClient() {
+/** Serialisable infrastructure item supplied by the server. */
+export type InfrastructureRow = {
+  caption: string;
+  description: string;
+  image: string;
+  alt: string;
+};
+
+export function ManufacturingClient({
+  infrastructure,
+}: {
+  infrastructure?: InfrastructureRow[];
+}) {
+  // Admin-managed infrastructure wins when any item is published;
+  // otherwise fall back to the static set so the page is never empty.
+  const infraItems = infrastructure?.length ? infrastructure : INFRASTRUCTURE_ITEMS;
   const reduced = useReducedMotion();
   const heroRef = useRef<HTMLDivElement>(null);
 
@@ -232,7 +247,7 @@ export function ManufacturingClient() {
         </p>
 
         <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
-          {INFRASTRUCTURE_ITEMS.map((item, i) => (
+          {infraItems.map((item, i) => (
             <article
               key={item.caption}
               className="mf-card group relative overflow-hidden rounded-xl border border-[#252A2D] bg-[#080B0D] transition-all duration-500 hover:border-[#D8A84E]/45 hover:shadow-[0_0_40px_-12px_rgba(214,168,74,0.35)]"

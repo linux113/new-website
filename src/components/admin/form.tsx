@@ -14,7 +14,7 @@ import type { ActionState } from "@/lib/admin/actions";
  * - SlugField: auto-derives from a source input until manually edited.
  */
 
-export function slugify(value: string): string {
+function slugify(value: string): string {
   return value
     .toLowerCase()
     .trim()

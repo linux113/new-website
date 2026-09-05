@@ -3,6 +3,8 @@ import { Breadcrumbs } from "@/components/layout";
 import { Container } from "@/components/ui";
 import { SITE_URL } from "@/content/site";
 import { ManufacturingClient } from "@/components/manufacturing/ManufacturingClient";
+import { INFRASTRUCTURE_ITEMS } from "@/content/manufacturing";
+import { getPublishedInfrastructure } from "@/lib/repositories/content";
 
 export const revalidate = 300;
 
@@ -20,7 +22,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ManufacturingPage() {
+export default async function ManufacturingPage() {
+  // Admin-managed infrastructure items take priority; each row keeps
+  // its uploaded image when there is one, otherwise it reuses the
+  // matching static photo so a card is never imageless.
+  const rows = await getPublishedInfrastructure().catch(() => []);
+  const infrastructure = rows.map((row, i) => {
+    const base = INFRASTRUCTURE_ITEMS[i % INFRASTRUCTURE_ITEMS.length];
+    return {
+      caption: row.title,
+      description: row.caption ?? base.description,
+      image: row.media?.publicUrl ?? base.image,
+      alt: row.media?.altText ?? row.title,
+    };
+  });
+
   return (
     <main
       className="relative min-h-screen overflow-hidden bg-[#050708] pb-24 pt-28 text-[#F5F7F8] lg:pb-32 lg:pt-36"
@@ -66,7 +82,7 @@ export default function ManufacturingPage() {
           />
         </nav>
 
-        <ManufacturingClient />
+        <ManufacturingClient infrastructure={infrastructure} />
       </Container>
 
       <style>{`

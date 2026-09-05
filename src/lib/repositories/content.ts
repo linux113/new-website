@@ -8,13 +8,6 @@ import { db } from "@/lib/db";
  * admin panel; until then the frontend keeps its typed placeholders.
  */
 
-export function getPublishedCapabilities() {
-  return db.capability.findMany({
-    where: { status: "PUBLISHED" },
-    orderBy: { sortOrder: "asc" },
-  });
-}
-
 export function getPublishedIndustries() {
   return db.industry.findMany({
     where: { status: "PUBLISHED" },
@@ -61,16 +54,3 @@ export function getPublishedGlobalCountries() {
   });
 }
 
-export function getCompanyPage(key: string) {
-  return db.companyPage.findUnique({
-    where: { key, status: "PUBLISHED" },
-    include: { seo: { include: { ogImage: true } } },
-  });
-}
-
-export function getWebsiteSettings(group?: string) {
-  return db.websiteSetting.findMany({
-    where: group ? { group } : undefined,
-    orderBy: { key: "asc" },
-  });
-}

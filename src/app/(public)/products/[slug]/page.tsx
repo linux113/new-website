@@ -1,24 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { FileText } from "lucide-react";
-import { Breadcrumbs } from "@/components/layout";
-import { ProductGallery, ProductGrid, SpecTable } from "@/components/patterns";
-import {
-  ButtonLink,
-  Container,
-  Eyebrow,
-  Hairline,
-  Icon,
-  Section,
-} from "@/components/ui";
-import { EnquiryForm } from "@/components/forms/EnquiryForm";
+import { ButtonLink, Container, Section } from "@/components/ui";
 import { CategorySeoView } from "@/components/seo/CategorySeoView";
 import { DbProductView } from "@/components/seo/DbProductView";
 import { getProductBySlug, getPublishedProducts } from "@/lib/repositories/products";
-import { toMediaRef, toPatternProduct } from "@/lib/mappers";
-import { whatsappProductUrl } from "@/lib/whatsapp";
-import { getCompanyInfo } from "@/lib/company";
+import { toPatternProduct } from "@/lib/mappers";
 import { SITE_NAME, SITE_URL } from "@/content/site";
 import {
   categoryDbSlugs,

@@ -32,8 +32,8 @@ async function main() {
   /* ---- Media (representative imagery, AI-generated, committed in repo) ---- */
   await media("images/cat-coils.jpg", "cat-coils.jpg", "Steel coils — representative imagery", 1536, 1024);
   await media("images/cat-sheets.jpg", "cat-sheets.jpg", "Steel sheets — representative imagery", 1536, 1024);
-  const imgBars = await media("images/cat-bars.jpg", "cat-bars.jpg", "Steel bars and fasteners — representative imagery", 1536, 1024);
-  const imgPipes = await media("images/cat-pipes.jpg", "cat-pipes.jpg", "Steel pipes — representative imagery", 1536, 1024);
+  await media("images/cat-bars.jpg", "cat-bars.jpg", "Steel bars and fasteners — representative imagery", 1536, 1024);
+  await media("images/cat-pipes.jpg", "cat-pipes.jpg", "Steel pipes — representative imagery", 1536, 1024);
   await media("images/material-wide.jpg", "material-wide.jpg", "Metal stock — representative imagery", 1920, 1080);
   await media("images/material-detail.jpg", "material-detail.jpg", "Metal detail — representative imagery", 1536, 1024);
 
