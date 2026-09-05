@@ -1,4 +1,3 @@
-import { getWorldDotsSvg } from "@/components/global-reach/world-map-data";
 import { getPublishedCustomers } from "@/lib/repositories/content";
 import { toMediaRef } from "@/lib/mappers";
 import {
@@ -34,5 +33,5 @@ export async function CustomersSection() {
         }))
       : DEFAULT_CUSTOMERS;
 
-  return <CustomersClient customers={customers} dotsSvg={getWorldDotsSvg()} />;
+  return <CustomersClient customers={customers} />;
 }

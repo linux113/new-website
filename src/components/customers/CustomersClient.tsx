@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { extractSvgInner } from "@/lib/svg";
 import {
   ArrowRight,
   Building2,
@@ -39,7 +38,6 @@ export interface CustomerEntry {
 
 interface Props {
   customers: CustomerEntry[];
-  dotsSvg: string;
 }
 
 const TRUST: { Icon: LucideIcon; title: string; sub: string }[] = [
@@ -179,7 +177,7 @@ function CustomerCard({
 
 /* ------------------------------ section ----------------------------- */
 
-export function CustomersClient({ customers, dotsSvg }: Props) {
+export function CustomersClient({ customers }: Props) {
   const reduced = useReducedMotion();
   const { ref, inView } = useInViewOnce<HTMLDivElement>();
   const shown = inView || reduced;
@@ -289,8 +287,13 @@ export function CustomersClient({ customers, dotsSvg }: Props) {
                     </filter>
                   </defs>
 
-                  <g
-                    dangerouslySetInnerHTML={{ __html: extractSvgInner(dotsSvg) }}
+                  <image
+                    href="/world-dots.svg"
+                    x="0"
+                    y="0"
+                    width="1000"
+                    height="500"
+                    preserveAspectRatio="xMidYMid meet"
                     opacity="0.55"
                   />
 

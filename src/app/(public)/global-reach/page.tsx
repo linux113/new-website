@@ -5,7 +5,6 @@ import { SITE_URL } from "@/content/site";
 import { getPublishedGlobalCountries } from "@/lib/repositories/content";
 import { getGlobalReachStats } from "@/lib/company";
 import { GlobalReachClient } from "@/components/global-reach/GlobalReachClient";
-import { getWorldDotsSvg } from "@/components/global-reach/world-map-data";
 
 export const revalidate = 300;
 
@@ -20,7 +19,6 @@ export default async function GlobalReachPage() {
   const countries = await getPublishedGlobalCountries().catch(() => []);
   const stats = await getGlobalReachStats();
   const confirmedCodes = countries.map((c) => c.code.toLowerCase());
-  const dotsSvg = getWorldDotsSvg();
 
   return (
     <main
@@ -74,7 +72,7 @@ export default async function GlobalReachPage() {
           />
         </nav>
 
-        <GlobalReachClient confirmedCodes={confirmedCodes} dotsSvg={dotsSvg} stats={stats} />
+        <GlobalReachClient confirmedCodes={confirmedCodes} stats={stats} />
       </Container>
 
       <style>{`

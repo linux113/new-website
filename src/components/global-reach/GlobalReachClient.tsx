@@ -22,7 +22,6 @@ interface Props {
    */
   stats?: Record<string, number>;
   /** Server-rendered dotted world map SVG inner markup. */
-  dotsSvg: string;
   /**
    * Embedded mode (e.g. inside the homepage section): the wrapper
    * already renders the eyebrow/H2/lede, so this component skips its
@@ -39,7 +38,7 @@ interface Props {
  * cards and the right-side world map. Cards and markers stay in sync
  * via hover and click.
  */
-export function GlobalReachClient({ confirmedCodes, dotsSvg, stats = {}, embedded = false }: Props) {
+export function GlobalReachClient({ confirmedCodes, stats = {}, embedded = false }: Props) {
   const reduced = useReducedMotion();
   const [activeId, setActiveId] = useState<string | null>(null);
   // Only stats the client has actually verified (set in the admin
@@ -199,7 +198,6 @@ export function GlobalReachClient({ confirmedCodes, dotsSvg, stats = {}, embedde
             regions={regions}
             activeId={activeId}
             onHover={setActiveId}
-            dotsSvg={dotsSvg}
           />
         </div>
       </div>

@@ -18,7 +18,6 @@ import {
 import { Container } from "@/components/ui";
 import { useReducedMotion } from "@/components/motion";
 import { cn } from "@/lib/cn";
-import { extractSvgInner } from "@/lib/svg";
 
 /**
  * SM-10 / TRADE — premium B2B import/export experience.
@@ -127,7 +126,7 @@ function useInViewOnce<T extends HTMLElement>() {
 
 /* --------------------------- sub-blocks --------------------------- */
 
-function TradeMap({ dotsSvg, shown }: { dotsSvg: string; shown: boolean }) {
+function TradeMap({ shown }: { shown: boolean }) {
   const reduced = useReducedMotion();
   const origin = project(ORIGIN.lat, ORIGIN.lng);
 
@@ -201,9 +200,14 @@ function TradeMap({ dotsSvg, shown }: { dotsSvg: string; shown: boolean }) {
             ))}
           </g>
 
-          {/* Dotted landmass (server-rendered string) */}
-          <g
-            dangerouslySetInnerHTML={{ __html: extractSvgInner(dotsSvg) }}
+          {/* Dotted landmass — cached asset, not inlined markup. */}
+          <image
+            href="/world-dots.svg"
+            x="0"
+            y="0"
+            width="1000"
+            height="500"
+            preserveAspectRatio="xMidYMid meet"
             opacity="0.9"
           />
 
@@ -556,11 +560,9 @@ function TradeCard({
 /* ----------------------------- section ---------------------------- */
 
 export function TradeClient({
-  dotsSvg,
   importMeta,
   exportMeta,
 }: {
-  dotsSvg: string;
   /** content.trade.import.meta — blank hides the card footer. */
   importMeta?: string;
   /** content.trade.export.meta — blank hides the card footer. */
@@ -662,7 +664,7 @@ export function TradeClient({
             </div>
 
             <div className="lg:col-span-6">
-              <TradeMap dotsSvg={dotsSvg} shown={shown} />
+              <TradeMap shown={shown} />
             </div>
           </div>
 

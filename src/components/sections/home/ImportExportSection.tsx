@@ -1,4 +1,3 @@
-import { getWorldDotsSvg } from "@/components/global-reach/world-map-data";
 import { TradeClient } from "@/components/trade/TradeClient";
 import { getCompanyInfo } from "@/lib/company";
 
@@ -14,11 +13,9 @@ import { getCompanyInfo } from "@/lib/company";
  * rendering a placeholder.
  */
 export async function ImportExportSection() {
-  const dotsSvg = getWorldDotsSvg();
   const company = await getCompanyInfo();
   return (
     <TradeClient
-      dotsSvg={dotsSvg}
       importMeta={company.content["content.trade.import.meta"]?.trim() || undefined}
       exportMeta={company.content["content.trade.export.meta"]?.trim() || undefined}
     />

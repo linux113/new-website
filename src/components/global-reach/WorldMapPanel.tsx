@@ -8,7 +8,6 @@ import {
   type GlobalRegion,
 } from "@/content/global-regions";
 import { project } from "./world-map-data";
-import { extractSvgInner } from "@/lib/svg";
 
 /**
  * Premium world-map visualisation.
@@ -29,7 +28,6 @@ interface WorldMapPanelProps {
   regions: GlobalRegion[];
   activeId: string | null;
   onHover: (id: string | null) => void;
-  dotsSvg: string;
   className?: string;
 }
 
@@ -37,7 +35,6 @@ export function WorldMapPanel({
   regions,
   activeId,
   onHover,
-  dotsSvg,
   className,
 }: WorldMapPanelProps) {
   const reduced = useReducedMotion();
@@ -131,9 +128,16 @@ export function WorldMapPanel({
           ))}
         </g>
 
-        {/* Landmass dots — inline the SVG inner markup */}
-        <g
-          dangerouslySetInnerHTML={{ __html: extractSvgInner(dotsSvg) }}
+        {/* Landmass dots — referenced as a cached asset rather than
+            inlined, so the ~200 KB of markup is fetched once and reused
+            by every section that shows the map. */}
+        <image
+          href="/world-dots.svg"
+          x="0"
+          y="0"
+          width="1000"
+          height="500"
+          preserveAspectRatio="xMidYMid meet"
           opacity="0.9"
         />
 

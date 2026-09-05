@@ -7,14 +7,20 @@ import DottedMap from "dotted-map";
  * must stay out of the client bundle. The page (server component)
  * calls this and passes the resulting string to <WorldMapPanel>.
  */
+let cachedSvg: string | null = null;
+
 export function getWorldDotsSvg(): string {
+  // Generating this costs ~200 KB of SVG and is identical every time,
+  // so build it once per server process instead of per render.
+  if (cachedSvg !== null) return cachedSvg;
   const map = new DottedMap({ height: 52, grid: "diagonal" });
-  return map.getSVG({
+  cachedSvg = map.getSVG({
     radius: 0.82,
     color: "#252A2D",
     shape: "circle",
     backgroundColor: "transparent",
   });
+  return cachedSvg;
 }
 
 /**
