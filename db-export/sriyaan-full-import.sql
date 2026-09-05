@@ -2,12 +2,11 @@
 --  SRIYAAN METALS — complete database import
 --  Target: MySQL 8 (Hostinger), database u391782884_sriyaanmetals
 --
---  HOW TO IMPORT
---    hPanel -> Databases -> phpMyAdmin -> select the database
---    -> Import tab -> choose this file -> Go
+--  Use this file on an EMPTY database. If the database already has
+--  tables, use sriyaan-reset-and-import.sql instead.
 --
---  Run this on an EMPTY database. It creates 32 tables, loads the
---  starter catalogue and site content, and creates one admin login.
+--  hPanel -> Databases -> phpMyAdmin -> select the database
+--  -> Import tab -> choose this file -> Go
 --
 --  ADMIN LOGIN
 --    URL       https://sriyaanmetals.com/admin/login
@@ -815,11 +814,11 @@ INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updat
 INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zuq1000jr3nzd1ta3p42', 'contact.email.purchase', '"purchase@sriyaanmetals.com"', 'contact', '2026-09-05 08:16:37.705', '2026-09-05 08:16:37.705');
 INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zuqa000kr3nz25sel0nz', 'contact.email.accounts', '"accounts@sriyaanmetals.com"', 'contact', '2026-09-05 08:16:37.714', '2026-09-05 08:16:37.714');
 INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zuqd000lr3nz656q6hfy', 'contact.hours', '"10:00 AM – 7:00 PM"', 'contact', '2026-09-05 08:16:37.717', '2026-09-05 08:16:37.717');
-INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zuql000mr3nzwurfjkz0', 'contact.address', '"Floor-2, 204, Plot No.96/98,\nPlatinum Arcade, JSS Road,\nCentral Plaza Cinema Charni Road,\nOpera House, Mumbai - 400004"', 'contact', '2026-09-05 08:16:37.725', '2026-09-05 08:16:37.725');
+INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zuql000mr3nzwurfjkz0', 'contact.address', '"Floor-2, 204, Plot No.96/98,\\nPlatinum Arcade, JSS Road,\\nCentral Plaza Cinema Charni Road,\\nOpera House, Mumbai - 400004"', 'contact', '2026-09-05 08:16:37.725', '2026-09-05 08:16:37.725');
 INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zuqo000nr3nzyhi4ine7', 'contact.gst', '"GSTIN: 27CRKPS0693G1ZB"', 'contact', '2026-09-05 08:16:37.728', '2026-09-05 08:16:37.728');
 INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zuqr000or3nzd80lcfm7', 'social.instagram', '"https://www.instagram.com/sriyaanmetals"', 'social', '2026-09-05 08:16:37.731', '2026-09-05 08:16:37.731');
 INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zuqv000pr3nzdgxp2mfw', 'social.facebook', '"https://www.facebook.com/sriyaanmetals"', 'social', '2026-09-05 08:16:37.735', '2026-09-05 08:16:37.735');
-INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zur7000qr3nzpdnc3fyb', 'content.hero.headline', '"Industrial Metal Supplier\nin Mumbai for Fasteners, Pipes & Fittings"', 'content', '2026-09-05 08:16:37.747', '2026-09-05 08:16:37.747');
+INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zur7000qr3nzpdnc3fyb', 'content.hero.headline', '"Industrial Metal Supplier\\nin Mumbai for Fasteners, Pipes & Fittings"', 'content', '2026-09-05 08:16:37.747', '2026-09-05 08:16:37.747');
 INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zur9000rr3nz8uimxrd4', 'content.hero.subline', '"Engineered supply for industrial buyers — exact specification, dependable delivery, direct communication."', 'content', '2026-09-05 08:16:37.749', '2026-09-05 08:16:37.749');
 INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zurc000sr3nzomctcdt6', 'content.cta.headline', '"Send us your specification"', 'content', '2026-09-05 08:16:37.752', '2026-09-05 08:16:37.752');
 INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updatedAt`) VALUES ('cmto3zurf000tr3nz61chdjrq', 'content.cta.subline', '"Tell us the grade, size, quantity and delivery — we respond with a considered quote."', 'content', '2026-09-05 08:16:37.755', '2026-09-05 08:16:37.755');
@@ -832,6 +831,6 @@ INSERT INTO `WebsiteSetting` (`id`, `key`, `value`, `group`, `createdAt`, `updat
 
 -- Admin login — change this password after your first sign-in.
 INSERT INTO `AdminUser` (`id`, `name`, `email`, `passwordHash`, `role`, `status`, `createdAt`, `updatedAt`)
-VALUES ('adm_sriyaan_0001', 'Administrator', 'admin@sriyaanmetals.com', '$2b$12$ELuuWGlP8eO5Cmzhah1Rmu/tyEiD2LbqIiSQNROCazeeNlRwkLVl6', 'SUPER_ADMIN', 'ACTIVE', '2026-09-05 08:17:57', '2026-09-05 08:17:57');
+VALUES ('adm_sriyaan_0001', 'Administrator', 'admin@sriyaanmetals.com', '$2b$12$51mGlfWAHrppcvgUITEE7.mK3OmmMvcUCVj0ZucQExGBOA9Z8Gpz6', 'SUPER_ADMIN', 'ACTIVE', '2026-09-05 08:32:41', '2026-09-05 08:32:41');
 
 SET FOREIGN_KEY_CHECKS = 1;
