@@ -11,7 +11,7 @@ import { InsightsClient, type InsightPost } from "@/components/insights/Insights
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Insights | Steel, Stainless & Industrial Knowledge — SRIYAAN METALS",
+  title: "Insights — Steel, Stainless & Industrial Knowledge",
   description:
     "Explore SRIYAAN METALS insights, technical guides, steel industry knowledge, material specifications, quality practices and company updates for buyers and engineering professionals.",
   alternates: { canonical: `${SITE_URL}/blog` },

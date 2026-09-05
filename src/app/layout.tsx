@@ -44,13 +44,26 @@ const plexMono = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://sriyaanmetals.com"),
   title: {
-    default:
-      "SRIYAAN METALS | Metal Supplier, Fasteners, Pipes & Fittings in Mumbai",
+    // The template appends "| SRIYAAN METALS", so the default must not
+    // repeat the brand or every homepage title reads
+    // "SRIYAAN METALS | … | SRIYAAN METALS" and Google truncates it.
+    default: "Metal Supplier, Fasteners, Pipes & Fittings in Mumbai",
     template: "%s | SRIYAAN METALS",
   },
   description:
     "SRIYAAN METALS is a Mumbai-based metal trading, import and export company supplying industrial fasteners, bolts, nuts, pipes, pipe fittings, flanges and foundation bolts across India and global markets.",
+  // Google Search Console ownership verification.
+  //
+  // The HTML-file method does not work here: Next.js only serves files
+  // that were in public/ at build time, so uploading googleXXXX.html to
+  // the server after a deploy 404s. Set GOOGLE_SITE_VERIFICATION to the
+  // token from the "HTML tag" method instead (the content="…" value,
+  // not the whole tag) and redeploy.
+  verification: process.env.GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.GOOGLE_SITE_VERIFICATION }
+    : undefined,
 };
+
 
 /**
  * Root layout: fonts + document shell only. The public site chrome

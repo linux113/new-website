@@ -8,7 +8,7 @@ import { AboutClient } from "@/components/about/AboutClient";
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "About — Mumbai Metals Trading, Import & Export | SRIYAAN METALS",
+  title: "About — Mumbai Metals Trading, Import & Export",
   description:
     "SRIYAAN METALS is a metals trading, import and export company in Opera House, Mumbai. A B2B industrial metal supplier offering metal sourcing, inspection and procurement — with verified address, GSTIN and contact details.",
   alternates: { canonical: `${SITE_URL}/about` },

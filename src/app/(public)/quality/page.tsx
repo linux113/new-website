@@ -18,7 +18,7 @@ import { QualityClient } from "@/components/quality/QualityClient";
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Quality & Certifications — SRIYAAN METALS",
+  title: "Quality & Certifications",
   description:
     "Every SRIYAAN METALS consignment is inspected, documented and traceable before it ships. View verified quality certifications.",
   alternates: { canonical: `${SITE_URL}/quality` },

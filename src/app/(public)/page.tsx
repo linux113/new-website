@@ -30,7 +30,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const robots = company.seo["seo.robots"] || undefined;
 
   return {
-    title,
+    // `absolute` opts out of the root layout's "%s | SRIYAAN METALS"
+    // template. The homepage title is admin-editable
+    // (seo.home.title) and already contains the brand, so without this
+    // it renders "SRIYAAN METALS | … | SRIYAAN METALS" — 87 characters,
+    // well past Google's ~60-character truncation point. Using
+    // `absolute` also means whatever the admin types is what ships.
+    title: { absolute: title },
     description,
     metadataBase: new URL(SITE_URL),
     alternates: { canonical: SITE_URL },

@@ -10,7 +10,7 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title:
-    "Industries — Construction, Automotive, Engineering & Infrastructure | SRIYAAN METALS",
+    "Industries — Construction, Automotive, Engineering & Infrastructure",
   description:
     "SRIYAAN METALS supplies industrial metals across construction, automotive, engineering and infrastructure. A Mumbai-based metal supplier offering B2B metal sourcing, procurement and import/export.",
   alternates: { canonical: `${SITE_URL}/industries` },
