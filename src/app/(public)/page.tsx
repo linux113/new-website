@@ -59,6 +59,13 @@ const organizationSchema = {
   "@type": "Organization",
   name: SITE_NAME,
   url: SITE_URL,
+  // Google reads `logo` to source the icon shown beside the site name
+  // in search results. It must be a square, crawlable, absolute URL —
+  // /brand/logo-square.png is the emblem on a solid white background
+  // (the wordmark version is too wide, and the white-on-transparent
+  // variant is invisible against Google's white result page).
+  logo: `${SITE_URL}/brand/logo-square.png`,
+  image: `${SITE_URL}/brand/logo-square.png`,
   email: CONTACT.emails[0].value,
   telephone: CONTACT.phones.map((p) => p.value),
   address: {
